@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Neon Terrarium</title>
+    <style>
+      :root {
+        --bg-1: #06131f;
+        --bg-2: #0b2a3a;
+        --glass: rgba(255, 255, 255, 0.08);
+        --text: #e7f7ff;
+        --mint: #6fffd2;
+        --amber: #ffcb6b;
+        --coral: #ff7d8a;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        margin: 0;
+        min-height: 100%;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        color: var(--text);
+      }
+
+      body {
+        min-height: 100vh;
+        overflow: hidden;
+        display: grid;
+        place-items: center;
+        background:
+          radial-gradient(circle at 18% 20%, rgba(111, 255, 210, 0.22), transparent 34%),
+          radial-gradient(circle at 82% 76%, rgba(255, 125, 138, 0.22), transparent 30%),
+          linear-gradient(135deg, var(--bg-1), var(--bg-2));
+      }
+
+      .panel {
+        width: min(920px, 92vw);
+        border-radius: 24px;
+        padding: 1.5rem;
+        background: var(--glass);
+        border: 1px solid rgba(255, 255, 255, 0.14);
+        backdrop-filter: blur(7px);
+        box-shadow: 0 20px 80px rgba(0, 0, 0, 0.35);
+      }
+
+      h1 {
+        margin: 0 0 0.5rem;
+        font-size: clamp(2rem, 5vw, 3.2rem);
+        letter-spacing: 0.05em;
+      }
+
+      p {
+        margin: 0 0 1rem;
+        color: rgba(231, 247, 255, 0.88);
+      }
+
+      .stage {
+        height: min(58vh, 520px);
+        border-radius: 18px;
+        position: relative;
+        overflow: hidden;
+        background:
+          linear-gradient(
+            to bottom,
+            rgba(255, 255, 255, 0.09),
+            rgba(255, 255, 255, 0.015)
+          );
+        border: 1px solid rgba(255, 255, 255, 0.12);
+      }
+
+      .orb {
+        --size: 120px;
+        position: absolute;
+        width: var(--size);
+        aspect-ratio: 1;
+        border-radius: 42% 58% 55% 45% / 48% 42% 58% 52%;
+        filter: blur(0.3px) saturate(1.2);
+        opacity: 0.85;
+        animation: drift 14s ease-in-out infinite;
+      }
+
+      .orb.one {
+        --size: 190px;
+        left: 10%;
+        top: 12%;
+        background: radial-gradient(circle at 30% 30%, #b8ffe8, var(--mint));
+        animation-duration: 16s;
+      }
+
+      .orb.two {
+        --size: 140px;
+        right: 18%;
+        top: 20%;
+        background: radial-gradient(circle at 30% 25%, #ffe6b2, var(--amber));
+        animation-duration: 13s;
+        animation-delay: -4s;
+      }
+
+      .orb.three {
+        --size: 170px;
+        left: 36%;
+        bottom: 6%;
+        background: radial-gradient(circle at 28% 24%, #ffc5cb, var(--coral));
+        animation-duration: 18s;
+        animation-delay: -2s;
+      }
+
+      .grid {
+        position: absolute;
+        inset: 0;
+        background-image:
+          linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+        background-size: 36px 36px;
+        mask-image: radial-gradient(circle at center, black 55%, transparent 100%);
+        animation: pulse 5s ease-in-out infinite;
+      }
+
+      .caption {
+        position: absolute;
+        left: 1rem;
+        bottom: 1rem;
+        margin: 0;
+        padding: 0.4rem 0.7rem;
+        border-radius: 999px;
+        font-size: 0.85rem;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        background: rgba(0, 0, 0, 0.28);
+        border: 1px solid rgba(255, 255, 255, 0.16);
+      }
+
+      @keyframes drift {
+        0%,
+        100% {
+          transform: translate(0, 0) rotate(0deg) scale(1);
+          border-radius: 42% 58% 55% 45% / 48% 42% 58% 52%;
+        }
+        33% {
+          transform: translate(24px, -22px) rotate(10deg) scale(1.06);
+          border-radius: 57% 43% 48% 52% / 39% 51% 49% 61%;
+        }
+        66% {
+          transform: translate(-18px, 16px) rotate(-8deg) scale(0.95);
+          border-radius: 46% 54% 58% 42% / 61% 44% 56% 39%;
+        }
+      }
+
+      @keyframes pulse {
+        0%,
+        100% {
+          opacity: 0.4;
+          transform: scale(1);
+        }
+        50% {
+          opacity: 0.75;
+          transform: scale(1.015);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="panel">
+      <h1>Neon Terrarium</h1>
+      <p>A tiny synthetic ecosystem running quietly in one HTML file.</p>
+
+      <section class="stage" aria-label="Animated neon terrarium scene">
+        <div class="grid"></div>
+        <div class="orb one"></div>
+        <div class="orb two"></div>
+        <div class="orb three"></div>
+        <p class="caption">No links. Just vibes.</p>
+      </section>
+    </main>
+  </body>
+</html>
