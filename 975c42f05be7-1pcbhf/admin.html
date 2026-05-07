@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Testing Demo Admin</title>
+    <style>
+      :root {
+        --page-bg: #ffffff;
+        --ink: #231f20;
+        --accent: #f89c29;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        margin: 0;
+        min-height: 100vh;
+        background: var(--page-bg);
+        color: var(--ink);
+        font-family: "Muli", "Segoe UI", sans-serif;
+      }
+
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      .app-shell {
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .top-menu {
+        position: relative;
+        z-index: 3;
+        background: rgba(255, 255, 255, 0.96);
+      }
+
+      .top-menu-inner {
+        max-width: 1320px;
+        margin: 0 auto;
+        padding: 24px 36px 18px;
+        display: flex;
+        align-items: center;
+        gap: 28px;
+        font-size: 14px;
+        font-weight: 700;
+      }
+
+      .top-menu-link {
+        transition: color 180ms ease;
+      }
+
+      .top-menu-link:hover {
+        color: var(--accent);
+      }
+
+      .top-menu-link.active {
+        color: var(--accent);
+      }
+
+      .content {
+        flex: 1;
+        max-width: 1320px;
+        margin: 0 auto;
+        width: 100%;
+        padding: 40px 36px;
+      }
+
+      @media (max-width: 720px) {
+        .top-menu-inner {
+          padding: 18px 16px 14px;
+          gap: 18px;
+          flex-wrap: wrap;
+        }
+
+        .content {
+          padding: 24px 16px;
+        }
+      }
+    </style>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Muli:wght@400;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="top-menu">
+        <div class="top-menu-inner">
+          <a class="top-menu-link" href="index.html">Chatbot</a>
+          <a class="top-menu-link active" href="admin.html">Admin</a>
+        </div>
+      </header>
+
+      <main class="content"></main>
+    </div>
+  </body>
+</html>
