@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Testing Demo</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <style>
+      :root {
+        --page-bg: #ffffff;
+        --panel-bg: #f2f2f2;
+        --panel-line: #d9d9d9;
+        --chat-line: #808080;
+        --ink: #231f20;
+        --muted: #6f6f6f;
+        --accent: #f89c29;
+        --accent-light: #ffba47;
+        --accent-deep: #da7e0b;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        margin: 0;
+        min-height: 100vh;
+        background: var(--page-bg);
+        color: var(--ink);
+        font-family: "Muli", "Segoe UI", sans-serif;
+      }
+
+      body {
+        overflow-x: hidden;
+      }
+
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      button,
+      textarea {
+        font: inherit;
+      }
+
+      .app-shell {
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .top-menu {
+        position: relative;
+        z-index: 3;
+        background: rgba(255, 255, 255, 0.96);
+      }
+
+      .top-menu-inner {
+        max-width: 1320px;
+        margin: 0 auto;
+        padding: 24px 36px 18px;
+        display: flex;
+        align-items: center;
+        gap: 28px;
+        font-size: 14px;
+        font-weight: 700;
+      }
+
+      .top-menu-link {
+        transition: color 180ms ease;
+      }
+
+      .top-menu-link:hover {
+        color: var(--accent);
+      }
+
+      .top-menu-link.active {
+        color: var(--accent);
+      }
+
+      .page-shell {
+        flex: 1;
+        position: relative;
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        min-height: 620px;
+      }
+
+      .hero-panel {
+        position: absolute;
+        inset: 0;
+        background: url("./VirtualAllyBG.png") center center / cover
+          no-repeat;
+      }
+
+      .hero-copy {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border: 0;
+      }
+
+      .chat-stage {
+        position: relative;
+        z-index: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: min(100%, 720px);
+        padding: 24px 40px 36px 12px;
+        background: transparent;
+      }
+
+      .chat-frame {
+        width: min(100%, 640px);
+        background: var(--panel-bg);
+        border: 1px solid var(--panel-line);
+        border-radius: 16px;
+        overflow: hidden;
+        box-shadow: 0 18px 40px -5px rgba(0, 0, 0, 0.2), 0 15px 20px -5px rgba(0, 0, 0, 0.1);
+      }
+
+      .chat-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        min-height: 56px;
+        padding: 14px 20px;
+        color: #ffffff;
+        background: linear-gradient(135deg, var(--accent-light), var(--accent), var(--accent-deep));
+      }
+
+      .chat-title {
+        font-size: 16px;
+        font-weight: 600;
+      }
+
+      .reset-button {
+        border: 0;
+        background: transparent;
+        color: #ffffff;
+        padding: 8px 12px;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 13px;
+        font-weight: 600;
+        transition: background 160ms ease;
+      }
+
+      .reset-button:hover {
+        background: rgba(255, 255, 255, 0.12);
+      }
+
+      .reset-button:disabled {
+        opacity: 0.55;
+        cursor: default;
+      }
+
+      .chat-messages {
+        min-height: 680px;
+        max-height: calc(100vh - 180px);
+        overflow-y: auto;
+        background: var(--panel-bg);
+        padding: 18px 14px 12px;
+      }
+
+      .message-list {
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+      }
+
+      .message-row {
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+        max-width: 88%;
+        animation: fadeUp 220ms ease both;
+      }
+
+      .message-row.user {
+        margin-left: auto;
+        flex-direction: row-reverse;
+      }
+
+      .message-avatar {
+        width: 31px;
+        height: 31px;
+        flex: 0 0 31px;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: contain;
+      }
+
+      .message-avatar.assistant {
+        background-image: url("https://onepicture.opinioninsight.com/files/5/ChatBubble.png");
+      }
+
+      .message-avatar.user {
+        background-image: url("https://onepicture.opinioninsight.com/files/5/UserBubble.png");
+      }
+
+      .message-content {
+        min-width: 0;
+      }
+
+      .message-bubble {
+        border: 1px solid #dddddd;
+        border-radius: 15px;
+        background: #dddddd;
+        color: #242424;
+        padding: 10px 14px;
+        line-height: 1.5;
+        white-space: pre-wrap;
+        word-break: break-word;
+      }
+
+      .message-time {
+        margin-top: 6px;
+        font-size: 11px;
+        color: var(--muted);
+      }
+
+      .message-row.user .message-time {
+        text-align: right;
+      }
+
+      .message-bubble a {
+        color: #0d5ea6;
+        text-decoration: underline;
+      }
+
+      .empty-state {
+        animation: fadeUp 220ms ease both;
+      }
+
+      .error-text {
+        margin-top: 12px;
+        font-size: 13px;
+        font-weight: 700;
+        color: #b42318;
+      }
+
+      .chat-footer {
+        border-top: 1px solid var(--chat-line);
+        background: var(--panel-bg);
+        padding: 8px 10px;
+      }
+
+      .composer {
+        display: flex;
+        align-items: flex-end;
+        gap: 8px;
+      }
+
+      .composer-input {
+        min-height: 44px;
+        max-height: 132px;
+        flex: 1;
+        resize: vertical;
+        border: 0;
+        background: transparent;
+        color: #2e2d2d;
+        padding: 10px 8px 8px;
+        outline: none;
+      }
+
+      .composer-input::placeholder {
+        color: #171616;
+      }
+
+      .send-button {
+        width: 42px;
+        height: 42px;
+        flex: 0 0 42px;
+        border: 0;
+        border-radius: 999px;
+        background: transparent;
+        color: #231f20;
+        cursor: pointer;
+        transition: color 160ms ease, background 160ms ease;
+      }
+
+      .send-button:hover {
+        background: rgba(0, 0, 0, 0.05);
+      }
+
+      .send-button:disabled {
+        opacity: 0.35;
+        cursor: default;
+      }
+
+      .footer {
+        background: #231f20;
+        color: #ffffff;
+      }
+
+      .footer-inner {
+        max-width: 1320px;
+        margin: 0 auto;
+        padding: 12px 36px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        font-size: 14px;
+      }
+
+      .footer a {
+        color: #ffffff;
+      }
+
+      .footer-center {
+        flex: 1;
+        text-align: center;
+      }
+
+      @keyframes fadeUp {
+        from {
+          opacity: 0;
+          transform: translateY(8px);
+        }
+
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @media (max-width: 1080px) {
+        .page-shell {
+          justify-content: center;
+          min-height: 520px;
+        }
+
+        .hero-panel {
+          background-position: 38% center;
+        }
+
+        .chat-stage {
+          padding: 24px 20px 36px;
+          width: 100%;
+        }
+
+        .chat-frame {
+          width: min(100%, 680px);
+        }
+
+        .chat-messages {
+          max-height: none;
+          min-height: 620px;
+        }
+      }
+
+      @media (max-width: 720px) {
+        .top-menu-inner {
+          padding: 18px 16px 14px;
+          gap: 18px;
+          flex-wrap: wrap;
+        }
+
+        .page-shell {
+          min-height: 480px;
+        }
+
+        .hero-panel {
+          background-position: 36% center;
+        }
+
+        .chat-stage {
+          padding: 16px 12px 24px;
+          width: 100%;
+        }
+
+        .chat-frame {
+          width: 100%;
+          border-radius: 14px;
+        }
+
+        .chat-header {
+          padding: 14px 16px;
+        }
+
+        .chat-messages {
+          min-height: 500px;
+          padding: 16px 10px 10px;
+        }
+
+        .message-row {
+          max-width: 96%;
+        }
+
+        .footer-inner {
+          padding: 12px 16px;
+          flex-direction: column;
+          text-align: center;
+        }
+
+        .footer-center {
+          display: none;
+        }
+      }
+    </style>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Muli:wght@400;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+      const { useState, useEffect, useRef } = React;
+
+      function clsx(...parts) {
+        return parts.filter(Boolean).join(" ");
+      }
+
+      function escapeHtml(unsafe) {
+        return String(unsafe)
+          .replaceAll(/&/g, "&amp;")
+          .replaceAll(/</g, "&lt;")
+          .replaceAll(/>/g, "&gt;")
+          .replaceAll(/\"/g, "&quot;")
+          .replaceAll(/'/g, "&#039;");
+      }
+
+      function renderMarkdownLinks(escapedText) {
+        const mdLink = /\[([^\]]+)\]\s*\((https?:\/\/[^\s)]+)\)/g;
+        return escapedText.replace(mdLink, (m, text, href) => {
+          const safeHref = href.replaceAll('"', "%22");
+          return `<a href="${safeHref}" target="_blank" rel="noopener noreferrer" class="text-blue-700 underline">${text}</a>`;
+        });
+      }
+
+      function renderMessageHtml(msg) {
+        const raw = getTextFromMessage(msg);
+        const escaped = escapeHtml(raw);
+        return renderMarkdownLinks(escaped);
+      }
+
+      function getTextFromMessage(msg) {
+        if (!msg) return "";
+        const blocks = Array.isArray(msg.contents)
+          ? msg.contents
+          : msg.content
+          ? [{ $type: "text", text: String(msg.content) }]
+          : [];
+        return (
+          blocks
+            .filter(
+              (b) => b && (b.$type === "text" || b.type === "text") && typeof b.text === "string"
+            )
+            .map((b) => b.text)
+            .join("\n")
+            .trim()
+        );
+      }
+
+      function isRenderable(msg) {
+        if (msg.role !== "user" && msg.role !== "assistant") return false;
+        return getTextFromMessage(msg).length > 0;
+      }
+
+      function augmentMessage(msg) {
+        return {
+          ...msg,
+          clientTimestamp: msg?.clientTimestamp || new Date().toISOString(),
+        };
+      }
+
+      function formatRelativeTime(isoString) {
+        if (!isoString) return "";
+        const timestamp = new Date(isoString).getTime();
+        if (Number.isNaN(timestamp)) return "";
+
+        const diffMs = Date.now() - timestamp;
+        const minutes = Math.round(diffMs / 60000);
+
+        if (minutes <= 1) return "Just now";
+        if (minutes < 60) return `${minutes} minutes ago`;
+
+        const hours = Math.round(minutes / 60);
+        if (hours === 1) return "1 hour ago";
+        if (hours < 24) return `${hours} hours ago`;
+
+        const days = Math.round(hours / 24);
+        return days === 1 ? "1 day ago" : `${days} days ago`;
+      }
+
+      function App() {
+        const [messages, setMessages] = useState([]);
+        const [input, setInput] = useState("");
+        const [isSending, setIsSending] = useState(false);
+        const [error, setError] = useState(null);
+        const messagesRef = useRef(null);
+
+        useEffect(() => {
+          const container = messagesRef.current;
+          if (!container) return;
+          container.scrollTo({ top: container.scrollHeight, behavior: "smooth" });
+        }, [messages.length]);
+
+        const visibleMessages = messages.filter(isRenderable);
+        const displayedMessages = visibleMessages.length
+          ? visibleMessages
+          : [
+              {
+                role: "assistant",
+                contents: [
+                  {
+                    $type: "text",
+                    text: "Hi, I am a testing demo assistant.\n\nTry any test message or scenario.",
+                  },
+                ],
+                clientTimestamp: new Date().toISOString(),
+              },
+            ];
+
+        async function sendMessage(e) {
+          e?.preventDefault();
+          if (!input.trim() || isSending) return;
+          setError(null);
+
+          const userMsg = augmentMessage({
+            role: "user",
+            contents: [
+              {
+                $type: "text",
+                text: input.trim(),
+              },
+            ],
+          });
+
+          setMessages((prev) => [...prev, userMsg]);
+          setInput("");
+          setIsSending(true);
+
+          try {
+            await new Promise((resolve) => window.setTimeout(resolve, 250));
+            setMessages((prev) => [
+              ...prev,
+              augmentMessage({
+                role: "assistant",
+                contents: [{ $type: "text", text: "This is a demo test response" }],
+              }),
+            ]);
+          } catch (err) {
+            console.error(err);
+            setError(err.message);
+            setMessages((prev) => [
+              ...prev,
+              augmentMessage({
+                role: "assistant",
+                contents: [{ $type: "text", text: "Sorry, the test response failed." }],
+              }),
+            ]);
+          } finally {
+            setIsSending(false);
+          }
+        }
+
+        function onKeyDown(e) {
+          if (e.key === "Enter" && !e.shiftKey) {
+            e.preventDefault();
+            sendMessage();
+          }
+        }
+
+        function clearChat() {
+          setMessages([]);
+          setError(null);
+        }
+
+        return (
+          <div className="app-shell">
+            <header className="top-menu">
+              <div className="top-menu-inner">
+                <a className="top-menu-link active" href="chatbot.html">
+                  Chatbot
+                </a>
+                <a className="top-menu-link" href="admin.html">
+                  Admin
+                </a>
+                <a className="top-menu-link" href="index.html">
+                  Logout
+                </a>
+              </div>
+            </header>
+
+            <div className="page-shell">
+              <section className="hero-panel" role="img" aria-label="Testing assistant background">
+                <span className="hero-copy">Testing Assistant</span>
+              </section>
+
+              <section className="chat-stage">
+                <div className="chat-frame">
+                  <header className="chat-header">
+                    <div className="chat-title">Testing Assistant</div>
+                    <button onClick={clearChat} disabled={isSending} className="reset-button">
+                      Reset Test
+                    </button>
+                  </header>
+
+                  <main ref={messagesRef} className="chat-messages">
+                    <div className={clsx("message-list", visibleMessages.length === 0 && "empty-state")}>
+                      {displayedMessages.map((m, i) => (
+                        <div key={i} className={clsx("message-row", m.role === "user" && "user")}>
+                          <div
+                            className={clsx(
+                              "message-avatar",
+                              m.role === "user" ? "user" : "assistant"
+                            )}
+                            aria-hidden="true"
+                          ></div>
+                          <div className="message-content">
+                            <div
+                              className="message-bubble"
+                              dangerouslySetInnerHTML={{ __html: renderMessageHtml(m) }}
+                            ></div>
+                            <div className="message-time">{formatRelativeTime(m.clientTimestamp)}</div>
+                          </div>
+                        </div>
+                      ))}
+
+                      {isSending && (
+                        <div className="message-row">
+                          <div className="message-avatar assistant" aria-hidden="true"></div>
+                          <div className="message-content">
+                            <div className="message-bubble">Running test...</div>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+
+                    {error && <div className="error-text">Test error: {error}</div>}
+                  </main>
+
+                  <footer className="chat-footer">
+                    <form onSubmit={sendMessage} className="composer">
+                      <textarea
+                        rows={1}
+                        placeholder="Type a test message"
+                        value={input}
+                        onChange={(e) => setInput(e.target.value)}
+                        onKeyDown={onKeyDown}
+                        className="composer-input"
+                      />
+                      <button
+                        type="submit"
+                        disabled={isSending || !input.trim()}
+                        className="send-button"
+                        aria-label={isSending ? "Sending test message" : "Send test message"}
+                      >
+                        <svg viewBox="0 0 45.7 33.8" width="28" height="28" fill="currentColor">
+                          <path d="M8.55 25.25l21.67-7.25H11zm2.41-9.47h19.26l-21.67-7.23zm-6 13l4-11.9L5 5l35.7 11.9z"></path>
+                        </svg>
+                      </button>
+                    </form>
+                  </footer>
+                </div>
+              </section>
+            </div>
+
+            <footer className="footer">
+              <div className="footer-inner">
+                <a rel="noopener" href="http://www.testing-demo.com/" target="_blank">
+                  www.testing-demo.com
+                </a>
+                <div className="footer-center">&nbsp;</div>
+                <a href="mailto:qa@testing-demo.com">qa@testing-demo.com</a>
+              </div>
+            </footer>
+
+            <div className="hero-copy" aria-live="polite">
+              {isSending ? "Sending test message" : "Test ready"}
+            </div>
+          </div>
+        );
+      }
+
+      ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+    </script>
+  </body>
+</html>
