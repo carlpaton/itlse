@@ -72,6 +72,148 @@
         padding: 40px 36px;
       }
 
+      .panel {
+        background: #f7f7f7;
+        border: 1px solid #e2e2e2;
+        border-radius: 12px;
+        padding: 20px;
+      }
+
+      .panel-title {
+        margin: 0;
+        font-size: 26px;
+        font-weight: 800;
+      }
+
+      .panel-subtitle {
+        margin: 8px 0 0;
+        color: #646464;
+      }
+
+      .file-list {
+        list-style: none;
+        margin: 20px 0 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .file-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        padding: 12px;
+        border: 1px solid #dedede;
+        border-radius: 10px;
+        background: #ffffff;
+      }
+
+      .file-name {
+        margin: 0;
+        font-size: 15px;
+        font-weight: 600;
+        overflow-wrap: anywhere;
+      }
+
+      .file-label {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .file-check {
+        width: 18px;
+        height: 18px;
+        border-radius: 50%;
+        background: #2ea043;
+        position: relative;
+        flex: 0 0 18px;
+        cursor: pointer;
+      }
+
+      .file-check::after {
+        content: "";
+        position: absolute;
+        left: 6px;
+        top: 3px;
+        width: 4px;
+        height: 8px;
+        border: solid #ffffff;
+        border-width: 0 2px 2px 0;
+        transform: rotate(45deg);
+      }
+
+      .download-link {
+        flex: 0 0 auto;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 96px;
+        height: 36px;
+        padding: 0 14px;
+        border-radius: 8px;
+        border: 1px solid var(--accent);
+        color: #231f20;
+        font-size: 14px;
+        font-weight: 700;
+        transition: background 150ms ease;
+        cursor: pointer;
+      }
+
+      .download-link:hover {
+        background: #ffe4bf;
+      }
+
+      .upload-section {
+        margin-top: 24px;
+        padding-top: 20px;
+        border-top: 1px solid #e2e2e2;
+      }
+
+      .upload-button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 10px 16px;
+        border-radius: 8px;
+        border: 2px solid var(--accent);
+        background: var(--accent);
+        color: #231f20;
+        font-size: 14px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: background 150ms ease;
+      }
+
+      .upload-button:hover {
+        background: #f6a82e;
+      }
+
+      #fileInput {
+        display: none;
+      }
+
+      .file-check.loading::after {
+        content: "";
+        position: absolute;
+        width: 12px;
+        height: 12px;
+        left: 3px;
+        top: 3px;
+        border: 2px solid rgba(255, 255, 255, 0.3);
+        border-top-color: #ffffff;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+      }
+
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+
       @media (max-width: 720px) {
         .top-menu-inner {
           padding: 18px 16px 14px;
@@ -81,6 +223,19 @@
 
         .content {
           padding: 24px 16px;
+        }
+
+        .panel {
+          padding: 14px;
+        }
+
+        .panel-title {
+          font-size: 22px;
+        }
+
+        .file-row {
+          align-items: flex-start;
+          flex-direction: column;
         }
       }
     </style>
@@ -101,7 +256,139 @@
         </div>
       </header>
 
-      <main class="content"></main>
+      <main class="content">
+        <section class="panel" aria-label="Admin file downloads">
+          <h1 class="panel-title">Persona Documentation</h1>
+          <p class="panel-subtitle">Download the persona files below, make changes and upload the change</p>
+          <ul id="fileList" class="file-list"></ul>
+          <div class="upload-section">
+            <input type="file" id="fileInput" accept=".md" />
+            <button class="upload-button" id="uploadButton">Upload File</button>
+          </div>
+        </section>
+      </main>
     </div>
+
+    <script>
+      const fileNames = [
+        "Core Challenges.md",
+        "Core Goals .md",
+        "instructions, prompts and login.md",
+        "Key Channels They Interact With.md",
+        "Key Decision Drivers.md",
+        "Key Jobs-to-be-done.md",
+        "Key Trigger Moments in Their Lives.md",
+      ];
+
+      const list = document.getElementById("fileList");
+      const fileCheckElements = {};
+
+      fileNames.forEach((name) => {
+        const item = document.createElement("li");
+        item.className = "file-row";
+
+        const fileName = document.createElement("p");
+        fileName.className = "file-name";
+        fileName.textContent = name;
+
+        const fileLabel = document.createElement("div");
+        fileLabel.className = "file-label";
+
+        const fileCheck = document.createElement("span");
+        fileCheck.className = "file-check";
+        fileCheck.setAttribute("aria-hidden", "true");
+
+        const randomDate = new Date(
+          Date.now() - Math.random() * 30 * 24 * 60 * 60 * 1000
+        );
+        const day = String(randomDate.getDate()).padStart(2, "0");
+        const month = String(randomDate.getMonth() + 1).padStart(2, "0");
+        const year = randomDate.getFullYear();
+        const hours = String(Math.floor(Math.random() * 24)).padStart(2, "0");
+        const seconds = String(Math.floor(Math.random() * 60)).padStart(2, "0");
+        const tooltip = `index on ${day}/${month}/${year} ${hours}:${seconds}`;
+        fileCheck.setAttribute("title", tooltip);
+
+        fileCheckElements[name] = fileCheck;
+
+        fileLabel.appendChild(fileCheck);
+        fileLabel.appendChild(fileName);
+
+        const download = document.createElement("button");
+        download.className = "download-link";
+        download.textContent = "Download";
+        download.type = "button";
+        download.addEventListener("click", () => {
+          const blob = new Blob(["this is what you would update"], {
+            type: "text/markdown;charset=utf-8",
+          });
+          const objectUrl = URL.createObjectURL(blob);
+          const saveLink = document.createElement("a");
+          saveLink.href = objectUrl;
+          saveLink.download = name;
+          document.body.appendChild(saveLink);
+          saveLink.click();
+          saveLink.remove();
+          URL.revokeObjectURL(objectUrl);
+        });
+
+        item.appendChild(fileLabel);
+        item.appendChild(download);
+        list.appendChild(item);
+      });
+
+      const uploadButton = document.getElementById("uploadButton");
+      const fileInput = document.getElementById("fileInput");
+
+      uploadButton.addEventListener("click", () => {
+        fileInput.click();
+      });
+
+      fileInput.addEventListener("change", (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+
+        const uploadedFileName = file.name;
+
+        if (fileCheckElements.hasOwnProperty(uploadedFileName)) {
+          const checkIcon = fileCheckElements[uploadedFileName];
+          checkIcon.classList.add("loading");
+          checkIcon.removeAttribute("title");
+          checkIcon.setAttribute("title", "index is queued");
+        } else {
+          // Create a new row for the file not in the list
+          const newItem = document.createElement("li");
+          newItem.className = "file-row";
+
+          const newFileName = document.createElement("p");
+          newFileName.className = "file-name";
+          newFileName.textContent = uploadedFileName;
+
+          const newFileLabel = document.createElement("div");
+          newFileLabel.className = "file-label";
+
+          const newFileCheck = document.createElement("span");
+          newFileCheck.className = "file-check loading";
+          newFileCheck.setAttribute("aria-hidden", "true");
+          newFileCheck.setAttribute("title", "index is queued");
+
+          newFileLabel.appendChild(newFileCheck);
+          newFileLabel.appendChild(newFileName);
+
+          const newDownload = document.createElement("button");
+          newDownload.className = "download-link";
+          newDownload.textContent = "Download";
+          newDownload.type = "button";
+          // No-op for now
+          newDownload.addEventListener("click", () => {});
+
+          newItem.appendChild(newFileLabel);
+          newItem.appendChild(newDownload);
+          list.appendChild(newItem);
+        }
+
+        fileInput.value = "";
+      });
+    </script>
   </body>
 </html>
