@@ -192,7 +192,11 @@
       }
 
       #fileInput {
-        display: none;
+        display: none !important;
+      }
+
+      #promptInput {
+        display: none !important;
       }
 
       .file-check.loading::after {
@@ -264,6 +268,16 @@
           <div class="upload-section">
             <input type="file" id="fileInput" accept=".md" />
             <button class="upload-button" id="uploadButton">Upload File</button>
+          </div>
+        </section>
+
+        <section class="panel" aria-label="Prompt configuration" style="margin-top: 24px;">
+          <h1 class="panel-title">System Prompt</h1>
+          <p class="panel-subtitle">Download the prompt below, make changes and upload to update</p>
+          <ul id="promptList" class="file-list"></ul>
+          <div class="upload-section">
+            <input type="file" id="promptInput" accept=".txt" />
+            <button class="upload-button" id="promptUploadButton">Upload Prompt</button>
           </div>
         </section>
       </main>
@@ -388,6 +402,96 @@
         }
 
         fileInput.value = "";
+      });
+
+      // Prompts section
+      const promptFileNames = ["ChatSystemPrompt.txt"];
+      const promptList = document.getElementById("promptList");
+      const promptCheckElements = {};
+
+      promptFileNames.forEach((name) => {
+        const item = document.createElement("li");
+        item.className = "file-row";
+
+        const fileName = document.createElement("p");
+        fileName.className = "file-name";
+        fileName.textContent = name;
+
+        const fileLabel = document.createElement("div");
+        fileLabel.className = "file-label";
+
+        const fileCheck = document.createElement("span");
+        fileCheck.className = "file-check";
+        fileCheck.setAttribute("aria-hidden", "true");
+
+        const randomDate = new Date(
+          Date.now() - Math.random() * 30 * 24 * 60 * 60 * 1000
+        );
+        const day = String(randomDate.getDate()).padStart(2, "0");
+        const month = String(randomDate.getMonth() + 1).padStart(2, "0");
+        const year = randomDate.getFullYear();
+        const hours = String(Math.floor(Math.random() * 24)).padStart(2, "0");
+        const seconds = String(Math.floor(Math.random() * 60)).padStart(2, "0");
+        const tooltip = `index on ${day}/${month}/${year} ${hours}:${seconds}`;
+        fileCheck.setAttribute("title", tooltip);
+
+        promptCheckElements[name] = fileCheck;
+
+        fileLabel.appendChild(fileCheck);
+        fileLabel.appendChild(fileName);
+
+        const download = document.createElement("button");
+        download.className = "download-link";
+        download.textContent = "Download";
+        download.type = "button";
+        download.addEventListener("click", () => {
+          const blob = new Blob(["this is the prompt you would update when tweaking model responses"], {
+            type: "text/plain;charset=utf-8",
+          });
+          const objectUrl = URL.createObjectURL(blob);
+          const saveLink = document.createElement("a");
+          saveLink.href = objectUrl;
+          saveLink.download = name;
+          document.body.appendChild(saveLink);
+          saveLink.click();
+          saveLink.remove();
+          URL.revokeObjectURL(objectUrl);
+        });
+
+        item.appendChild(fileLabel);
+        item.appendChild(download);
+        promptList.appendChild(item);
+      });
+
+      const promptUploadButton = document.getElementById("promptUploadButton");
+      const promptInput = document.getElementById("promptInput");
+
+      promptUploadButton.addEventListener("click", () => {
+        promptInput.click();
+      });
+
+      promptInput.addEventListener("change", (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+
+        const uploadedFileName = file.name;
+
+        // Only allow ChatSystemPrompt.txt
+        if (uploadedFileName !== "ChatSystemPrompt.txt") {
+          alert("You must download the file first and upload it with the same name: ChatSystemPrompt.txt");
+          promptInput.value = "";
+          return;
+        }
+
+        // Always update the existing ChatSystemPrompt.txt icon
+        if (promptCheckElements.hasOwnProperty("ChatSystemPrompt.txt")) {
+          const checkIcon = promptCheckElements["ChatSystemPrompt.txt"];
+          checkIcon.classList.add("loading");
+          checkIcon.removeAttribute("title");
+          checkIcon.setAttribute("title", "index is queued");
+        }
+
+        promptInput.value = "";
       });
     </script>
   </body>
