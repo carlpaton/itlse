@@ -7,13 +7,11 @@
     <title>Neon Terrarium</title>
     <style>
       :root {
-        --bg-1: #06131f;
-        --bg-2: #0b2a3a;
-        --glass: rgba(255, 255, 255, 0.08);
-        --text: #e7f7ff;
-        --mint: #6fffd2;
-        --amber: #ffcb6b;
-        --coral: #ff7d8a;
+        --bg-1: #020814;
+        --bg-2: #071a2e;
+        --sun-core: #fff6cc;
+        --sun-mid: #ffcb64;
+        --sun-edge: #f07d1f;
       }
 
       * {
@@ -24,159 +22,310 @@
       body {
         margin: 0;
         min-height: 100%;
-        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-        color: var(--text);
       }
 
       body {
         min-height: 100vh;
         overflow: hidden;
-        display: grid;
-        place-items: center;
-        background:
-          radial-gradient(circle at 18% 20%, rgba(111, 255, 210, 0.22), transparent 34%),
-          radial-gradient(circle at 82% 76%, rgba(255, 125, 138, 0.22), transparent 30%),
-          linear-gradient(135deg, var(--bg-1), var(--bg-2));
-      }
-
-      .panel {
-        width: min(920px, 92vw);
-        border-radius: 24px;
-        padding: 1.5rem;
-        background: var(--glass);
-        border: 1px solid rgba(255, 255, 255, 0.14);
-        backdrop-filter: blur(7px);
-        box-shadow: 0 20px 80px rgba(0, 0, 0, 0.35);
-      }
-
-      h1 {
-        margin: 0 0 0.5rem;
-        font-size: clamp(2rem, 5vw, 3.2rem);
-        letter-spacing: 0.05em;
-      }
-
-      p {
-        margin: 0 0 1rem;
-        color: rgba(231, 247, 255, 0.88);
-      }
-
-      .stage {
-        height: min(58vh, 520px);
-        border-radius: 18px;
         position: relative;
-        overflow: hidden;
         background:
-          linear-gradient(
-            to bottom,
-            rgba(255, 255, 255, 0.09),
-            rgba(255, 255, 255, 0.015)
-          );
-        border: 1px solid rgba(255, 255, 255, 0.12);
+          radial-gradient(circle at 50% 52%, rgba(255, 176, 67, 0.1), transparent 35%),
+          radial-gradient(circle at 17% 22%, rgba(130, 200, 255, 0.07), transparent 34%),
+          radial-gradient(circle at 84% 78%, rgba(255, 144, 114, 0.08), transparent 32%),
+          linear-gradient(180deg, var(--bg-1), var(--bg-2) 52%, #0a2033);
       }
 
-      .orb {
-        --size: 120px;
-        position: absolute;
-        width: var(--size);
-        aspect-ratio: 1;
-        border-radius: 42% 58% 55% 45% / 48% 42% 58% 52%;
-        filter: blur(0.3px) saturate(1.2);
-        opacity: 0.85;
-        animation: drift 14s ease-in-out infinite;
-      }
-
-      .orb.one {
-        --size: 190px;
-        left: 10%;
-        top: 12%;
-        background: radial-gradient(circle at 30% 30%, #b8ffe8, var(--mint));
-        animation-duration: 16s;
-      }
-
-      .orb.two {
-        --size: 140px;
-        right: 18%;
-        top: 20%;
-        background: radial-gradient(circle at 30% 25%, #ffe6b2, var(--amber));
-        animation-duration: 13s;
-        animation-delay: -4s;
-      }
-
-      .orb.three {
-        --size: 170px;
-        left: 36%;
-        bottom: 6%;
-        background: radial-gradient(circle at 28% 24%, #ffc5cb, var(--coral));
-        animation-duration: 18s;
-        animation-delay: -2s;
-      }
-
-      .grid {
+      body::before {
+        content: "";
         position: absolute;
         inset: 0;
         background-image:
-          linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
-          linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
-        background-size: 36px 36px;
-        mask-image: radial-gradient(circle at center, black 55%, transparent 100%);
-        animation: pulse 5s ease-in-out infinite;
+          radial-gradient(2px 2px at 10% 18%, rgba(255, 255, 255, 0.8), transparent 60%),
+          radial-gradient(1px 1px at 16% 62%, rgba(255, 255, 255, 0.65), transparent 60%),
+          radial-gradient(2px 2px at 23% 30%, rgba(255, 255, 255, 0.7), transparent 60%),
+          radial-gradient(1px 1px at 29% 82%, rgba(255, 255, 255, 0.8), transparent 60%),
+          radial-gradient(2px 2px at 35% 12%, rgba(255, 255, 255, 0.7), transparent 60%),
+          radial-gradient(1px 1px at 44% 70%, rgba(255, 255, 255, 0.75), transparent 60%),
+          radial-gradient(2px 2px at 52% 22%, rgba(255, 255, 255, 0.7), transparent 60%),
+          radial-gradient(1px 1px at 61% 86%, rgba(255, 255, 255, 0.8), transparent 60%),
+          radial-gradient(2px 2px at 68% 38%, rgba(255, 255, 255, 0.72), transparent 60%),
+          radial-gradient(1px 1px at 74% 58%, rgba(255, 255, 255, 0.9), transparent 60%),
+          radial-gradient(2px 2px at 81% 16%, rgba(255, 255, 255, 0.8), transparent 60%),
+          radial-gradient(1px 1px at 89% 44%, rgba(255, 255, 255, 0.7), transparent 60%),
+          radial-gradient(2px 2px at 94% 74%, rgba(255, 255, 255, 0.78), transparent 60%);
+        pointer-events: none;
       }
 
-      .caption {
+      .orb,
+      .planet,
+      .moon,
+      .planet-system,
+      .moon-system {
         position: absolute;
-        left: 1rem;
-        bottom: 1rem;
-        margin: 0;
-        padding: 0.4rem 0.7rem;
-        border-radius: 999px;
-        font-size: 0.85rem;
-        letter-spacing: 0.06em;
-        text-transform: uppercase;
-        background: rgba(0, 0, 0, 0.28);
-        border: 1px solid rgba(255, 255, 255, 0.16);
+        left: 50%;
+        top: 50%;
+        transform-origin: center center;
+        will-change: transform;
       }
 
-      @keyframes drift {
-        0%,
-        100% {
-          transform: translate(0, 0) rotate(0deg) scale(1);
-          border-radius: 42% 58% 55% 45% / 48% 42% 58% 52%;
-        }
-        33% {
-          transform: translate(24px, -22px) rotate(10deg) scale(1.06);
-          border-radius: 57% 43% 48% 52% / 39% 51% 49% 61%;
-        }
-        66% {
-          transform: translate(-18px, 16px) rotate(-8deg) scale(0.95);
-          border-radius: 46% 54% 58% 42% / 61% 44% 56% 39%;
-        }
+      .sun {
+        position: fixed;
+        left: 50%;
+        top: 50%;
+        width: clamp(78px, 10vmin, 120px);
+        aspect-ratio: 1;
+        border-radius: 50%;
+        transform: translate(-50%, -50%);
+        background:
+          radial-gradient(circle at 32% 30%, var(--sun-core) 5%, var(--sun-mid) 38%, var(--sun-edge) 70%, #cf570f 100%);
+        box-shadow:
+          0 0 24px rgba(255, 182, 90, 0.5),
+          0 0 70px rgba(255, 150, 60, 0.4),
+          0 0 150px rgba(255, 122, 48, 0.25);
+        animation: sun-pulse 6s ease-in-out infinite;
+        z-index: 5;
       }
 
-      @keyframes pulse {
+      .planet-system {
+        width: 2px;
+        height: 2px;
+        animation: orbit-sun var(--duration) linear infinite;
+        animation-delay: var(--delay, 0s);
+      }
+
+      .planet-orbit {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        width: calc(var(--orbit-radius) * 2);
+        height: calc(var(--orbit-radius) * 2);
+        transform: translate(-50%, -50%);
+        border-radius: 50%;
+        border: 1px solid rgba(255, 255, 255, 0.085);
+        pointer-events: none;
+      }
+
+      .planet {
+        width: var(--size);
+        height: var(--size);
+        border-radius: 50%;
+        transform: translate(-50%, -50%) translateX(var(--orbit-radius));
+        background: var(--color);
+        box-shadow: 0 0 12px var(--glow, rgba(255, 255, 255, 0.2));
+      }
+
+      .planet.saturn::after {
+        content: "";
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        width: 180%;
+        height: 42%;
+        border-radius: 50%;
+        transform: translate(-50%, -50%) rotate(20deg);
+        border: 1.5px solid rgba(222, 198, 156, 0.6);
+        box-shadow: 0 0 8px rgba(210, 184, 144, 0.25);
+      }
+
+      .moon-system {
+        width: 2px;
+        height: 2px;
+        animation: orbit-planet var(--moon-duration) linear infinite;
+        animation-delay: var(--moon-delay, 0s);
+      }
+
+      .moon {
+        width: var(--moon-size);
+        height: var(--moon-size);
+        border-radius: 50%;
+        transform: translate(-50%, -50%) translateX(var(--moon-radius));
+        background: radial-gradient(circle at 32% 28%, #f6f6f6, #d7d7d7 58%, #a4a4a4 100%);
+        opacity: 0.9;
+      }
+
+      .moon-orbit {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        width: calc(var(--moon-radius) * 2);
+        height: calc(var(--moon-radius) * 2);
+        transform: translate(-50%, -50%);
+        border-radius: 50%;
+        border: 1px solid rgba(255, 255, 255, 0.06);
+      }
+
+      @keyframes sun-pulse {
         0%,
         100% {
-          opacity: 0.4;
-          transform: scale(1);
+          transform: translate(-50%, -50%) scale(1);
         }
         50% {
-          opacity: 0.75;
-          transform: scale(1.015);
+          transform: translate(-50%, -50%) scale(1.05);
+        }
+      }
+
+      @keyframes orbit-sun {
+        from {
+          transform: translate(-50%, -50%) rotate(0deg);
+        }
+        to {
+          transform: translate(-50%, -50%) rotate(360deg);
+        }
+      }
+
+      @keyframes orbit-planet {
+        from {
+          transform: translate(-50%, -50%) rotate(0deg);
+        }
+        to {
+          transform: translate(-50%, -50%) rotate(360deg);
+        }
+      }
+
+      @media (max-width: 860px) {
+        .sun {
+          width: clamp(68px, 14vmin, 98px);
         }
       }
     </style>
   </head>
   <body>
-    <main class="panel">
-      <h1>Neon Terrarium</h1>
-      <p>A tiny synthetic ecosystem running quietly in one HTML file.</p>
+    <div class="sun"></div>
 
-      <section class="stage" aria-label="Animated neon terrarium scene">
-        <div class="grid"></div>
-        <div class="orb one"></div>
-        <div class="orb two"></div>
-        <div class="orb three"></div>
-        <p class="caption">No links. Just vibes.</p>
-      </section>
-    </main>
+    <script>
+      const planets = [
+        {
+          name: "mercury",
+          radius: "8vmin",
+          size: "1.1vmin",
+          duration: "9s",
+          color: "radial-gradient(circle at 32% 28%, #f0ead9, #b8afa2 62%, #867f74 100%)",
+          glow: "rgba(200, 185, 166, 0.3)",
+          moonCount: 0
+        },
+        {
+          name: "venus",
+          radius: "11.5vmin",
+          size: "1.45vmin",
+          duration: "14s",
+          color: "radial-gradient(circle at 32% 28%, #ffe7ba, #d3ac6f 64%, #9a7643 100%)",
+          glow: "rgba(230, 179, 102, 0.28)",
+          moonCount: 0
+        },
+        {
+          name: "earth",
+          radius: "15vmin",
+          size: "1.6vmin",
+          duration: "19s",
+          color: "radial-gradient(circle at 30% 26%, #d8f2ff, #4f90d2 58%, #235b9e 100%)",
+          glow: "rgba(87, 160, 232, 0.3)",
+          moonCount: 1
+        },
+        {
+          name: "mars",
+          radius: "19vmin",
+          size: "1.3vmin",
+          duration: "24s",
+          color: "radial-gradient(circle at 30% 24%, #ffd9c7, #d97d53 62%, #9d4c2e 100%)",
+          glow: "rgba(210, 113, 76, 0.25)",
+          moonCount: 2
+        },
+        {
+          name: "jupiter",
+          radius: "25vmin",
+          size: "3.8vmin",
+          duration: "36s",
+          color: "radial-gradient(circle at 30% 28%, #ffe9ce, #c89e72 52%, #9a734f 100%)",
+          glow: "rgba(227, 184, 131, 0.24)",
+          moonCount: 95
+        },
+        {
+          name: "saturn",
+          radius: "31vmin",
+          size: "3.2vmin",
+          duration: "47s",
+          color: "radial-gradient(circle at 30% 28%, #fff0cf, #d4be8f 58%, #9c8359 100%)",
+          glow: "rgba(222, 197, 148, 0.22)",
+          moonCount: 274
+        },
+        {
+          name: "uranus",
+          radius: "37vmin",
+          size: "2.4vmin",
+          duration: "58s",
+          color: "radial-gradient(circle at 30% 28%, #ebffff, #8cd8d6 58%, #4aa5ab 100%)",
+          glow: "rgba(138, 219, 218, 0.24)",
+          moonCount: 28
+        },
+        {
+          name: "neptune",
+          radius: "43vmin",
+          size: "2.35vmin",
+          duration: "72s",
+          color: "radial-gradient(circle at 30% 28%, #d7e5ff, #4d78c8 58%, #27438a 100%)",
+          glow: "rgba(90, 125, 214, 0.25)",
+          moonCount: 16
+        }
+      ];
+
+      const body = document.body;
+
+      const clampMoonSize = (i) => {
+        if (i < 4) return "0.54vmin";
+        if (i < 20) return "0.34vmin";
+        return "0.24vmin";
+      };
+
+      planets.forEach((planet, planetIndex) => {
+        const orbit = document.createElement("div");
+        orbit.className = "planet-orbit";
+        orbit.style.setProperty("--orbit-radius", planet.radius);
+        body.appendChild(orbit);
+
+        const system = document.createElement("div");
+        system.className = "planet-system";
+        system.style.setProperty("--duration", planet.duration);
+        system.style.setProperty("--delay", `${-planetIndex * 1.7}s`);
+
+        const planetEl = document.createElement("div");
+        planetEl.className = `planet ${planet.name}`;
+        planetEl.style.setProperty("--orbit-radius", planet.radius);
+        planetEl.style.setProperty("--size", planet.size);
+        planetEl.style.setProperty("--color", planet.color);
+        planetEl.style.setProperty("--glow", planet.glow);
+        system.appendChild(planetEl);
+
+        const moonOrbitMax = planet.moonCount <= 8 ? planet.moonCount : 8;
+        for (let i = 0; i < moonOrbitMax; i += 1) {
+          const moonRing = document.createElement("div");
+          moonRing.className = "moon-orbit";
+          moonRing.style.setProperty("--moon-radius", `${1.4 + i * 0.45}vmin`);
+          planetEl.appendChild(moonRing);
+        }
+
+        for (let i = 0; i < planet.moonCount; i += 1) {
+          const moonSystem = document.createElement("div");
+          moonSystem.className = "moon-system";
+
+          const trackSlot = i % 8;
+          const moonRadius = 1.4 + trackSlot * 0.45;
+          const moonDuration = 2.4 + trackSlot * 0.55 + (i % 5) * 0.25;
+
+          moonSystem.style.setProperty("--moon-radius", `${moonRadius}vmin`);
+          moonSystem.style.setProperty("--moon-duration", `${moonDuration}s`);
+          moonSystem.style.setProperty("--moon-delay", `${-(i * 0.12)}s`);
+          moonSystem.style.transform = `translate(-50%, -50%) rotate(${(i * 29) % 360}deg)`;
+
+          const moon = document.createElement("div");
+          moon.className = "moon";
+          moon.style.setProperty("--moon-size", clampMoonSize(i));
+
+          moonSystem.appendChild(moon);
+          planetEl.appendChild(moonSystem);
+        }
+
+        body.appendChild(system);
+      });
+    </script>
   </body>
 </html>
