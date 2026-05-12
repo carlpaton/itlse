@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
-  <title>AoTech - Calendar</title>
+  <title>AoTech - Expenses</title>
   <style>
     @import url("https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700&family=Sora:wght@600;700&display=swap");
 
@@ -102,9 +102,10 @@
     .icon-btn:focus-visible,
     .nav-link:focus-visible,
     .btn-primary:focus-visible,
+    .btn-secondary:focus-visible,
     .filter-tab:focus-visible,
-    .date-input:focus-visible,
-    .calendar-day:focus-visible {
+    .search-input:focus-visible,
+    .row-radio:focus-visible {
       outline: 2px solid var(--color-focus);
       outline-offset: 2px;
     }
@@ -174,6 +175,13 @@
       font-size: 1.02rem;
     }
 
+    .toolbar-actions {
+      display: flex;
+      gap: var(--space-3);
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
     .btn-primary {
       display: inline-flex;
       align-items: center;
@@ -191,6 +199,7 @@
       cursor: pointer;
       box-shadow: 0 6px 12px rgba(42, 63, 86, 0.18);
       transition: transform 140ms ease, box-shadow 140ms ease, filter 140ms ease;
+      gap: var(--space-2);
       white-space: nowrap;
     }
 
@@ -198,6 +207,55 @@
       filter: brightness(0.95);
       transform: translateY(-1px);
       box-shadow: 0 10px 16px rgba(42, 63, 86, 0.2);
+    }
+
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid #b9c7d7;
+      border-radius: var(--radius-sm);
+      background: #ffffff;
+      color: var(--color-text-body);
+      min-height: 44px;
+      padding: 0 var(--space-5);
+      font-size: 0.95rem;
+      font-weight: 600;
+      font-family: var(--font-body);
+      cursor: pointer;
+      transition: background 140ms ease, border-color 140ms ease;
+    }
+
+    .btn-secondary:hover {
+      background: #f2f6fb;
+      border-color: #9fb1c6;
+    }
+
+    .search-group {
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+      flex-wrap: wrap;
+      margin-bottom: var(--space-5);
+    }
+
+    .search-input {
+      min-width: 220px;
+      height: 38px;
+      padding: 0 var(--space-4);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-sm);
+      background: var(--color-surface);
+      font-family: var(--font-body);
+      font-size: 0.9rem;
+      color: var(--color-text-body);
+      transition: border-color 160ms ease, box-shadow 160ms ease;
+    }
+
+    .search-input:focus {
+      border-color: var(--color-focus);
+      box-shadow: 0 0 0 3px rgba(91, 140, 194, 0.18);
+      outline: none;
     }
 
     .filter-tabs {
@@ -231,7 +289,7 @@
       border-color: var(--color-nav-main);
     }
 
-    .calendar-card {
+    .table-card {
       border: 1px solid var(--color-border);
       border-radius: var(--radius-md);
       background: var(--color-surface);
@@ -239,83 +297,70 @@
       overflow: hidden;
     }
 
-    .calendar-controls {
-      display: flex;
-      align-items: center;
-      gap: var(--space-3);
-      flex-wrap: wrap;
-      padding: var(--space-4);
-      border-bottom: 1px solid var(--color-border);
-      background: #ffffff;
+    .table-scroll {
+      width: 100%;
+      overflow-x: auto;
     }
 
-    .date-input {
-      min-width: 180px;
-      height: 40px;
-      padding: 0 var(--space-4);
-      border: 1px solid var(--color-border);
-      border-radius: var(--radius-sm);
-      background: #ffffff;
-      font-family: var(--font-body);
-      font-size: 0.9rem;
-      color: var(--color-text-body);
-      transition: border-color 160ms ease, box-shadow 160ms ease;
+    .expenses-table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 900px;
     }
 
-    .date-input:focus {
-      border-color: var(--color-focus);
-      box-shadow: 0 0 0 3px rgba(91, 140, 194, 0.18);
-      outline: none;
-    }
-
-    .calendar-grid-wrap {
-      padding: var(--space-4);
-    }
-
-    .weekday-row {
-      display: grid;
-      grid-template-columns: repeat(7, minmax(0, 1fr));
-      border: 1px solid #6d7d92;
-      border-bottom: none;
-      text-align: center;
+    .expenses-table thead th {
+      padding: var(--space-3) var(--space-4);
+      text-align: left;
       font-weight: 700;
-      color: #1e2f43;
-    }
-
-    .weekday {
-      padding: 10px 6px;
-      border-right: 1px solid #6d7d92;
-      background: #f4f7fb;
-      font-size: 0.92rem;
+      font-size: 0.82rem;
       text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: var(--color-text-muted);
+      border-bottom: 1px solid var(--color-border);
+      white-space: nowrap;
+      background: linear-gradient(180deg, #f8fbff 0%, #f0f5fb 100%);
     }
 
-    .weekday:last-child {
-      border-right: none;
+    .expenses-table thead th:first-child {
+      width: 52px;
+      text-align: center;
     }
 
-    .days-grid {
-      display: grid;
-      grid-template-columns: repeat(7, minmax(0, 1fr));
-      grid-template-rows: repeat(5, 92px);
-      border: 1px solid #6d7d92;
-      border-top: none;
+    .expenses-table tbody tr {
+      border-bottom: 1px solid #e3ebf5;
+      transition: background 120ms ease;
     }
 
-    .calendar-day {
-      border-right: 1px solid #6d7d92;
-      border-top: 1px solid #6d7d92;
-      background: #ffffff;
-      padding: 8px;
-      outline: none;
+    .expenses-table tbody tr:last-child { border-bottom: none; }
+    .expenses-table tbody tr:hover { background: #f8fbff; }
+
+    .expenses-table td {
+      padding: var(--space-3) var(--space-4);
+      color: var(--color-text-body);
+      vertical-align: middle;
+      font-size: 0.95rem;
     }
 
-    .calendar-day:nth-child(7n) {
-      border-right: none;
+    .expenses-table td:first-child { text-align: center; }
+
+    .row-radio {
+      appearance: none;
+      -webkit-appearance: none;
+      width: 18px;
+      height: 18px;
+      border: 2px solid var(--color-nav-main);
+      border-radius: 50%;
+      cursor: pointer;
+      position: relative;
+      background: #fff;
     }
 
-    .calendar-day:hover {
-      background: #f8fbff;
+    .row-radio:checked::after {
+      content: "";
+      position: absolute;
+      inset: 3px;
+      border-radius: 50%;
+      background: var(--color-nav-main);
     }
 
     @keyframes page-enter {
@@ -327,29 +372,14 @@
       .top-bar { padding: 0 var(--space-4); }
       .page-content { padding: var(--space-6) var(--space-4); }
 
-      .page-toolbar {
-        flex-direction: column;
-        align-items: stretch;
-      }
-
-      .btn-primary {
+      .toolbar-actions {
         width: 100%;
       }
 
-      .calendar-controls {
-        align-items: stretch;
-      }
-
-      .date-input {
-        min-width: 100%;
-      }
-
-      .weekday {
-        font-size: 0.8rem;
-      }
-
-      .days-grid {
-        grid-template-rows: repeat(5, 64px);
+      .toolbar-actions .btn-primary,
+      .toolbar-actions .btn-secondary,
+      .search-input {
+        width: 100%;
       }
     }
   </style>
@@ -385,52 +415,126 @@
     <nav class="main-nav" aria-label="Primary">
       <a href="users01.html" class="nav-link">Users</a>
       <a href="reports01.html" class="nav-link">Reports</a>
-      <a href="expenses01.html" class="nav-link">Expenses</a>
+      <a href="expenses01.html" class="nav-link is-active" aria-current="page">Expenses</a>
       <a href="contractor01.html" class="nav-link">Contractor</a>
-      <a href="calendar01.html" class="nav-link is-active" aria-current="page">Calendar</a>
+      <a href="calendar01.html" class="nav-link">Calendar</a>
     </nav>
   </header>
 
   <main class="page-content" id="page-content">
-    <section class="page-toolbar" aria-label="Calendar heading">
+    <section class="page-toolbar" aria-label="Expenses header">
       <div>
-        <h1 class="page-title">Calendar</h1>
-        <p class="page-subtitle">Schedule upcoming jobs and review weekly availability</p>
+        <h1 class="page-title">Expenses</h1>
+        <p class="page-subtitle">Track line items, mark up, and totals for each job</p>
       </div>
-      <a class="btn-primary" href="job01.html">Schedule Job</a>
+      <div class="toolbar-actions">
+        <a class="btn-primary" href="job01.html">Create Job</a>
+        <a class="btn-primary" href="expenses02.html">Create Expense</a>
+        <button class="btn-secondary" type="button">Edit Expense</button>
+      </div>
     </section>
 
-    <section class="filter-tabs" role="tablist" aria-label="Calendar filters">
-      <button class="filter-tab active" role="tab" aria-selected="true" type="button">All</button>
-      <button class="filter-tab" role="tab" aria-selected="false" type="button">Free slots</button>
-      <button class="filter-tab" role="tab" aria-selected="false" type="button">Maintenance</button>
-      <button class="filter-tab" role="tab" aria-selected="false" type="button">Repairs</button>
+    <section class="search-group" aria-label="Search expenses">
+      <input class="search-input" type="search" placeholder="QR Code search" aria-label="QR Code search" />
+      <input class="search-input" type="search" placeholder="Search" aria-label="Search expenses" />
     </section>
 
-    <section class="calendar-card" aria-label="Calendar view">
-      <div class="calendar-controls">
-        <input class="date-input" type="text" placeholder="Date from" aria-label="Date from" />
-        <input class="date-input" type="text" placeholder="Date to" aria-label="Date to" />
-      </div>
+    <section class="filter-tabs" role="tablist" aria-label="Expense filters">
+      <button class="filter-tab active" role="tab" aria-selected="true" type="button">All jobs</button>
+      <button class="filter-tab" role="tab" aria-selected="false" type="button">In progress</button>
+      <button class="filter-tab" role="tab" aria-selected="false" type="button">Completed</button>
+      <button class="filter-tab" role="tab" aria-selected="false" type="button">Invoiced</button>
+    </section>
 
-      <div class="calendar-grid-wrap" role="table" aria-label="Monthly schedule grid">
-        <div class="weekday-row" role="row">
-          <div class="weekday" role="columnheader">Sun</div>
-          <div class="weekday" role="columnheader">Mon</div>
-          <div class="weekday" role="columnheader">Tue</div>
-          <div class="weekday" role="columnheader">Wed</div>
-          <div class="weekday" role="columnheader">Thu</div>
-          <div class="weekday" role="columnheader">Fri</div>
-          <div class="weekday" role="columnheader">Sat</div>
-        </div>
-
-        <div class="days-grid" role="rowgroup">
-          <div class="calendar-day" tabindex="0"></div><div class="calendar-day" tabindex="0"></div><div class="calendar-day" tabindex="0"></div><div class="calendar-day" tabindex="0"></div><div class="calendar-day" tabindex="0"></div><div class="calendar-day" tabindex="0"></div><div class="calendar-day" tabindex="0"></div>
-          <div class="calendar-day" tabindex="0"></div><div class="calendar-day" tabindex="0"></div><div class="calendar-day" tabindex="0"></div><div class="calendar-day" tabindex="0"></div><div class="calendar-day" tabindex="0"></div><div class="calendar-day" tabindex="0"></div><div class="calendar-day" tabindex="0"></div>
-          <div class="calendar-day" tabindex="0"></div><div class="calendar-day" tabindex="0"></div><div class="calendar-day" tabindex="0"></div><div class="calendar-day" tabindex="0"></div><div class="calendar-day" tabindex="0"></div><div class="calendar-day" tabindex="0"></div><div class="calendar-day" tabindex="0"></div>
-          <div class="calendar-day" tabindex="0"></div><div class="calendar-day" tabindex="0"></div><div class="calendar-day" tabindex="0"></div><div class="calendar-day" tabindex="0"></div><div class="calendar-day" tabindex="0"></div><div class="calendar-day" tabindex="0"></div><div class="calendar-day" tabindex="0"></div>
-          <div class="calendar-day" tabindex="0"></div><div class="calendar-day" tabindex="0"></div><div class="calendar-day" tabindex="0"></div><div class="calendar-day" tabindex="0"></div><div class="calendar-day" tabindex="0"></div><div class="calendar-day" tabindex="0"></div><div class="calendar-day" tabindex="0"></div>
-        </div>
+    <section class="table-card" aria-label="Expense register">
+      <div class="table-scroll">
+        <table class="expenses-table">
+          <thead>
+            <tr>
+              <th><span class="sr-only">Select</span></th>
+              <th>Item Code</th>
+              <th>Item Name</th>
+              <th>Description</th>
+              <th>Cost</th>
+              <th>Mark Up %</th>
+              <th>Total</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><input class="row-radio" type="radio" name="expense-row" checked /></td>
+              <td>E-1042</td>
+              <td>Compressor Oil</td>
+              <td>Industrial compressor lubricant 5L</td>
+              <td>$82.00</td>
+              <td>20%</td>
+              <td>$98.40</td>
+            </tr>
+            <tr>
+              <td><input class="row-radio" type="radio" name="expense-row" /></td>
+              <td>E-2297</td>
+              <td>Copper Fitting</td>
+              <td>1/2 inch coupler and seal set</td>
+              <td>$36.50</td>
+              <td>18%</td>
+              <td>$43.07</td>
+            </tr>
+            <tr>
+              <td><input class="row-radio" type="radio" name="expense-row" /></td>
+              <td>E-3015</td>
+              <td>Drive Belt</td>
+              <td>Motor drive belt replacement</td>
+              <td>$47.00</td>
+              <td>15%</td>
+              <td>$54.05</td>
+            </tr>
+            <tr>
+              <td><input class="row-radio" type="radio" name="expense-row" /></td>
+              <td>E-4860</td>
+              <td>Service Kit</td>
+              <td>Filter and gasket maintenance kit</td>
+              <td>$120.00</td>
+              <td>22%</td>
+              <td>$146.40</td>
+            </tr>
+            <tr>
+              <td><input class="row-radio" type="radio" name="expense-row" /></td>
+              <td>E-5178</td>
+              <td>Sealant</td>
+              <td>High-temp pipe sealant tube</td>
+              <td>$24.00</td>
+              <td>15%</td>
+              <td>$27.60</td>
+            </tr>
+            <tr>
+              <td><input class="row-radio" type="radio" name="expense-row" /></td>
+              <td>E-6230</td>
+              <td>Fastener Pack</td>
+              <td>Stainless bolt pack (20 units)</td>
+              <td>$18.75</td>
+              <td>18%</td>
+              <td>$22.13</td>
+            </tr>
+            <tr>
+              <td><input class="row-radio" type="radio" name="expense-row" /></td>
+              <td>E-7044</td>
+              <td>Sensor Lead</td>
+              <td>Temperature lead and connector</td>
+              <td>$55.00</td>
+              <td>20%</td>
+              <td>$66.00</td>
+            </tr>
+            <tr>
+              <td><input class="row-radio" type="radio" name="expense-row" /></td>
+              <td>E-8096</td>
+              <td>Coolant</td>
+              <td>Equipment coolant concentrate 4L</td>
+              <td>$41.00</td>
+              <td>16%</td>
+              <td>$47.56</td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </section>
   </main>
