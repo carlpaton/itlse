@@ -13,8 +13,9 @@ This folder currently has two page families. Follow the matching layout family w
 1. `index.html`
    - Standalone Microsoft-style account picker page.
    - Does not use the AoTech app header/nav shell.
-2. `dashboard.html`, `assets01.html`, `assets02.html`, `assets03.html`
+2. `regional-manager/dashboard.html`, `regional-manager/assets01.html`, `regional-manager/assets02.html`, `regional-manager/assets03.html`, `regional-manager/users01.html`, `regional-manager/users02.html`
    - AoTech app pages using shared top bar + primary nav shell.
+   - Visual baseline for spacing, component shape, shadows, table treatment, and button styling is `assets01.html`.
 
 ## 2. Global Head Requirements (All Pages)
 
@@ -25,9 +26,9 @@ Every HTML page in this folder must include:
 3. `<meta name="viewport" content="width=device-width, initial-scale=1.0" />`.
 4. `<meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />`.
 
-## 3. Shared AoTech App Shell (Dashboard + Assets Pages)
+## 3. Shared AoTech App Shell (Regional Manager App Pages)
 
-For app pages (`dashboard.html`, `assets01.html`, `assets02.html`, `assets03.html`), keep this structure and routing behavior:
+For app pages (`dashboard.html`, `assets01.html`, `assets02.html`, `assets03.html`, `users01.html`, `users02.html`), keep this structure and routing behavior:
 
 1. Sticky header with:
    - `.top-bar`
@@ -35,7 +36,7 @@ For app pages (`dashboard.html`, `assets01.html`, `assets02.html`, `assets03.htm
 2. Brand and utility links:
    - Brand link text: `AoTech`
    - Brand link target: `dashboard.html`
-   - Profile icon is an anchor to `index.html` (not a button)
+   - Profile icon is an anchor to `./../index.html` (not a button)
 3. Primary nav links and order:
    - `users01.html`
    - `reports01.html`
@@ -90,6 +91,7 @@ Notes:
 1. `assets01.html` additionally uses `--color-surface-muted`, status colors (`--color-success`, `--color-warning`, `--color-danger`), and `--space-1`.
 2. `assets02.html` and `assets03.html` also include `--color-surface-muted` and `--space-1`.
 3. Keep display typography on page titles and key metric numbers (`var(--font-display)`), body UI in `var(--font-body)`.
+4. For app CTA buttons, prefer the `assets01.html` visual treatment: rectangular with `--radius-sm`, blue gradient fill, subtle lift/brightness hover, and no purple pill styling.
 
 ## 5. Page-Specific Patterns
 
@@ -102,8 +104,8 @@ Notes:
 ### 5.2 dashboard.html (Home)
 
 1. Uses full AoTech app shell.
-2. Main container is currently empty (`<main class="page-content" id="page-content"></main>`).
-3. If content is added, keep existing shell and token system unchanged.
+2. Can contain dashboard summary and data table content, but must retain the AoTech shell/tokens and `assets01.html` component language.
+3. Keep headings, cards, tabs, and table styling visually aligned with `assets01.html`.
 
 ### 5.3 assets01.html (Asset Register)
 
@@ -128,6 +130,18 @@ Notes:
    - `Cancel` links to `assets01.html`
    - `Save Changes` links to `assets01.html`
 
+### 5.6 users01.html (Manage Users)
+
+1. Header/nav shell with `Users` nav item active.
+2. Use `assets01.html` visual language for toolbar/buttons/table card and pagination affordances.
+3. `Add User` routes to `users02.html`.
+
+### 5.7 users02.html (Add User)
+
+1. Header/nav shell with `Users` nav item active.
+2. Form should use the same card, border, spacing, and button visual system as the app shell and asset pages.
+3. Primary/secondary actions route back to `users01.html` unless explicitly changed.
+
 ## 6. Interaction and Accessibility Baseline
 
 1. Keep visible focus states using `:focus-visible` and `--color-focus`.
@@ -140,4 +154,5 @@ Notes:
 1. Do not change existing route targets unless explicitly requested.
 2. Do not remove the robots meta directive.
 3. Do not swap the app font stack away from Sora/Public Sans on AoTech app pages.
-4. Keep the shared AoTech shell structure consistent across dashboard and assets pages.
+4. Keep the shared AoTech shell structure consistent across regional-manager app pages.
+5. When pasted references or screenshots conflict with AoTech styles, these instructions prevail. Match existing in-repo AoTech pages (`assets01.html` first) over external visual cues.
