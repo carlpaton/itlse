@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+  <title>AoTech - QR Query Job Dashboard</title>
+  <style>
+    @import url("https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700&family=Sora:wght@600;700&display=swap");
+
+    :root {
+      --font-display: "Sora", "Segoe UI", sans-serif;
+      --font-body: "Public Sans", "Segoe UI", sans-serif;
+      --color-page-bg: #f3f5f8;
+      --color-surface: #ffffff;
+      --color-border: #d7e0ea;
+      --color-text-strong: #10233a;
+      --color-text-body: #26394f;
+      --color-text-muted: #5f7185;
+      --color-focus: #5b8cc2;
+      --shadow-soft: 0 1px 2px rgba(10, 24, 40, 0.08), 0 6px 16px rgba(17, 36, 56, 0.04);
+      --space-2: 8px;
+      --space-3: 12px;
+      --space-4: 16px;
+      --space-5: 20px;
+      --space-6: 24px;
+      --space-8: 32px;
+      --radius-sm: 6px;
+      --radius-md: 10px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: var(--font-body);
+      color: var(--color-text-body);
+      background: radial-gradient(1200px 500px at -10% -20%, #e7edf5 0%, transparent 60%),
+        radial-gradient(800px 400px at 110% 120%, #e9eef6 0%, transparent 60%),
+        var(--color-page-bg);
+    }
+
+    .page-shell {
+      max-width: 1220px;
+      margin: 0 auto;
+      padding: var(--space-8) var(--space-6);
+    }
+
+    .screen {
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      background: var(--color-surface);
+      box-shadow: var(--shadow-soft);
+      padding: clamp(var(--space-5), 3vw, 30px);
+    }
+
+    .page-toolbar {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: var(--space-4);
+      flex-wrap: wrap;
+    }
+
+    .page-title {
+      margin: 0;
+      color: var(--color-text-strong);
+      font-family: var(--font-display);
+      font-size: clamp(1.7rem, 3vw, 2.1rem);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+
+    .page-subtitle {
+      margin: var(--space-2) 0 0;
+      color: var(--color-text-muted);
+      font-size: 1rem;
+    }
+
+    .btn-primary,
+    .btn-secondary,
+    .btn-small {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: var(--radius-sm);
+      min-height: 42px;
+      padding: 0 var(--space-4);
+      font-family: var(--font-body);
+      font-size: 0.92rem;
+      font-weight: 700;
+      text-decoration: none;
+      transition: transform 140ms ease, filter 140ms ease;
+    }
+
+    .btn-primary,
+    .btn-small {
+      border: 1px solid transparent;
+      background: linear-gradient(135deg, #324e6b, #3a5a7b);
+      color: #fff;
+      box-shadow: 0 6px 12px rgba(42, 63, 86, 0.18);
+    }
+
+    .btn-secondary {
+      border: 1px solid #b9c7d7;
+      color: var(--color-text-body);
+      background: #ffffff;
+    }
+
+    .btn-primary:hover,
+    .btn-small:hover {
+      filter: brightness(0.95);
+      transform: translateY(-1px);
+    }
+
+    .btn-secondary:hover {
+      background: #f2f6fb;
+    }
+
+    .search-group {
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+      flex-wrap: wrap;
+      margin-top: var(--space-6);
+    }
+
+    .search-input {
+      min-width: 220px;
+      height: 38px;
+      padding: 0 var(--space-4);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-sm);
+      background: var(--color-surface);
+      font-family: var(--font-body);
+      font-size: 0.9rem;
+      color: var(--color-text-body);
+    }
+
+    .stat-grid {
+      margin-top: var(--space-5);
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: var(--space-3);
+    }
+
+    .stat-card {
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      background: #fff;
+      padding: var(--space-4);
+    }
+
+    .stat-label {
+      display: block;
+      font-size: 0.9rem;
+      color: var(--color-text-muted);
+      margin-bottom: var(--space-2);
+    }
+
+    .stat-value {
+      margin: 0;
+      font-family: var(--font-display);
+      font-size: 2rem;
+      color: var(--color-text-strong);
+      line-height: 1;
+    }
+
+    .filter-tabs {
+      display: flex;
+      align-items: center;
+      gap: var(--space-2);
+      flex-wrap: wrap;
+      margin-top: var(--space-5);
+      border-bottom: 1px solid var(--color-border);
+      padding-bottom: var(--space-3);
+    }
+
+    .filter-tab {
+      padding: 6px 14px;
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-sm);
+      background: #fff;
+      color: var(--color-text-body);
+      font-family: var(--font-body);
+      font-size: 0.88rem;
+      font-weight: 600;
+    }
+
+    .filter-tab.active {
+      background: #334d69;
+      border-color: #334d69;
+      color: #fff;
+    }
+
+    .table-card {
+      margin-top: var(--space-5);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      background: #fff;
+    }
+
+    .table-scroll {
+      width: 100%;
+      overflow-x: auto;
+    }
+
+    .jobs-table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 980px;
+    }
+
+    .jobs-table th {
+      padding: var(--space-3) var(--space-4);
+      text-align: left;
+      font-weight: 700;
+      font-size: 0.82rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: var(--color-text-muted);
+      border-bottom: 1px solid var(--color-border);
+      background: linear-gradient(180deg, #f8fbff 0%, #f0f5fb 100%);
+      white-space: nowrap;
+    }
+
+    .jobs-table td {
+      padding: var(--space-3) var(--space-4);
+      border-bottom: 1px solid #e3ebf5;
+      font-size: 0.94rem;
+      vertical-align: middle;
+    }
+
+    .jobs-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    .job-num {
+      font-family: var(--font-display);
+      font-weight: 600;
+      color: var(--color-text-strong);
+    }
+
+    .priority-dot {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.88rem;
+    }
+
+    .priority-dot::before {
+      content: "";
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .priority-high::before { background: #ef4444; }
+    .priority-medium::before { background: #f59e0b; }
+    .priority-low::before { background: #22c55e; }
+
+    .badge {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: var(--radius-sm);
+      font-size: 0.82rem;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .badge-in-progress { background: #dbeafe; color: #1d4ed8; }
+    .badge-assigned { background: #fde8c8; color: #b45309; }
+    .badge-scheduled { background: #e0f2fe; color: #0369a1; }
+    .badge-completed { background: #dcfce7; color: #15803d; }
+
+    .table-footer {
+      border-top: 1px solid var(--color-border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--space-4);
+      padding: var(--space-4);
+      flex-wrap: wrap;
+    }
+
+    .results-note {
+      margin: 0;
+      color: var(--color-text-muted);
+      font-size: 0.93rem;
+    }
+
+    .pager {
+      display: flex;
+      gap: var(--space-2);
+      align-items: center;
+    }
+
+    .pager-btn {
+      border: 1px solid var(--color-border);
+      background: #ffffff;
+      border-radius: var(--radius-sm);
+      color: var(--color-text-body);
+      min-height: 36px;
+      min-width: 36px;
+      padding: 0 var(--space-3);
+      font-family: var(--font-body);
+      font-size: 0.92rem;
+      font-weight: 600;
+    }
+
+    .pager-btn.is-current {
+      background: #334d69;
+      color: #fff;
+      border-color: #334d69;
+    }
+
+    .search-input:focus-visible,
+    .btn-primary:focus-visible,
+    .btn-secondary:focus-visible,
+    .btn-small:focus-visible,
+    .pager-btn:focus-visible {
+      outline: 2px solid var(--color-focus);
+      outline-offset: 2px;
+    }
+
+    @media (max-width: 900px) {
+      .stat-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 680px) {
+      .page-shell {
+        padding: var(--space-6) var(--space-4);
+      }
+
+      .page-toolbar {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .btn-primary,
+      .btn-secondary {
+        width: 100%;
+      }
+
+      .search-input {
+        width: 100%;
+      }
+
+      .stat-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page-shell">
+    <main class="screen" aria-labelledby="job-dashboard-title">
+      <section class="page-toolbar" aria-label="Dashboard heading and actions">
+        <div>
+          <h1 class="page-title" id="job-dashboard-title">Job Query Dashboard</h1>
+          <p class="page-subtitle">All jobs across managed regions</p>
+        </div>
+        <div style="display:flex; gap:12px; flex-wrap:wrap;">
+          <a class="btn-secondary" href="./index.html">Log out</a>
+          <a class="btn-primary" href="./regional-manager/dashboard.html">Open Main Dashboard</a>
+        </div>
+      </section>
+
+      <section class="search-group" aria-label="Dashboard searches">
+        <input class="search-input" type="search" placeholder="QR Code search" aria-label="QR Code search" />
+        <input class="search-input" type="search" placeholder="Search jobs..." aria-label="Search jobs" />
+      </section>
+
+      <section class="stat-grid" aria-label="Job summary metrics">
+        <article class="stat-card">
+          <span class="stat-label">Total Jobs</span>
+          <p class="stat-value">41</p>
+        </article>
+        <article class="stat-card">
+          <span class="stat-label">In Progress</span>
+          <p class="stat-value">9</p>
+        </article>
+        <article class="stat-card">
+          <span class="stat-label">Completed</span>
+          <p class="stat-value">25</p>
+        </article>
+        <article class="stat-card">
+          <span class="stat-label">High Priority</span>
+          <p class="stat-value">7</p>
+        </article>
+      </section>
+
+      <section class="filter-tabs" aria-label="Job filters">
+        <span class="filter-tab active">All jobs</span>
+        <span class="filter-tab">In progress</span>
+        <span class="filter-tab">Completed</span>
+        <span class="filter-tab">Public queues</span>
+        <span class="filter-tab">Regional sites</span>
+      </section>
+
+      <section class="table-card" aria-label="Jobs list">
+        <div class="table-scroll">
+          <table class="jobs-table">
+            <thead>
+              <tr>
+                <th scope="col">Job #</th>
+                <th scope="col">Priority</th>
+                <th scope="col">Date Assigned</th>
+                <th scope="col">Date Completed</th>
+                <th scope="col">Job Status</th>
+                <th scope="col">Asset Details</th>
+                <th scope="col">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="job-num">JOB-0041</td>
+                <td><span class="priority-dot priority-high">High</span></td>
+                <td>08 May 2026</td>
+                <td>-</td>
+                <td><span class="badge badge-in-progress">In progress</span></td>
+                <td>Generator - Site A</td>
+                <td><a class="btn-small" href="qr-query03.html">View</a></td>
+              </tr>
+              <tr>
+                <td class="job-num">JOB-0040</td>
+                <td><span class="priority-dot priority-medium">Medium</span></td>
+                <td>06 May 2026</td>
+                <td>-</td>
+                <td><span class="badge badge-assigned">Assigned</span></td>
+                <td>HVAC Unit 3 - Site B</td>
+                <td><a class="btn-small" href="qr-query03.html">View</a></td>
+              </tr>
+              <tr>
+                <td class="job-num">JOB-0039</td>
+                <td><span class="priority-dot priority-low">Low</span></td>
+                <td>04 May 2026</td>
+                <td>-</td>
+                <td><span class="badge badge-scheduled">Scheduled</span></td>
+                <td>Fire Panel - Site C</td>
+                <td><a class="btn-small" href="qr-query03.html">View</a></td>
+              </tr>
+              <tr>
+                <td class="job-num">JOB-0038</td>
+                <td><span class="priority-dot priority-medium">Medium</span></td>
+                <td>01 May 2026</td>
+                <td>09 May 2026</td>
+                <td><span class="badge badge-completed">Completed</span></td>
+                <td>Pump Station 2 - Site A</td>
+                <td><a class="btn-small" href="qr-query03.html">View</a></td>
+              </tr>
+              <tr>
+                <td class="job-num">JOB-0037</td>
+                <td><span class="priority-dot priority-high">High</span></td>
+                <td>28 Apr 2026</td>
+                <td>05 May 2026</td>
+                <td><span class="badge badge-completed">Completed</span></td>
+                <td>Electrical Board - Site D</td>
+                <td><a class="btn-small" href="qr-query03.html">View</a></td>
+              </tr>
+              <tr>
+                <td class="job-num">JOB-0036</td>
+                <td><span class="priority-dot priority-low">Low</span></td>
+                <td>25 Apr 2026</td>
+                <td>-</td>
+                <td><span class="badge badge-assigned">Assigned</span></td>
+                <td>Water Tank - Site B</td>
+                <td><a class="btn-small" href="qr-query03.html">View</a></td>
+              </tr>
+              <tr>
+                <td class="job-num">JOB-0035</td>
+                <td><span class="priority-dot priority-medium">Medium</span></td>
+                <td>22 Apr 2026</td>
+                <td>-</td>
+                <td><span class="badge badge-in-progress">In progress</span></td>
+                <td>Cooling Tower - Site E</td>
+                <td><a class="btn-small" href="qr-query03.html">View</a></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="table-footer">
+          <p class="results-note">Showing 1 to 7 of 41 results</p>
+          <nav class="pager" aria-label="Pagination">
+            <button class="pager-btn" type="button">Previous</button>
+            <button class="pager-btn is-current" type="button" aria-current="page">1</button>
+            <button class="pager-btn" type="button">2</button>
+            <button class="pager-btn" type="button">Next</button>
+          </nav>
+        </div>
+      </section>
+    </main>
+  </div>
+</body>
+</html>
