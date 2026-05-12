@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+  <title>AoTech - Create Report</title>
+  <style>
+    @import url("https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700&family=Sora:wght@600;700&display=swap");
+
+    :root {
+      --font-display: "Sora", "Segoe UI", sans-serif;
+      --font-body: "Public Sans", "Segoe UI", sans-serif;
+
+      --color-nav-top: #2a3f56;
+      --color-nav-main: #334d69;
+      --color-nav-active: #3f5f80;
+      --color-nav-hover: #3a5878;
+
+      --color-page-bg: #f3f5f8;
+      --color-surface: #ffffff;
+      --color-surface-muted: #eef3f8;
+      --color-border: #d7e0ea;
+
+      --color-text-strong: #10233a;
+      --color-text-body: #26394f;
+      --color-text-muted: #5f7185;
+      --color-text-on-dark: #f7fbff;
+
+      --color-focus: #5b8cc2;
+      --shadow-soft: 0 1px 2px rgba(10, 24, 40, 0.08), 0 6px 16px rgba(17, 36, 56, 0.04);
+
+      --space-1: 4px;
+      --space-2: 8px;
+      --space-3: 12px;
+      --space-4: 16px;
+      --space-5: 20px;
+      --space-6: 24px;
+      --space-8: 32px;
+      --radius-sm: 6px;
+      --radius-md: 10px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: var(--font-body);
+      color: var(--color-text-body);
+      background: var(--color-page-bg);
+    }
+
+    .app-header {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      box-shadow: 0 1px 0 rgba(7, 18, 32, 0.15);
+    }
+
+    .top-bar {
+      height: 56px;
+      background: var(--color-nav-top);
+      color: var(--color-text-on-dark);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 var(--space-6);
+    }
+
+    .brand-group {
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+    }
+
+    .brand {
+      color: var(--color-text-on-dark);
+      text-decoration: none;
+      font-family: var(--font-display);
+      font-size: 1.55rem;
+      font-weight: 700;
+      letter-spacing: 0.2px;
+    }
+
+    .icon-btn {
+      border: 0;
+      background: transparent;
+      color: inherit;
+      width: 36px;
+      height: 36px;
+      border-radius: 999px;
+      display: inline-grid;
+      place-items: center;
+      cursor: pointer;
+      position: relative;
+      font-size: 1rem;
+      line-height: 1;
+    }
+
+    .icon-btn:hover {
+      background: rgba(255, 255, 255, 0.12);
+    }
+
+    .icon-btn:focus-visible,
+    .nav-link:focus-visible,
+    .btn-primary:focus-visible,
+    .btn-secondary:focus-visible {
+      outline: 2px solid var(--color-focus);
+      outline-offset: 2px;
+    }
+
+    .has-dot::after {
+      content: "";
+      position: absolute;
+      top: 7px;
+      right: 7px;
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #ff4d4d;
+    }
+
+    .main-nav {
+      min-height: 44px;
+      background: var(--color-nav-main);
+      display: flex;
+      align-items: center;
+      gap: var(--space-2);
+      padding: 0 var(--space-5);
+      overflow-x: auto;
+    }
+
+    .nav-link {
+      color: rgba(247, 251, 255, 0.95);
+      text-decoration: none;
+      padding: 10px 12px;
+      border-radius: var(--radius-sm);
+      font-weight: 600;
+      white-space: nowrap;
+      transition: background 160ms ease;
+    }
+
+    .nav-link:hover {
+      background: var(--color-nav-hover);
+    }
+
+    .nav-link.is-active {
+      background: var(--color-nav-active);
+    }
+
+    .page-content {
+      max-width: 1220px;
+      margin: 0 auto;
+      padding: var(--space-8) var(--space-6) var(--space-8);
+      animation: page-enter 320ms ease-out;
+    }
+
+    .page-toolbar {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: var(--space-4);
+      margin-bottom: var(--space-6);
+    }
+
+    .page-title {
+      margin: 0;
+      color: var(--color-text-strong);
+      font-family: var(--font-display);
+      font-size: clamp(1.7rem, 3vw, 2.15rem);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+
+    .page-subtitle {
+      margin: var(--space-2) 0 0;
+      font-size: 1.02rem;
+      color: var(--color-text-muted);
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid transparent;
+      border-radius: var(--radius-sm);
+      background: linear-gradient(135deg, #324e6b, #3a5a7b);
+      color: #ffffff;
+      min-height: 44px;
+      padding: 0 var(--space-5);
+      font-size: 0.98rem;
+      font-weight: 700;
+      font-family: var(--font-body);
+      text-decoration: none;
+      cursor: pointer;
+      box-shadow: 0 6px 12px rgba(42, 63, 86, 0.18);
+      transition: transform 140ms ease, box-shadow 140ms ease, filter 140ms ease;
+      white-space: nowrap;
+    }
+
+    .btn-primary:hover {
+      filter: brightness(0.95);
+      transform: translateY(-1px);
+      box-shadow: 0 10px 16px rgba(42, 63, 86, 0.2);
+    }
+
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-sm);
+      background: var(--color-surface);
+      color: var(--color-text-body);
+      min-height: 44px;
+      padding: 0 var(--space-5);
+      font-size: 0.98rem;
+      font-weight: 600;
+      font-family: var(--font-body);
+      text-decoration: none;
+      cursor: pointer;
+      transition: background 140ms ease, border-color 140ms ease;
+      white-space: nowrap;
+    }
+
+    .btn-secondary:hover {
+      background: var(--color-surface-muted);
+      border-color: #c6d5e5;
+    }
+
+    /* Filter bar */
+    .filter-bar {
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+      flex-wrap: wrap;
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      padding: var(--space-4) var(--space-5);
+      box-shadow: var(--shadow-soft);
+      margin-bottom: var(--space-5);
+    }
+
+    .filter-bar label {
+      display: none;
+    }
+
+    .filter-select,
+    .filter-input {
+      height: 40px;
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-sm);
+      background: var(--color-surface);
+      color: var(--color-text-body);
+      font-family: var(--font-body);
+      font-size: 0.95rem;
+      padding: 0 var(--space-3);
+      min-width: 140px;
+    }
+
+    .filter-select {
+      padding-right: var(--space-5);
+      cursor: pointer;
+    }
+
+    .filter-select:focus,
+    .filter-input:focus {
+      outline: 2px solid var(--color-focus);
+      outline-offset: 1px;
+    }
+
+    .filter-bar .btn-primary {
+      margin-left: auto;
+    }
+
+    /* Table card */
+    .table-card {
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      background: var(--color-surface);
+      box-shadow: var(--shadow-soft);
+      overflow: hidden;
+    }
+
+    .table-scroll {
+      width: 100%;
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      min-width: 780px;
+      border-collapse: collapse;
+      background: #ffffff;
+    }
+
+    thead th {
+      text-align: left;
+      font-size: 0.83rem;
+      color: var(--color-text-muted);
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      padding: 12px var(--space-4);
+      border-bottom: 1px solid var(--color-border);
+      background: linear-gradient(180deg, #f8fbff 0%, #f0f5fb 100%);
+      font-weight: 700;
+    }
+
+    tbody td {
+      padding: 13px var(--space-4);
+      border-bottom: 1px solid #e3ebf5;
+      font-size: 0.96rem;
+      color: var(--color-text-body);
+    }
+
+    .editable-cell {
+      width: 100%;
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-sm);
+      background: var(--color-surface);
+      color: var(--color-text-body);
+      font-family: var(--font-body);
+      font-size: 0.95rem;
+      padding: 6px var(--space-3);
+      min-height: 36px;
+    }
+
+    .editable-cell:focus {
+      outline: 2px solid var(--color-focus);
+      outline-offset: 1px;
+    }
+
+    tbody tr:hover {
+      background: #f8fbff;
+    }
+
+    tbody tr:last-child td {
+      border-bottom: none;
+    }
+
+    /* Form actions footer */
+    .form-actions {
+      display: flex;
+      justify-content: center;
+      gap: var(--space-4);
+      padding: var(--space-6) var(--space-5);
+      border-top: 1px solid var(--color-border);
+      background: #ffffff;
+    }
+
+    @keyframes page-enter {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @media (max-width: 768px) {
+      .top-bar {
+        padding: 0 var(--space-4);
+      }
+
+      .page-content {
+        padding: var(--space-6) var(--space-4);
+      }
+
+      .page-toolbar {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .filter-bar {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .filter-select,
+      .filter-input {
+        width: 100%;
+      }
+
+      .filter-bar .btn-primary {
+        margin-left: 0;
+      }
+
+      .form-actions {
+        flex-direction: column;
+      }
+
+      .btn-primary,
+      .btn-secondary {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="app-header" role="banner">
+    <div class="top-bar">
+      <div class="brand-group">
+        <button class="icon-btn" aria-label="Open menu">&#9776;</button>
+        <a class="brand" href="dashboard.html">AoTech</a>
+      </div>
+      <div class="utility-icons" aria-label="Utility actions">
+        <button class="icon-btn" aria-label="Search">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="8"></circle>
+            <path d="m21 21-4.35-4.35"></path>
+          </svg>
+        </button>
+        <button class="icon-btn has-dot" aria-label="Notifications">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+            <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+          </svg>
+        </button>
+        <a class="icon-btn" href="./../index.html" aria-label="Profile">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+            <circle cx="12" cy="7" r="4"></circle>
+          </svg>
+        </a>
+      </div>
+    </div>
+
+    <nav class="main-nav" aria-label="Primary">
+      <a href="users01.html" class="nav-link">Users</a>
+      <a href="reports01.html" class="nav-link is-active" aria-current="page">Reports</a>
+      <a href="contractor01.html" class="nav-link">Contractor</a>
+      <a href="calendar01.html" class="nav-link">Calendar</a>
+    </nav>
+  </header>
+
+  <main class="page-content" id="page-content">
+    <section class="page-toolbar" aria-label="Create report heading">
+      <div>
+        <h1 class="page-title">Create Report</h1>
+        <p class="page-subtitle">Configure filters and review asset data for this report</p>
+      </div>
+    </section>
+
+    <section aria-label="Report filters">
+      <div class="filter-bar">
+        <label for="filter-customer">Customer</label>
+        <select id="filter-customer" class="filter-select">
+          <option value="">Customer</option>
+          <option value="customer-a">Customer A</option>
+          <option value="customer-b">Customer B</option>
+          <option value="customer-c">Customer C</option>
+        </select>
+
+        <label for="filter-date-from">Date from</label>
+        <input id="filter-date-from" class="filter-input" type="date" placeholder="Date from" />
+
+        <label for="filter-date-to">Date to</label>
+        <input id="filter-date-to" class="filter-input" type="date" placeholder="Date to" />
+
+        <label for="filter-report-type">Type of report</label>
+        <select id="filter-report-type" class="filter-select">
+          <option value="">Type of report</option>
+          <option value="repair">Repair</option>
+          <option value="maintenance">Maintenance</option>
+          <option value="inspection">Inspection</option>
+        </select>
+
+        <a class="btn-primary" href="reports01.html">Create report</a>
+      </div>
+    </section>
+
+    <section class="table-card" aria-label="Report asset data">
+      <div class="table-scroll">
+        <table>
+          <thead>
+            <tr>
+              <th>QR Code #</th>
+              <th>Model #</th>
+              <th>Serial #</th>
+              <th>Location</th>
+              <th>Next Service</th>
+              <th>Notes</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>QR-2024-001</td>
+              <td>LAT-5520</td>
+              <td>Repair</td>
+              <td>Office - Floor 2</td>
+              <td>2024-07-15</td>
+              <td>Repair</td>
+            </tr>
+            <tr>
+              <td>QR-2024-002</td>
+              <td>IP14P-256</td>
+              <td>Maintenance</td>
+              <td>Office - Floor 3</td>
+              <td>2024-08-20</td>
+              <td>Maintenance</td>
+            </tr>
+            <tr>
+              <td>QR-2023-045</td>
+              <td>HPLJ-M404</td>
+              <td>SN7362819</td>
+              <td>Office - Floor 1</td>
+              <td>2024-06-10</td>
+              <td><input class="editable-cell" type="text" value="" aria-label="Notes for QR-2023-045" /></td>
+            </tr>
+            <tr>
+              <td>QR-2024-003</td>
+              <td>MBP-16-M3</td>
+              <td>SN1928374</td>
+              <td>Office - Floor 2</td>
+              <td>2024-09-05</td>
+              <td><input class="editable-cell" type="text" value="" aria-label="Notes for QR-2024-003" /></td>
+            </tr>
+            <tr>
+              <td>QR-2024-004</td>
+              <td>SAM-M27</td>
+              <td>SN8473625</td>
+              <td>Office - Floor 2</td>
+              <td>2025-01-28</td>
+              <td><input class="editable-cell" type="text" value="" aria-label="Notes for QR-2024-004" /></td>
+            </tr>
+            <tr>
+              <td>QR-2023-032</td>
+              <td>TP-X1-G9</td>
+              <td>SN5648392</td>
+              <td>Warehouse</td>
+              <td>2024-11-14</td>
+              <td><input class="editable-cell" type="text" value="" aria-label="Notes for QR-2023-032" /></td>
+            </tr>
+            <tr>
+              <td>QR-2024-005</td>
+              <td>IPAD-AIR-5</td>
+              <td>SN2847193</td>
+              <td>Office - Floor 3</td>
+              <td>2024-08-01</td>
+              <td><input class="editable-cell" type="text" value="" aria-label="Notes for QR-2024-005" /></td>
+            </tr>
+            <tr>
+              <td>QR-2023-028</td>
+              <td>CSC-RT-2901</td>
+              <td>SN9384756</td>
+              <td>Server Room</td>
+              <td>2024-11-20</td>
+              <td><input class="editable-cell" type="text" value="" aria-label="Notes for QR-2023-028" /></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="form-actions">
+        <button class="btn-primary" type="button">Save</button>
+        <button class="btn-secondary" type="button">Email report</button>
+      </div>
+    </section>
+  </main>
+</body>
+</html>
