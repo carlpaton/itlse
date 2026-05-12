@@ -36,14 +36,23 @@
       box-sizing: border-box;
     }
 
+    html,
+    body {
+      height: 100%;
+    }
+
     body {
       margin: 0;
-      min-height: 100vh;
       font-family: var(--font-body);
       background: radial-gradient(1200px 500px at -10% -20%, #e7edf5 0%, transparent 60%),
         radial-gradient(800px 400px at 110% 120%, #e9eef6 0%, transparent 60%),
         var(--color-page-bg);
       color: var(--color-text-body);
+    }
+
+    .page-shell {
+      min-height: 100vh;
+      min-height: 100dvh;
       display: grid;
       place-items: center;
       padding: var(--space-6);
@@ -147,15 +156,17 @@
   </style>
 </head>
 <body>
-  <main class="screen" aria-labelledby="confirmation-status">
-    <h1 class="screen-title" id="confirmation-status">Confirmation</h1>
-    <div class="status-chip">Fault Logged</div>
-    <p class="message">Fault has been logged. Thank you.</p>
-    <p class="message-sub">Your report has been submitted for triage.</p>
+  <div class="page-shell">
+    <main class="screen" aria-labelledby="confirmation-status">
+      <h1 class="screen-title" id="confirmation-status">Confirmation</h1>
+      <div class="status-chip">Fault Logged</div>
+      <p class="message">Fault has been logged. Thank you.</p>
+      <p class="message-sub">Your report has been submitted for triage.</p>
 
-    <div class="actions">
-      <a class="btn-primary" href="../index.html">Close Window</a>
-    </div>
-  </main>
+      <div class="actions">
+        <a class="btn-primary" href="../index.html">Close Window</a>
+      </div>
+    </main>
+  </div>
 </body>
 </html>

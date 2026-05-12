@@ -37,14 +37,23 @@
       box-sizing: border-box;
     }
 
+    html,
+    body {
+      height: 100%;
+    }
+
     body {
       margin: 0;
-      min-height: 100vh;
       font-family: var(--font-body);
       background: radial-gradient(1200px 500px at -10% -20%, #e7edf5 0%, transparent 60%),
         radial-gradient(800px 400px at 110% 120%, #e9eef6 0%, transparent 60%),
         var(--color-page-bg);
       color: var(--color-text-body);
+    }
+
+    .page-shell {
+      min-height: 100vh;
+      min-height: 100dvh;
       display: grid;
       place-items: center;
       padding: var(--space-6);
@@ -140,19 +149,21 @@
   </style>
 </head>
 <body>
-  <main class="screen" aria-labelledby="fault-security-title">
-    <h1 class="screen-title" id="fault-security-title">Enter Security Code</h1>
+  <div class="page-shell">
+    <main class="screen" aria-labelledby="fault-security-title">
+      <h1 class="screen-title" id="fault-security-title">Enter Security Code</h1>
 
-    <form action="qr-fault02.html" method="get">
-      <div class="form-row">
-        <input class="input-field" type="text" name="security-label" placeholder="Security Code #" aria-label="Security Code label" />
-        <input class="input-field" type="text" name="security-code" placeholder="XXXXXXXXXXXX" aria-label="Security Code" required />
-      </div>
+      <form action="qr-fault02.html" method="get">
+        <div class="form-row">
+          <input class="input-field" type="text" name="security-label" placeholder="Security Code #" aria-label="Security Code label" />
+          <input class="input-field" type="text" name="security-code" placeholder="XXXXXXXXXXXX" aria-label="Security Code" required />
+        </div>
 
-      <div class="actions">
-        <button class="btn-primary" type="submit">Submit</button>
-      </div>
-    </form>
-  </main>
+        <div class="actions">
+          <button class="btn-primary" type="submit">Submit</button>
+        </div>
+      </form>
+    </main>
+  </div>
 </body>
 </html>
