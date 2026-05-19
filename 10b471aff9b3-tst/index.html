@@ -1,0 +1,309 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sign in to your account</title>
+  <style>
+    :root {
+      --text: #1b1b1b;
+      --muted: #616161;
+      --line: #8a8886;
+      --card: #ffffff;
+      --brand: #0067b8;
+      --page-bg: #f3f3f3;
+      --card-shadow: 0 2px 8px rgba(0, 0, 0, 0.18);
+      --focus-ring: 0 0 0 2px #0067b8;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+      color: var(--text);
+      background:
+        linear-gradient(135deg, rgba(245, 245, 245, 0.95), rgba(230, 230, 230, 0.9)),
+        radial-gradient(circle at 18% 22%, rgba(177, 207, 232, 0.5), transparent 36%),
+        radial-gradient(circle at 78% 84%, rgba(233, 201, 220, 0.42), transparent 34%),
+        var(--page-bg);
+      display: grid;
+      place-items: center;
+      padding: 24px 12px;
+    }
+
+    .auth-shell {
+      width: min(440px, 100%);
+      background: var(--card);
+      box-shadow: var(--card-shadow);
+      padding: 44px;
+      animation: fade-up 220ms ease both;
+    }
+
+    .microsoft {
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      margin-bottom: 16px;
+      color: #444;
+      font-size: 15px;
+    }
+
+    .microsoft-mark {
+      width: 20px;
+      height: 20px;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 2px;
+    }
+
+    .microsoft-mark span {
+      display: block;
+    }
+
+    .microsoft-mark span:nth-child(1) { background: #f25022; }
+    .microsoft-mark span:nth-child(2) { background: #7fba00; }
+    .microsoft-mark span:nth-child(3) { background: #00a4ef; }
+    .microsoft-mark span:nth-child(4) { background: #ffb900; }
+
+    h1 {
+      margin: 0;
+      font-size: 24px;
+      font-weight: 600;
+      line-height: 1.2;
+    }
+
+    .sub {
+      margin: 14px 0 18px;
+      font-size: 15px;
+      color: #1b1b1b;
+      line-height: 1.45;
+    }
+
+    .sub a,
+    .links a,
+    .alt-signin {
+      color: #0067b8;
+      text-decoration: none;
+    }
+
+    .sub a:hover,
+    .links a:hover,
+    .alt-signin:hover {
+      text-decoration: underline;
+    }
+
+    .field {
+      margin-bottom: 14px;
+    }
+
+    label {
+      display: none;
+    }
+
+    input {
+      width: 100%;
+      border: none;
+      border-bottom: 1px solid var(--line);
+      border-radius: 0;
+      padding: 6px 2px 8px;
+      font-size: 15px;
+      color: var(--text);
+      background: transparent;
+      outline: none;
+    }
+
+    input:focus {
+      border-bottom: 2px solid #0067b8;
+      padding-bottom: 7px;
+      box-shadow: none;
+    }
+
+    .links {
+      margin: 0 0 24px;
+      font-size: 13px;
+      color: var(--muted);
+      display: grid;
+      gap: 6px;
+    }
+
+    .actions {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .alt-signin {
+      font-size: 13px;
+      cursor: pointer;
+      border: 0;
+      background: transparent;
+      padding: 6px 2px;
+    }
+
+    .next {
+      min-width: 108px;
+      border: none;
+      background: var(--brand);
+      color: #fff;
+      font-size: 15px;
+      line-height: 1;
+      padding: 10px 18px 11px;
+      cursor: pointer;
+    }
+
+    .next:hover {
+      background: #005da6;
+    }
+
+    .next:focus-visible,
+    .alt-signin:focus-visible,
+    .signin-options:focus-visible {
+      outline: none;
+      box-shadow: var(--focus-ring);
+    }
+
+    .signin-options {
+      margin-top: 14px;
+      width: min(440px, 100%);
+      background: #fff;
+      box-shadow: var(--card-shadow);
+      border: 0;
+      padding: 14px 18px;
+      text-align: left;
+      color: #1b1b1b;
+      font-size: 15px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .signin-options span {
+      font-size: 18px;
+      color: #5f5f5f;
+      line-height: 1;
+    }
+
+    .footer {
+      position: fixed;
+      right: 0;
+      bottom: 0;
+      display: flex;
+      gap: 20px;
+      padding: 10px 16px;
+      font-size: 12px;
+      background: rgba(255, 255, 255, 0.94);
+    }
+
+    .footer a {
+      color: #444;
+      text-decoration: none;
+    }
+
+    .footer a:hover {
+      text-decoration: underline;
+    }
+
+    @media (max-width: 600px) {
+      .auth-shell {
+        padding: 30px 24px;
+      }
+
+      body {
+        place-items: start center;
+        padding-top: 24px;
+      }
+
+      .footer {
+        position: static;
+        width: 100%;
+        justify-content: flex-end;
+        margin-top: 20px;
+      }
+    }
+
+    @keyframes fade-up {
+      from {
+        opacity: 0;
+        transform: translateY(4px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="auth-shell" aria-label="Sign in container">
+    <div class="microsoft" aria-label="Microsoft brand">
+      <div class="microsoft-mark" aria-hidden="true">
+        <span></span><span></span><span></span><span></span>
+      </div>
+      <strong>Microsoft</strong>
+    </div>
+
+    <h1>Sign in</h1>
+    <p class="sub">to continue to Contractor Operations Workspace</p>
+
+    <form id="loginForm" action="landing.html">
+      <div class="field">
+        <label for="email">Email, phone, or Skype</label>
+        <input id="email" type="email" placeholder="Email, phone, or Skype" required />
+      </div>
+
+      <div class="links">
+        <span>No account? <a href="#">Create one!</a></span>
+        <a href="#">Can't access your account?</a>
+      </div>
+
+      <div class="actions">
+        <button type="button" class="alt-signin">Sign-in options</button>
+        <button type="submit" class="next">Next</button>
+      </div>
+    </form>
+  </main>
+
+  <button type="button" class="signin-options" aria-label="Sign in options">
+    <span>[+]</span>
+    Sign-in options
+  </button>
+
+  <footer class="footer" aria-label="Footer links">
+    <a href="#">Terms of use</a>
+    <a href="#">Privacy & cookies</a>
+    <a href="#">...</a>
+  </footer>
+
+  <script>
+    var emailInput = document.getElementById('email');
+    var loginForm = document.getElementById('loginForm');
+    var demoEmail = 'alexa.tan+demo@northgrid.co.nz';
+    var typeDelayMs = 85;
+    var charIndex = 0;
+
+    emailInput.value = '';
+    emailInput.focus();
+
+    var typeTimer = setInterval(function () {
+      if (charIndex >= demoEmail.length) {
+        clearInterval(typeTimer);
+        return;
+      }
+
+      emailInput.value += demoEmail.charAt(charIndex);
+      charIndex += 1;
+    }, typeDelayMs);
+
+    loginForm.addEventListener('submit', function (event) {
+      event.preventDefault();
+      window.location.href = 'landing.html';
+    });
+  </script>
+</body>
+</html>

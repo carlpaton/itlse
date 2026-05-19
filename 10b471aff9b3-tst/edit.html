@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Edit Row</title>
+  <style>
+    :root {
+      --bg: #f7f9fd;
+      --paper: #fff;
+      --line: #d7deea;
+      --text: #1a2538;
+      --muted: #5f6e86;
+      --accent: #005fb8;
+      --accent-2: #0c7de8;
+      --warning: #ae6b00;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+      color: var(--text);
+      min-height: 100vh;
+      background:
+        radial-gradient(circle at 0% 100%, #eaf2ff, transparent 34%),
+        radial-gradient(circle at 100% 0%, #f2e9ff, transparent 26%),
+        var(--bg);
+      display: grid;
+      place-items: center;
+      padding: 20px;
+    }
+
+    .panel {
+      width: min(780px, 100%);
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 28px;
+      box-shadow: 0 16px 38px rgba(17, 33, 57, 0.1);
+      animation: reveal 500ms ease;
+    }
+
+    .badge {
+      display: inline-block;
+      background: #fff6e8;
+      color: var(--warning);
+      font-size: 12px;
+      padding: 4px 9px;
+      border-radius: 999px;
+      margin-bottom: 10px;
+      font-weight: 600;
+    }
+
+    h1 {
+      margin: 0 0 6px;
+      font-size: 28px;
+    }
+
+    p {
+      margin: 0 0 22px;
+      color: var(--muted);
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    .field { display: grid; gap: 7px; }
+
+    label {
+      font-size: 13px;
+      color: #334155;
+    }
+
+    input, select {
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 11px 12px;
+      font-size: 14px;
+      outline: none;
+    }
+
+    input:focus, select:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(0, 95, 184, 0.15);
+    }
+
+    .actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+    a, button {
+      border-radius: 10px;
+      border: 1px solid transparent;
+      font-size: 14px;
+      padding: 10px 14px;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    a {
+      border-color: var(--line);
+      color: var(--text);
+      background: #fff;
+    }
+
+    button {
+      background: linear-gradient(180deg, var(--accent-2), var(--accent));
+      color: #fff;
+      font-weight: 600;
+    }
+
+    .note {
+      margin-top: 14px;
+      padding: 10px 12px;
+      border-radius: 10px;
+      background: #eaf3ff;
+      color: #0e4b91;
+      font-size: 13px;
+      display: none;
+    }
+
+    @media (max-width: 700px) {
+      .grid { grid-template-columns: 1fr; }
+    }
+
+    @keyframes reveal {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+  <main class="panel">
+    <span class="badge">Editing: W-1012</span>
+    <h1>Edit Row</h1>
+    <p>Update an existing worker record.</p>
+
+    <form id="editForm">
+      <div class="grid">
+        <div class="field">
+          <label for="recordId">Record ID</label>
+          <input id="recordId" value="W-1012" />
+        </div>
+        <div class="field">
+          <label for="name">Name</label>
+          <input id="name" value="Aria Chen" required />
+        </div>
+
+        <div class="field">
+          <label for="location">Location</label>
+          <input id="location" value="East Depot" required />
+        </div>
+        <div class="field">
+          <label for="role">Role</label>
+          <input id="role" value="Contractor" required />
+        </div>
+
+        <div class="field">
+          <label for="status">Status</label>
+          <select id="status">
+            <option>Active</option>
+            <option selected>Pending</option>
+            <option>Blocked</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="updated">Last Updated</label>
+          <input id="updated" value="19 May 2026" />
+        </div>
+      </div>
+
+      <div class="actions">
+        <a href="landing.html">Back to Table</a>
+        <button type="submit">Save Changes</button>
+      </div>
+    </form>
+
+    <div class="note" id="savedNote">Row updated in prototype. Redirecting to table...</div>
+  </main>
+
+  <script>
+    document.getElementById('editForm').addEventListener('submit', function (event) {
+      event.preventDefault();
+      var note = document.getElementById('savedNote');
+      note.style.display = 'block';
+      setTimeout(function () {
+        window.location.href = 'landing.html';
+      }, 900);
+    });
+  </script>
+</body>
+</html>

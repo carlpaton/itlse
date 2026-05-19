@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Add Row</title>
+  <style>
+    :root {
+      --bg: #f6f8fc;
+      --paper: #fff;
+      --line: #d7deea;
+      --text: #1a2538;
+      --muted: #5f6e86;
+      --accent: #005fb8;
+      --accent-2: #0c7de8;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+      background: linear-gradient(170deg, #edf4ff, #f8fbff 50%, #eef2fa);
+      color: var(--text);
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      padding: 20px;
+    }
+
+    .panel {
+      width: min(760px, 100%);
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 28px;
+      box-shadow: 0 16px 38px rgba(17, 33, 57, 0.1);
+      animation: reveal 500ms ease;
+    }
+
+    h1 {
+      margin: 0 0 6px;
+      font-size: 28px;
+    }
+
+    p {
+      margin: 0 0 24px;
+      color: var(--muted);
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    .field { display: grid; gap: 7px; }
+
+    .field.full { grid-column: 1 / -1; }
+
+    label {
+      font-size: 13px;
+      color: #334155;
+    }
+
+    input, select {
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 11px 12px;
+      font-size: 14px;
+      outline: none;
+    }
+
+    input:focus, select:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(0, 95, 184, 0.15);
+    }
+
+    .actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+    a, button {
+      border-radius: 10px;
+      border: 1px solid transparent;
+      font-size: 14px;
+      padding: 10px 14px;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    a {
+      border-color: var(--line);
+      color: var(--text);
+      background: #fff;
+    }
+
+    button {
+      background: linear-gradient(180deg, var(--accent-2), var(--accent));
+      color: #fff;
+      font-weight: 600;
+    }
+
+    .note {
+      margin-top: 14px;
+      padding: 10px 12px;
+      border-radius: 10px;
+      background: #ecf8f1;
+      color: #186a43;
+      font-size: 13px;
+      display: none;
+    }
+
+    @media (max-width: 700px) {
+      .grid { grid-template-columns: 1fr; }
+    }
+
+    @keyframes reveal {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+  <main class="panel">
+    <h1>Add New Row</h1>
+    <p>Capture a new worker record for the demo table.</p>
+
+    <form id="addForm">
+      <div class="grid">
+        <div class="field">
+          <label for="recordId">Record ID</label>
+          <input id="recordId" value="W-1021" required />
+        </div>
+        <div class="field">
+          <label for="name">Name</label>
+          <input id="name" placeholder="e.g. Morgan Hale" required />
+        </div>
+
+        <div class="field">
+          <label for="location">Location</label>
+          <input id="location" placeholder="e.g. West Hub" required />
+        </div>
+        <div class="field">
+          <label for="role">Role</label>
+          <input id="role" placeholder="e.g. Technician" required />
+        </div>
+
+        <div class="field">
+          <label for="status">Status</label>
+          <select id="status">
+            <option>Active</option>
+            <option>Pending</option>
+            <option>Blocked</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="updated">Last Updated</label>
+          <input id="updated" value="19 May 2026" />
+        </div>
+      </div>
+
+      <div class="actions">
+        <a href="landing.html">Cancel</a>
+        <button type="submit">Save Row</button>
+      </div>
+    </form>
+
+    <div class="note" id="savedNote">Row created in prototype. Redirecting to table...</div>
+  </main>
+
+  <script>
+    document.getElementById('addForm').addEventListener('submit', function (event) {
+      event.preventDefault();
+      var note = document.getElementById('savedNote');
+      note.style.display = 'block';
+      setTimeout(function () {
+        window.location.href = 'landing.html';
+      }, 900);
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,262 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Operations Data</title>
+  <style>
+    :root {
+      --bg: #f6f8fc;
+      --paper: #ffffff;
+      --text: #172033;
+      --muted: #5e6a81;
+      --line: #d7deea;
+      --accent: #005fb8;
+      --accent-2: #0d7be8;
+      --good: #1f8f55;
+      --warn: #cc8b00;
+      --bad: #bb2f2f;
+      --chip: #eef4ff;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at 0% 0%, #e6efff, transparent 30%),
+        radial-gradient(circle at 100% 100%, #dce9ff, transparent 24%),
+        var(--bg);
+    }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--line);
+      padding: 14px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+    }
+
+    .topbar strong { font-size: 18px; }
+
+    .top-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .btn {
+      border: 1px solid transparent;
+      border-radius: 10px;
+      padding: 10px 14px;
+      font-size: 14px;
+      text-decoration: none;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: 180ms ease;
+    }
+
+    .btn.primary {
+      background: linear-gradient(180deg, var(--accent-2), var(--accent));
+      color: #fff;
+      box-shadow: 0 10px 20px rgba(0, 95, 184, 0.25);
+    }
+
+    .btn.secondary {
+      border-color: var(--line);
+      color: var(--text);
+      background: #fff;
+    }
+
+    .btn:hover { transform: translateY(-1px); }
+
+    .container {
+      width: min(1200px, 95%);
+      margin: 20px auto 28px;
+      display: grid;
+      gap: 18px;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(170px, 1fr));
+      gap: 12px;
+    }
+
+    .card {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 16px;
+      box-shadow: 0 8px 24px rgba(20, 34, 57, 0.07);
+    }
+
+    .card h3 {
+      margin: 0;
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 500;
+    }
+
+    .card p {
+      margin: 6px 0 0;
+      font-size: 24px;
+      font-weight: 700;
+    }
+
+    .table-shell {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      overflow: auto;
+      box-shadow: 0 14px 36px rgba(17, 33, 57, 0.08);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 900px;
+    }
+
+    thead th {
+      text-align: left;
+      font-size: 12px;
+      letter-spacing: 0.3px;
+      text-transform: uppercase;
+      color: var(--muted);
+      background: #f9fbff;
+      border-bottom: 1px solid var(--line);
+      padding: 12px 14px;
+    }
+
+    tbody td {
+      border-bottom: 1px solid #edf1f8;
+      padding: 14px;
+      font-size: 14px;
+    }
+
+    tbody tr:hover { background: #fafcff; }
+
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      padding: 5px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 600;
+      background: var(--chip);
+    }
+
+    .chip.active { color: var(--good); }
+    .chip.pending { color: var(--warn); }
+    .chip.blocked { color: var(--bad); }
+
+    .action {
+      color: var(--accent);
+      text-decoration: none;
+      font-weight: 600;
+      margin-right: 10px;
+      font-size: 13px;
+    }
+
+    .action:hover { text-decoration: underline; }
+
+    @media (max-width: 760px) {
+      .topbar {
+        flex-wrap: wrap;
+      }
+
+      .cards {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <strong>Contractor Operations Workspace</strong>
+    <div class="top-actions">
+      <a class="btn secondary" href="index.html">Sign out</a>
+      <a class="btn primary" href="add.html">+ Add Row</a>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="cards" aria-label="Summary cards">
+      <article class="card">
+        <h3>Total Records</h3>
+        <p>128</p>
+      </article>
+      <article class="card">
+        <h3>Active This Week</h3>
+        <p>94</p>
+      </article>
+      <article class="card">
+        <h3>Needs Review</h3>
+        <p>12</p>
+      </article>
+    </section>
+
+    <section class="table-shell" aria-label="Records table">
+      <table>
+        <thead>
+          <tr>
+            <th>Record ID</th>
+            <th>Name</th>
+            <th>Location</th>
+            <th>Role</th>
+            <th>Status</th>
+            <th>Last Updated</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>W-1009</td>
+            <td>Riley Porter</td>
+            <td>North Hub</td>
+            <td>Site Supervisor</td>
+            <td><span class="chip active">Active</span></td>
+            <td>18 May 2026</td>
+            <td>
+              <a class="action" href="edit.html">Edit</a>
+            </td>
+          </tr>
+          <tr>
+            <td>W-1012</td>
+            <td>Aria Chen</td>
+            <td>East Depot</td>
+            <td>Contractor</td>
+            <td><span class="chip pending">Pending</span></td>
+            <td>17 May 2026</td>
+            <td>
+              <a class="action" href="edit.html">Edit</a>
+            </td>
+          </tr>
+          <tr>
+            <td>W-1017</td>
+            <td>Tama Johnson</td>
+            <td>South Yard</td>
+            <td>Technician</td>
+            <td><span class="chip blocked">Blocked</span></td>
+            <td>16 May 2026</td>
+            <td>
+              <a class="action" href="edit.html">Edit</a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+  </main>
+</body>
+</html>
