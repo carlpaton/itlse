@@ -217,7 +217,7 @@
         <h1 class="heading">Pick an account</h1>
         <p class="subheading">to continue with your microsoft account</p>
 
-        <ul class="accounts">
+        <ul class="accounts" id="accountsList">
           <li>
             <a class="account-link" href="admin-area/admin.html" aria-label="Sign in as admin@testing.com">
               <div class="account-main">
@@ -257,5 +257,104 @@
         </ul>
       </main>
     </div>
+
+    <script>
+      const accountsList = document.getElementById("accountsList");
+      const CLIENT_SCOPES_STORAGE_KEY = "testingDemoClientScopes";
+      const DEFAULT_CLIENT_SCOPES = ["client-one", "client-two"];
+
+      function readStoredClientScopes() {
+        const raw = localStorage.getItem(CLIENT_SCOPES_STORAGE_KEY);
+        if (!raw) {
+          return [];
+        }
+
+        try {
+          const parsed = JSON.parse(raw);
+          if (!Array.isArray(parsed)) {
+            return [];
+          }
+
+          return parsed
+            .map((scope) => String(scope).trim().toLowerCase())
+            .filter((scope) => scope.length > 0);
+        } catch (error) {
+          return [];
+        }
+      }
+
+      function toClientLabel(scope) {
+        return scope
+          .split("-")
+          .map((part) => (part ? part[0].toUpperCase() + part.slice(1) : ""))
+          .join(" ");
+      }
+
+      function renderStoredClientAccounts() {
+        const knownScopes = [];
+        DEFAULT_CLIENT_SCOPES.concat(readStoredClientScopes()).forEach((scope) => {
+          if (!knownScopes.includes(scope)) {
+            knownScopes.push(scope);
+          }
+        });
+
+        const existingScopes = new Set();
+        accountsList.querySelectorAll("a.account-link").forEach((link) => {
+          const href = link.getAttribute("href") || "";
+          const match = href.match(/^([^/]+)\/chatbot\.html$/);
+          if (match && match[1]) {
+            existingScopes.add(match[1].toLowerCase());
+          }
+        });
+
+        knownScopes.forEach((scope) => {
+          if (existingScopes.has(scope)) {
+            return;
+          }
+
+          const item = document.createElement("li");
+          const link = document.createElement("a");
+          link.className = "account-link";
+          link.href = `${scope}/chatbot.html`;
+          link.setAttribute("aria-label", `Sign in as ${scope}@testing.com`);
+
+          const main = document.createElement("div");
+          main.className = "account-main";
+
+          const avatar = document.createElement("div");
+          avatar.className = "avatar";
+          avatar.setAttribute("aria-hidden", "true");
+          avatar.textContent = "U";
+
+          const text = document.createElement("div");
+          text.className = "account-text";
+
+          const name = document.createElement("p");
+          name.className = "account-name";
+          name.textContent = toClientLabel(scope);
+
+          const email = document.createElement("p");
+          email.className = "account-email";
+          email.textContent = `${scope}@testing.com`;
+
+          text.appendChild(name);
+          text.appendChild(email);
+          main.appendChild(avatar);
+          main.appendChild(text);
+
+          const kebab = document.createElement("div");
+          kebab.className = "kebab";
+          kebab.setAttribute("aria-hidden", "true");
+          kebab.textContent = "⋮";
+
+          link.appendChild(main);
+          link.appendChild(kebab);
+          item.appendChild(link);
+          accountsList.appendChild(item);
+        });
+      }
+
+      renderStoredClientAccounts();
+    </script>
   </body>
 </html>

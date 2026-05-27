@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
-    <title>Testing Demo Admin</title>
+    <title>Testing Demo File Updates</title>
     <style>
       :root {
         --page-bg: #ffffff;
@@ -65,6 +65,72 @@
         color: var(--accent);
       }
 
+      .top-menu-dropdown {
+        position: relative;
+      }
+
+      .top-menu-dropdown summary {
+        list-style: none;
+      }
+
+      .top-menu-dropdown summary::-webkit-details-marker {
+        display: none;
+      }
+
+      .dropdown-trigger {
+        border: 0;
+        background: transparent;
+        padding: 0;
+        cursor: pointer;
+        font-weight: inherit;
+        font-size: inherit;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+      }
+
+      .dropdown-trigger::after {
+        content: "▾";
+        font-size: 11px;
+        line-height: 1;
+        transition: transform 150ms ease;
+      }
+
+      .top-menu-dropdown[open] .dropdown-trigger::after {
+        transform: rotate(180deg);
+      }
+
+      .dropdown-menu {
+        position: absolute;
+        top: 100%;
+        margin-top: 6px;
+        left: 0;
+        min-width: 180px;
+        background: #ffffff;
+        border: 1px solid #e2e2e2;
+        border-radius: 10px;
+        box-shadow: 0 10px 24px rgba(0, 0, 0, 0.12);
+        padding: 8px;
+        z-index: 12;
+      }
+
+      .dropdown-item {
+        display: block;
+        padding: 8px 10px;
+        border-radius: 8px;
+        font-size: 14px;
+      }
+
+      .dropdown-item:hover {
+        background: #fff1dd;
+        color: var(--accent);
+      }
+
+      .dropdown-item.active {
+        background: #fff1dd;
+        color: var(--accent);
+      }
+
       .content {
         flex: 1;
         max-width: 1320px;
@@ -89,6 +155,54 @@
       .panel-subtitle {
         margin: 8px 0 0;
         color: #646464;
+      }
+
+      .client-form-row {
+        margin-top: 16px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+
+      .client-input {
+        flex: 1;
+        min-width: 220px;
+        height: 40px;
+        border-radius: 8px;
+        border: 1px solid #cfcfcf;
+        padding: 0 12px;
+        font-size: 14px;
+        background: #ffffff;
+      }
+
+      .client-status {
+        margin: 12px 0 0;
+        font-size: 14px;
+        color: #4b4b4b;
+        font-weight: 600;
+      }
+
+      .sub-panel-title {
+        margin: 20px 0 0;
+        padding-top: 20px;
+        border-top: 1px solid #e2e2e2;
+        font-size: 18px;
+        font-weight: 800;
+      }
+
+      .documentation-panels {
+        margin-top: 24px;
+      }
+
+      .documentation-panels.locked {
+        opacity: 0.55;
+      }
+
+      .lock-note {
+        margin: 0 0 14px;
+        font-size: 14px;
+        font-weight: 700;
+        color: #8f5d10;
       }
 
       .file-list {
@@ -192,6 +306,11 @@
         background: #f6a82e;
       }
 
+      button:disabled {
+        opacity: 0.55;
+        cursor: not-allowed;
+      }
+
       #fileInput {
         display: none !important;
       }
@@ -255,14 +374,53 @@
     <div class="app-shell">
       <header class="top-menu">
         <div class="top-menu-inner">
-          <a class="top-menu-link" href="../client-one/chatbot.html">Client One Chatbot</a>
-          <a class="top-menu-link" href="../client-two/chatbot.html">Client Two Chatbot</a>
-          <a class="top-menu-link active" href="admin.html">Admin</a>
+          <details class="top-menu-dropdown">
+            <summary class="top-menu-link dropdown-trigger" aria-haspopup="menu">
+              Chatbots
+            </summary>
+            <div class="dropdown-menu" id="chatbotsMenu" role="menu" aria-label="Chatbots">
+              <a class="dropdown-item" role="menuitem" href="../client-one/chatbot.html">Client One</a>
+              <a class="dropdown-item" role="menuitem" href="../client-two/chatbot.html">Client Two</a>
+            </div>
+          </details>
+          <details class="top-menu-dropdown">
+            <summary class="top-menu-link dropdown-trigger active" aria-haspopup="menu">
+              Admin
+            </summary>
+            <div class="dropdown-menu" role="menu" aria-label="Admin">
+              <a class="dropdown-item active" role="menuitem" href="admin.html">File Updates</a>
+              <a class="dropdown-item" role="menuitem" href="onboarding.html">Onboarding</a>
+            </div>
+          </details>
           <a class="top-menu-link" href="../index.html">Logout</a>
         </div>
       </header>
 
       <main class="content">
+        <section class="panel" aria-label="Client access selection">
+          <h1 class="panel-title">File Updates</h1>
+          <p class="panel-subtitle">Select the active client scope before editing persona docs or prompts.</p>
+          <div class="client-form-row">
+            <input
+              class="client-input"
+              id="selectedClientScopeInput"
+              type="text"
+              list="knownClientScopes"
+              placeholder="Enter client scope (example: client-one)"
+              aria-label="Active client scope"
+            />
+            <button class="upload-button" id="selectClientButton" type="button">Set Active Client</button>
+          </div>
+          <p class="client-status" id="activeClientScopeLabel">No client selected.</p>
+
+          <datalist id="knownClientScopes">
+            <option value="client-one"></option>
+            <option value="client-two"></option>
+          </datalist>
+        </section>
+
+        <div id="documentationPanels" class="documentation-panels locked" aria-disabled="true">
+          <p class="lock-note" id="lockNote">Select a client scope above to enable documentation editing.</p>
         <section class="panel" aria-label="Admin file downloads">
           <h1 class="panel-title">Persona Documentation</h1>
           <p class="panel-subtitle">These files control the Bot's persona. Download, make changes and upload to update</p>
@@ -282,10 +440,134 @@
             <button class="upload-button" id="promptUploadButton">Upload Prompt</button>
           </div>
         </section>
+        </div>
       </main>
     </div>
 
     <script>
+      const navDropdowns = Array.from(document.querySelectorAll(".top-menu-dropdown"));
+
+      navDropdowns.forEach((dropdown) => {
+        dropdown.addEventListener("toggle", () => {
+          if (dropdown.open) {
+            navDropdowns.forEach((otherDropdown) => {
+              if (otherDropdown !== dropdown) {
+                otherDropdown.removeAttribute("open");
+              }
+            });
+          }
+        });
+      });
+
+      document.addEventListener("click", (event) => {
+        navDropdowns.forEach((dropdown) => {
+          if (!dropdown.contains(event.target)) {
+            dropdown.removeAttribute("open");
+          }
+        });
+      });
+
+      document.addEventListener("keydown", (event) => {
+        if (event.key === "Escape") {
+          navDropdowns.forEach((dropdown) => {
+            dropdown.removeAttribute("open");
+          });
+        }
+      });
+
+      const selectedClientScopeInput = document.getElementById("selectedClientScopeInput");
+      const selectClientButton = document.getElementById("selectClientButton");
+      const activeClientScopeLabel = document.getElementById("activeClientScopeLabel");
+      const documentationPanels = document.getElementById("documentationPanels");
+      const lockNote = document.getElementById("lockNote");
+      const chatbotsMenu = document.getElementById("chatbotsMenu");
+      const CLIENT_SCOPES_STORAGE_KEY = "testingDemoClientScopes";
+      const DEFAULT_CLIENT_SCOPES = ["client-one", "client-two"];
+
+      let activeClientScope = "";
+
+      function updateDocumentationState() {
+        const isLocked = activeClientScope.length === 0;
+        documentationPanels.classList.toggle("locked", isLocked);
+        documentationPanels.setAttribute("aria-disabled", isLocked ? "true" : "false");
+        lockNote.style.display = isLocked ? "block" : "none";
+        document.querySelectorAll("#documentationPanels button").forEach((button) => {
+          button.disabled = isLocked;
+        });
+      }
+
+      function setActiveClientScope(nextScope) {
+        activeClientScope = nextScope.trim().toLowerCase();
+        if (activeClientScope) {
+          activeClientScopeLabel.textContent = `Active client scope: ${activeClientScope}`;
+        } else {
+          activeClientScopeLabel.textContent = "No client selected.";
+        }
+        updateDocumentationState();
+      }
+
+      function readStoredClientScopes() {
+        const raw = localStorage.getItem(CLIENT_SCOPES_STORAGE_KEY);
+        if (!raw) {
+          return [];
+        }
+
+        try {
+          const parsed = JSON.parse(raw);
+          if (!Array.isArray(parsed)) {
+            return [];
+          }
+
+          return parsed
+            .map((scope) => String(scope).trim().toLowerCase())
+            .filter((scope) => scope.length > 0);
+        } catch (error) {
+          return [];
+        }
+      }
+
+      function toClientLabel(scope) {
+        return scope
+          .split("-")
+          .map((part) => (part ? part[0].toUpperCase() + part.slice(1) : ""))
+          .join(" ");
+      }
+
+      function renderChatbotsDropdown() {
+        const uniqueScopes = [];
+
+        DEFAULT_CLIENT_SCOPES.concat(readStoredClientScopes()).forEach((scope) => {
+          if (!uniqueScopes.includes(scope)) {
+            uniqueScopes.push(scope);
+          }
+        });
+
+        if (uniqueScopes.length === 0) {
+          return;
+        }
+
+        chatbotsMenu.innerHTML = "";
+
+        uniqueScopes.forEach((scope) => {
+          const link = document.createElement("a");
+          link.className = "dropdown-item";
+          link.setAttribute("role", "menuitem");
+          link.href = `../${scope}/chatbot.html`;
+          link.textContent = toClientLabel(scope);
+          chatbotsMenu.appendChild(link);
+        });
+      }
+
+      selectClientButton.addEventListener("click", () => {
+        const value = selectedClientScopeInput.value.trim();
+        if (!value) {
+          setActiveClientScope("");
+          return;
+        }
+
+        setActiveClientScope(value);
+      });
+
       const fileNames = [
         "Core Challenges.md",
         "Core Goals .md",
@@ -334,6 +616,7 @@
         download.className = "download-link";
         download.textContent = "Download";
         download.type = "button";
+        download.disabled = activeClientScope.length === 0;
         download.addEventListener("click", () => {
           const blob = new Blob(["this is what you would update"], {
             type: "text/markdown;charset=utf-8",
@@ -395,6 +678,7 @@
           newDownload.className = "download-link";
           newDownload.textContent = "Download";
           newDownload.type = "button";
+          newDownload.disabled = activeClientScope.length === 0;
           // No-op for now
           newDownload.addEventListener("click", () => {});
 
@@ -446,6 +730,7 @@
         download.className = "download-link";
         download.textContent = "Download";
         download.type = "button";
+        download.disabled = activeClientScope.length === 0;
         download.addEventListener("click", () => {
           const blob = new Blob(["this is the prompt you would update when tweaking model responses"], {
             type: "text/plain;charset=utf-8",
@@ -495,6 +780,9 @@
 
         promptInput.value = "";
       });
+
+      renderChatbotsDropdown();
+      updateDocumentationState();
     </script>
   </body>
 </html>

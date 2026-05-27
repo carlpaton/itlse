@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+    <title>Testing Demo Debug Storage</title>
+    <style>
+      :root {
+        --page-bg: #f7f7f7;
+        --panel-bg: #ffffff;
+        --ink: #231f20;
+        --muted: #6f6f6f;
+        --accent: #f89c29;
+        --danger: #b42318;
+        --line: #dddddd;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        margin: 0;
+        min-height: 100vh;
+        background: var(--page-bg);
+        color: var(--ink);
+        font-family: "Muli", "Segoe UI", sans-serif;
+      }
+
+      .page {
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 28px 16px 40px;
+      }
+
+      .panel {
+        background: var(--panel-bg);
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        padding: 18px;
+      }
+
+      h1 {
+        margin: 0;
+        font-size: 28px;
+      }
+
+      .subtitle {
+        margin: 8px 0 0;
+        color: var(--muted);
+      }
+
+      .actions {
+        margin-top: 16px;
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+
+      button {
+        border: 0;
+        border-radius: 8px;
+        padding: 10px 14px;
+        font-size: 14px;
+        font-weight: 700;
+        cursor: pointer;
+      }
+
+      .refresh-btn {
+        background: #ececec;
+        color: var(--ink);
+      }
+
+      .clear-btn {
+        background: var(--danger);
+        color: #ffffff;
+      }
+
+      .note {
+        margin-top: 14px;
+        min-height: 18px;
+        font-size: 13px;
+        color: var(--muted);
+      }
+
+      .storage-list {
+        list-style: none;
+        margin: 16px 0 0;
+        padding: 0;
+        display: grid;
+        gap: 12px;
+      }
+
+      .item {
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        padding: 12px;
+        background: #fcfcfc;
+      }
+
+      .item-key {
+        margin: 0;
+        font-size: 14px;
+        font-weight: 800;
+      }
+
+      .item-value {
+        margin: 8px 0 0;
+        padding: 10px;
+        border-radius: 8px;
+        background: #f2f2f2;
+        border: 1px solid #e3e3e3;
+        font-family: "Courier New", monospace;
+        white-space: pre-wrap;
+        word-break: break-word;
+        font-size: 13px;
+      }
+
+      .empty {
+        margin-top: 16px;
+        padding: 14px;
+        border-radius: 8px;
+        background: #f2f2f2;
+        color: var(--muted);
+        border: 1px dashed #cfcfcf;
+      }
+    </style>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Muli:wght@400;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <main class="page">
+      <section class="panel" aria-label="Local storage debug panel">
+        <h1>Debug Local Storage</h1>
+        <p class="subtitle">This page shows everything currently saved in localStorage (shared across tabs).</p>
+
+        <div class="actions">
+          <button id="refreshButton" class="refresh-btn" type="button">Refresh Data</button>
+          <button id="clearButton" class="clear-btn" type="button">Clear Local Storage</button>
+        </div>
+
+        <p id="statusNote" class="note"></p>
+        <ul id="storageList" class="storage-list"></ul>
+        <div id="emptyState" class="empty" hidden>No local storage data found.</div>
+      </section>
+    </main>
+
+    <script>
+      const storageList = document.getElementById("storageList");
+      const emptyState = document.getElementById("emptyState");
+      const statusNote = document.getElementById("statusNote");
+      const refreshButton = document.getElementById("refreshButton");
+      const clearButton = document.getElementById("clearButton");
+
+      function normalizeValue(rawValue) {
+        try {
+          const parsed = JSON.parse(rawValue);
+          return JSON.stringify(parsed, null, 2);
+        } catch (error) {
+          return rawValue;
+        }
+      }
+
+      function renderStorage() {
+        storageList.innerHTML = "";
+
+        if (localStorage.length === 0) {
+          emptyState.hidden = false;
+          return;
+        }
+
+        emptyState.hidden = true;
+
+        for (let index = 0; index < localStorage.length; index += 1) {
+          const key = localStorage.key(index);
+          if (!key) {
+            continue;
+          }
+
+          const value = localStorage.getItem(key) || "";
+          const item = document.createElement("li");
+          item.className = "item";
+
+          const keyEl = document.createElement("p");
+          keyEl.className = "item-key";
+          keyEl.textContent = key;
+
+          const valueEl = document.createElement("pre");
+          valueEl.className = "item-value";
+          valueEl.textContent = normalizeValue(value);
+
+          item.appendChild(keyEl);
+          item.appendChild(valueEl);
+          storageList.appendChild(item);
+        }
+      }
+
+      refreshButton.addEventListener("click", () => {
+        renderStorage();
+        statusNote.textContent = "Data refreshed.";
+      });
+
+      clearButton.addEventListener("click", () => {
+        localStorage.clear();
+        renderStorage();
+        statusNote.textContent = "Local storage cleared.";
+      });
+
+      renderStorage();
+    </script>
+  </body>
+</html>

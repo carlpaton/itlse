@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+    <title>Testing Demo Onboarding</title>
+    <style>
+      :root {
+        --page-bg: #ffffff;
+        --ink: #231f20;
+        --accent: #f89c29;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        margin: 0;
+        min-height: 100vh;
+        background: var(--page-bg);
+        color: var(--ink);
+        font-family: "Muli", "Segoe UI", sans-serif;
+      }
+
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      .app-shell {
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .top-menu {
+        position: relative;
+        z-index: 3;
+        background: rgba(255, 255, 255, 0.96);
+      }
+
+      .top-menu-inner {
+        max-width: 1320px;
+        margin: 0 auto;
+        padding: 24px 36px 18px;
+        display: flex;
+        align-items: center;
+        gap: 28px;
+        font-size: 14px;
+        font-weight: 700;
+      }
+
+      .top-menu-link {
+        transition: color 180ms ease;
+      }
+
+      .top-menu-link:hover {
+        color: var(--accent);
+      }
+
+      .top-menu-link.active {
+        color: var(--accent);
+      }
+
+      .top-menu-dropdown {
+        position: relative;
+      }
+
+      .top-menu-dropdown summary {
+        list-style: none;
+      }
+
+      .top-menu-dropdown summary::-webkit-details-marker {
+        display: none;
+      }
+
+      .dropdown-trigger {
+        border: 0;
+        background: transparent;
+        padding: 0;
+        cursor: pointer;
+        font-weight: inherit;
+        font-size: inherit;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+      }
+
+      .dropdown-trigger::after {
+        content: "▾";
+        font-size: 11px;
+        line-height: 1;
+        transition: transform 150ms ease;
+      }
+
+      .top-menu-dropdown[open] .dropdown-trigger::after {
+        transform: rotate(180deg);
+      }
+
+      .dropdown-menu {
+        position: absolute;
+        top: 100%;
+        margin-top: 6px;
+        left: 0;
+        min-width: 180px;
+        background: #ffffff;
+        border: 1px solid #e2e2e2;
+        border-radius: 10px;
+        box-shadow: 0 10px 24px rgba(0, 0, 0, 0.12);
+        padding: 8px;
+        z-index: 12;
+      }
+
+      .dropdown-item {
+        display: block;
+        padding: 8px 10px;
+        border-radius: 8px;
+        font-size: 14px;
+      }
+
+      .dropdown-item:hover {
+        background: #fff1dd;
+        color: var(--accent);
+      }
+
+      .dropdown-item.active {
+        background: #fff1dd;
+        color: var(--accent);
+      }
+
+      .content {
+        flex: 1;
+        max-width: 1320px;
+        margin: 0 auto;
+        width: 100%;
+        padding: 40px 36px;
+      }
+
+      .panel {
+        background: #f7f7f7;
+        border: 1px solid #e2e2e2;
+        border-radius: 12px;
+        padding: 20px;
+      }
+
+      .panel-title {
+        margin: 0;
+        font-size: 26px;
+        font-weight: 800;
+      }
+
+      .panel-subtitle {
+        margin: 8px 0 0;
+        color: #646464;
+      }
+
+      .client-form-row {
+        margin-top: 16px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+
+      .client-input {
+        flex: 1;
+        min-width: 220px;
+        height: 40px;
+        border-radius: 8px;
+        border: 1px solid #cfcfcf;
+        padding: 0 12px;
+        font-size: 14px;
+        background: #ffffff;
+      }
+
+      .upload-button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 10px 16px;
+        border-radius: 8px;
+        border: 2px solid var(--accent);
+        background: var(--accent);
+        color: #231f20;
+        font-size: 14px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: background 150ms ease;
+      }
+
+      .upload-button:hover {
+        background: #f6a82e;
+      }
+
+      .onboarding-note {
+        margin: 12px 0 0;
+        min-height: 18px;
+        font-size: 13px;
+        color: #4b4b4b;
+      }
+
+      .onboarding-note.success {
+        color: #0f7a37;
+      }
+
+      .onboarding-note.error {
+        color: #b42318;
+      }
+
+      .sub-panel-title {
+        margin: 24px 0 0;
+        padding-top: 20px;
+        border-top: 1px solid #e2e2e2;
+        font-size: 20px;
+        font-weight: 800;
+      }
+
+      .upload-row {
+        margin-top: 14px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        align-items: center;
+      }
+
+      .hint-text {
+        margin: 0;
+        font-size: 13px;
+        color: #666666;
+      }
+
+      .file-list {
+        list-style: none;
+        margin: 10px 0 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+
+      .file-item {
+        border: 1px solid #dedede;
+        border-radius: 8px;
+        padding: 9px 11px;
+        background: #ffffff;
+        font-size: 14px;
+      }
+
+      .save-row {
+        margin-top: 18px;
+      }
+
+      #personaInput,
+      #systemPromptInput {
+        display: none !important;
+      }
+
+      @media (max-width: 720px) {
+        .top-menu-inner {
+          padding: 18px 16px 14px;
+          gap: 18px;
+          flex-wrap: wrap;
+        }
+
+        .content {
+          padding: 24px 16px;
+        }
+
+        .panel {
+          padding: 14px;
+        }
+
+        .panel-title {
+          font-size: 22px;
+        }
+      }
+    </style>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Muli:wght@400;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="top-menu">
+        <div class="top-menu-inner">
+          <details class="top-menu-dropdown">
+            <summary class="top-menu-link dropdown-trigger" aria-haspopup="menu">
+              Chatbots
+            </summary>
+            <div class="dropdown-menu" id="chatbotsMenu" role="menu" aria-label="Chatbots">
+              <a class="dropdown-item" role="menuitem" href="../client-one/chatbot.html">Client One</a>
+              <a class="dropdown-item" role="menuitem" href="../client-two/chatbot.html">Client Two</a>
+            </div>
+          </details>
+          <details class="top-menu-dropdown" open>
+            <summary class="top-menu-link dropdown-trigger active" aria-haspopup="menu">
+              Admin
+            </summary>
+            <div class="dropdown-menu" role="menu" aria-label="Admin">
+              <a class="dropdown-item" role="menuitem" href="admin.html">File Updates</a>
+              <a class="dropdown-item active" role="menuitem" href="onboarding.html">Onboarding</a>
+            </div>
+          </details>
+          <a class="top-menu-link" href="../index.html">Logout</a>
+        </div>
+      </header>
+
+      <main class="content">
+        <section class="panel" aria-label="Client onboarding">
+          <h1 class="panel-title">Onboarding</h1>
+          <p class="panel-subtitle">Set the Entra scope and upload onboarding files, then save once.</p>
+
+          <div class="client-form-row">
+            <input
+              class="client-input"
+              id="newClientScopeInput"
+              type="text"
+              placeholder="New client scope (example: client-three)"
+              aria-label="New client scope"
+            />
+          </div>
+
+          <p class="onboarding-note" id="onboardClientNote"></p>
+
+          <h2 class="sub-panel-title">Onboarding Files</h2>
+          <p class="panel-subtitle">Upload at least one Persona Documentation file and exactly one System Prompt file.</p>
+
+          <div class="upload-row">
+            <input type="file" id="personaInput" accept=".md,.txt" multiple />
+            <button class="upload-button" id="personaUploadButton" type="button">Upload Persona Documentation</button>
+            <p class="hint-text">At least one file is required.</p>
+          </div>
+          <ul class="file-list" id="personaFileList">
+            <li class="file-item" id="personaFileEmpty">No persona files selected.</li>
+          </ul>
+
+          <div class="upload-row">
+            <input type="file" id="systemPromptInput" accept=".txt" />
+            <button class="upload-button" id="systemPromptUploadButton" type="button">Upload System Prompt</button>
+            <p class="hint-text">Exactly one file is required.</p>
+          </div>
+          <ul class="file-list" id="systemPromptFileList">
+            <li class="file-item" id="systemPromptFileEmpty">No system prompt selected.</li>
+          </ul>
+
+          <div class="save-row">
+            <button class="upload-button" id="saveOnboardingButton" type="button">Save Onboarding</button>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <script>
+      const navDropdowns = Array.from(document.querySelectorAll(".top-menu-dropdown"));
+
+      navDropdowns.forEach((dropdown) => {
+        dropdown.addEventListener("toggle", () => {
+          if (dropdown.open) {
+            navDropdowns.forEach((otherDropdown) => {
+              if (otherDropdown !== dropdown) {
+                otherDropdown.removeAttribute("open");
+              }
+            });
+          }
+        });
+      });
+
+      document.addEventListener("click", (event) => {
+        navDropdowns.forEach((dropdown) => {
+          if (!dropdown.contains(event.target)) {
+            dropdown.removeAttribute("open");
+          }
+        });
+      });
+
+      document.addEventListener("keydown", (event) => {
+        if (event.key === "Escape") {
+          navDropdowns.forEach((dropdown) => {
+            dropdown.removeAttribute("open");
+          });
+        }
+      });
+
+      const newClientScopeInput = document.getElementById("newClientScopeInput");
+      const onboardClientNote = document.getElementById("onboardClientNote");
+      const personaInput = document.getElementById("personaInput");
+      const personaUploadButton = document.getElementById("personaUploadButton");
+      const personaFileList = document.getElementById("personaFileList");
+      const personaFileEmpty = document.getElementById("personaFileEmpty");
+      const systemPromptInput = document.getElementById("systemPromptInput");
+      const systemPromptUploadButton = document.getElementById("systemPromptUploadButton");
+      const systemPromptFileList = document.getElementById("systemPromptFileList");
+      const systemPromptFileEmpty = document.getElementById("systemPromptFileEmpty");
+      const saveOnboardingButton = document.getElementById("saveOnboardingButton");
+      const chatbotsMenu = document.getElementById("chatbotsMenu");
+      const ONBOARDING_STORAGE_KEY = "testingDemoOnboarding";
+      const CLIENT_SCOPES_STORAGE_KEY = "testingDemoClientScopes";
+      const DEFAULT_CLIENT_SCOPES = ["client-one", "client-two"];
+
+      let personaFiles = [];
+      let systemPromptFile = null;
+
+      function setClientNote(message, tone) {
+        onboardClientNote.textContent = message;
+        onboardClientNote.className = "onboarding-note";
+        if (tone) {
+          onboardClientNote.classList.add(tone);
+        }
+      }
+
+      function readStoredClientScopes() {
+        const raw = localStorage.getItem(CLIENT_SCOPES_STORAGE_KEY);
+        if (!raw) {
+          return [];
+        }
+
+        try {
+          const parsed = JSON.parse(raw);
+          if (!Array.isArray(parsed)) {
+            return [];
+          }
+
+          return parsed
+            .map((scope) => String(scope).trim().toLowerCase())
+            .filter((scope) => scope.length > 0);
+        } catch (error) {
+          return [];
+        }
+      }
+
+      function writeStoredClientScopes(scopes) {
+        localStorage.setItem(CLIENT_SCOPES_STORAGE_KEY, JSON.stringify(scopes));
+      }
+
+      function toClientLabel(scope) {
+        return scope
+          .split("-")
+          .map((part) => (part ? part[0].toUpperCase() + part.slice(1) : ""))
+          .join(" ");
+      }
+
+      function renderChatbotsDropdown() {
+        const uniqueScopes = [];
+
+        DEFAULT_CLIENT_SCOPES.concat(readStoredClientScopes()).forEach((scope) => {
+          if (!uniqueScopes.includes(scope)) {
+            uniqueScopes.push(scope);
+          }
+        });
+
+        if (uniqueScopes.length === 0) {
+          return;
+        }
+
+        chatbotsMenu.innerHTML = "";
+
+        uniqueScopes.forEach((scope) => {
+          const link = document.createElement("a");
+          link.className = "dropdown-item";
+          link.setAttribute("role", "menuitem");
+          link.href = `../${scope}/chatbot.html`;
+          link.textContent = toClientLabel(scope);
+          chatbotsMenu.appendChild(link);
+        });
+      }
+
+      function renderPersonaFiles() {
+        personaFileList.innerHTML = "";
+
+        if (personaFiles.length === 0) {
+          personaFileList.appendChild(personaFileEmpty);
+          return;
+        }
+
+        personaFiles.forEach((file) => {
+          const item = document.createElement("li");
+          item.className = "file-item";
+          item.textContent = file.name;
+          personaFileList.appendChild(item);
+        });
+      }
+
+      function renderSystemPromptFile() {
+        systemPromptFileList.innerHTML = "";
+
+        if (!systemPromptFile) {
+          systemPromptFileList.appendChild(systemPromptFileEmpty);
+          return;
+        }
+
+        const item = document.createElement("li");
+        item.className = "file-item";
+        item.textContent = systemPromptFile.name;
+        systemPromptFileList.appendChild(item);
+      }
+
+      personaUploadButton.addEventListener("click", () => {
+        personaInput.click();
+      });
+
+      personaInput.addEventListener("change", (event) => {
+        const files = Array.from(event.target.files || []);
+        if (files.length === 0) {
+          return;
+        }
+
+        personaFiles = personaFiles.concat(files);
+        renderPersonaFiles();
+        personaInput.value = "";
+      });
+
+      systemPromptUploadButton.addEventListener("click", () => {
+        systemPromptInput.click();
+      });
+
+      systemPromptInput.addEventListener("change", (event) => {
+        const file = event.target.files[0];
+        if (!file) {
+          return;
+        }
+
+        systemPromptFile = file;
+        renderSystemPromptFile();
+        systemPromptInput.value = "";
+      });
+
+      saveOnboardingButton.addEventListener("click", () => {
+        const scope = newClientScopeInput.value.trim().toLowerCase();
+        if (!scope) {
+          setClientNote("Set a client scope before saving onboarding.", "error");
+          return;
+        }
+
+        if (personaFiles.length === 0) {
+          setClientNote("Upload at least one Persona Documentation file before saving.", "error");
+          return;
+        }
+
+        if (!systemPromptFile) {
+          setClientNote("Upload one System Prompt file before saving.", "error");
+          return;
+        }
+
+        const onboardingPayload = {
+          scope,
+          personaFiles: personaFiles.map((file) => file.name),
+          systemPromptFile: systemPromptFile.name,
+          savedAt: new Date().toISOString(),
+        };
+
+        let onboardingByScope = {};
+        const existingOnboardingRaw = localStorage.getItem(ONBOARDING_STORAGE_KEY);
+
+        if (existingOnboardingRaw) {
+          try {
+            const existingOnboarding = JSON.parse(existingOnboardingRaw);
+            if (existingOnboarding && typeof existingOnboarding === "object" && !Array.isArray(existingOnboarding)) {
+              if (typeof existingOnboarding.scope === "string") {
+                onboardingByScope[existingOnboarding.scope] = existingOnboarding;
+              } else {
+                onboardingByScope = existingOnboarding;
+              }
+            }
+          } catch (error) {
+            onboardingByScope = {};
+          }
+        }
+
+        onboardingByScope[scope] = onboardingPayload;
+        localStorage.setItem(ONBOARDING_STORAGE_KEY, JSON.stringify(onboardingByScope));
+
+        const knownScopes = [];
+        DEFAULT_CLIENT_SCOPES.concat(readStoredClientScopes()).forEach((existingScope) => {
+          if (!knownScopes.includes(existingScope)) {
+            knownScopes.push(existingScope);
+          }
+        });
+        if (!knownScopes.includes(scope)) {
+          knownScopes.push(scope);
+        }
+        writeStoredClientScopes(knownScopes);
+        renderChatbotsDropdown();
+
+        setClientNote(
+          `Onboarding saved for ${scope} with ${personaFiles.length} persona file(s) and 1 system prompt file.`,
+          "success"
+        );
+      });
+
+      renderPersonaFiles();
+      renderSystemPromptFile();
+      renderChatbotsDropdown();
+    </script>
+  </body>
+</html>
