@@ -312,10 +312,12 @@
             return;
           }
 
+          const targetScope = DEFAULT_CLIENT_SCOPES.includes(scope) ? scope : "client-three";
+
           const item = document.createElement("li");
           const link = document.createElement("a");
           link.className = "account-link";
-          link.href = `${scope}/chatbot.html`;
+          link.href = `${targetScope}/chatbot.html`;
           link.setAttribute("aria-label", `Sign in as ${scope}@testing.com`);
 
           const main = document.createElement("div");

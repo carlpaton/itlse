@@ -463,7 +463,8 @@
           const link = document.createElement("a");
           link.className = "dropdown-item";
           link.setAttribute("role", "menuitem");
-          link.href = `../${scope}/chatbot.html`;
+          const targetScope = DEFAULT_CLIENT_SCOPES.includes(scope) ? scope : "client-three";
+          link.href = `../${targetScope}/chatbot.html`;
           link.textContent = toClientLabel(scope);
           chatbotsMenu.appendChild(link);
         });
