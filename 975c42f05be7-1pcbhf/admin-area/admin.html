@@ -674,6 +674,27 @@
         return entry;
       }
 
+      function upsertOnboardingForScope(scope, updater) {
+        if (!scope || typeof updater !== "function") {
+          return;
+        }
+
+        const onboardingByScope = readOnboardingByScope();
+        const currentEntry = onboardingByScope[scope];
+        const safeEntry = currentEntry && typeof currentEntry === "object" && !Array.isArray(currentEntry)
+          ? { ...currentEntry }
+          : {};
+
+        const nextEntry = updater(safeEntry);
+        if (!nextEntry || typeof nextEntry !== "object" || Array.isArray(nextEntry)) {
+          return;
+        }
+
+        nextEntry.scope = scope;
+        onboardingByScope[scope] = nextEntry;
+        localStorage.setItem(ONBOARDING_STORAGE_KEY, JSON.stringify(onboardingByScope));
+      }
+
       function buildKnownClientScopes() {
         const unique = [];
         const addScope = (scope) => {
@@ -966,6 +987,19 @@
         const uploadedFileName = file.name;
         const uploadedFileContent = await file.text();
         writeScopeSessionFile(activeClientScope, uploadedFileName, uploadedFileContent);
+        upsertOnboardingForScope(activeClientScope, (entry) => {
+          const personaFiles = Array.isArray(entry.personaFiles)
+            ? uniqueFileNames(entry.personaFiles)
+            : [];
+          if (!personaFiles.includes(uploadedFileName)) {
+            personaFiles.push(uploadedFileName);
+          }
+
+          return {
+            ...entry,
+            personaFiles,
+          };
+        });
 
         if (!currentPersonaFileNames.includes(uploadedFileName)) {
           currentPersonaFileNames.push(uploadedFileName);
@@ -1027,6 +1061,10 @@
           const checkIcon = promptCheckElements[uploadedFileName];
           const uploadedPromptContent = await file.text();
           writeScopeSessionPrompt(activeClientScope, uploadedFileName, uploadedPromptContent);
+          upsertOnboardingForScope(activeClientScope, (entry) => ({
+            ...entry,
+            systemPromptFile: uploadedFileName,
+          }));
           checkIcon.classList.remove("loading");
           checkIcon.setAttribute("title", "session content active");
         }
