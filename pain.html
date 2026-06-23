@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pain In Your Life</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #1a1a2e;
+            gap: 20px;
+        }
+
+        .fill-button {
+            padding: 10px 20px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .fill-button:disabled {
+            background-color: #555;
+            cursor: not-allowed;
+        }
+
+        .square {
+            width: 250px;
+            height: 250px;
+            border: 2px solid #808080;
+            position: relative;
+            overflow: hidden;
+            background-color: #16213e;
+            transition: width 0.3s, height 0.3s;
+        }
+
+        .ball {
+            width: 20px;
+            height: 20px;
+            background-color: #e94560;
+            border-radius: 50%;
+            position: absolute;
+        }
+
+        .pain-button {
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 120px;
+            height: 25px;
+            background-color: red;
+            color: white;
+            border: none;
+            border-radius: 4px 4px 0 0;
+            font-size: 10px;
+            font-weight: bold;
+            cursor: default;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .pain-button.flash {
+            background-color: #ff6666;
+            box-shadow: 0 0 15px red, 0 0 30px red;
+        }
+    </style>
+</head>
+<body>
+    <button class="fill-button">Fill Your Life</button>
+
+    <div class="square">
+        <div class="ball"></div>
+        <button class="pain-button">PAIN</button>
+    </div>
+
+    <script>
+        const ball = document.querySelector('.ball');
+        const square = document.querySelector('.square');
+
+        let squareSize = 250;
+        const ballSize = 20;
+        const painButton = document.querySelector('.pain-button');
+        const fillButton = document.querySelector('.fill-button');
+        const squareEl = document.querySelector('.square');
+        const buttonWidth = 120;
+        const buttonHeight = 25;
+        let clickCount = 0;
+
+        const buttonX = () => (squareSize - buttonWidth) / 2;
+        const buttonY = () => squareSize - buttonHeight;
+
+        let x = Math.random() * (squareSize - ballSize);
+        let y = Math.random() * (squareSize - ballSize);
+        let vx = 2 + Math.random();
+        let vy = 2 + Math.random();
+
+        // Randomize initial direction
+        if (Math.random() < 0.5) vx *= -1;
+        if (Math.random() < 0.5) vy *= -1;
+
+        fillButton.addEventListener('click', () => {
+            if (clickCount < 5) {
+                clickCount++;
+                squareSize += 50;
+                squareEl.style.width = squareSize + 'px';
+                squareEl.style.height = squareSize + 'px';
+                if (clickCount >= 5) {
+                    fillButton.disabled = true;
+                }
+            }
+        });
+
+        function flashButton() {
+            painButton.classList.add('flash');
+            setTimeout(() => {
+                painButton.classList.remove('flash');
+            }, 150);
+        }
+
+        function checkButtonCollision() {
+            const ballLeft = x;
+            const ballRight = x + ballSize;
+            const ballTop = y;
+            const ballBottom = y + ballSize;
+
+            const currentButtonX = buttonX();
+            const currentButtonY = buttonY();
+
+            if (ballRight > currentButtonX && ballLeft < currentButtonX + buttonWidth &&
+                ballBottom > currentButtonY && ballTop < currentButtonY + buttonHeight) {
+                flashButton();
+                return true;
+            }
+            return false;
+        }
+
+        function animate() {
+            x += vx;
+            y += vy;
+
+            if (x <= 0) {
+                x = 0;
+                vx = Math.abs(vx);
+            } else if (x >= squareSize - ballSize) {
+                x = squareSize - ballSize;
+                vx = -Math.abs(vx);
+            }
+
+            if (y <= 0) {
+                y = 0;
+                vy = Math.abs(vy);
+            } else if (y >= squareSize - ballSize) {
+                y = squareSize - ballSize;
+                vy = -Math.abs(vy);
+            }
+
+            checkButtonCollision();
+
+            ball.style.left = x + 'px';
+            ball.style.top = y + 'px';
+
+            requestAnimationFrame(animate);
+        }
+
+        animate();
+    </script>
+</body>
+</html>
