@@ -464,6 +464,34 @@
       flex-wrap: wrap;
     }
 
+    .dev-notes {
+      margin-top: calc(var(--space-8) + var(--space-2));
+      padding: var(--space-5);
+      border: 1px solid #cfd9e4;
+      border-radius: var(--radius-md);
+      background: #ffffff;
+      box-shadow: 0 14px 32px rgba(16, 35, 58, 0.08);
+    }
+
+    .dev-notes-title {
+      margin: 0 0 var(--space-3);
+      color: var(--color-text-strong);
+      font-family: var(--font-display);
+      font-size: 1rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+    }
+
+    .dev-notes-list {
+      margin: 0;
+      padding-left: 1.25rem;
+      color: var(--color-text-body);
+    }
+
+    .dev-notes-list li + li {
+      margin-top: var(--space-2);
+    }
+
     .results-note {
       margin: 0;
       color: var(--color-text-muted);
@@ -614,7 +642,7 @@
 
     <section class="search-group" aria-label="Dashboard searches">
       <a class="btn-primary" href="camera-dashboard.html" aria-label="Open QR code camera search">QR Code Search</a>
-      <input class="search-input" type="search" placeholder="Search on Model, serial and company name and address" title="Search on Model, serial and company name and address" aria-label="Search jobs" />
+      <input class="search-input" type="search" placeholder="Search Jobs" aria-label="Search Jobs" />
       <span class="search-actions">
         <a class="btn-primary" href="job01.html">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -735,6 +763,14 @@
           <button class="pager-btn" type="button">Next</button>
         </nav>
       </div>
+    </section>
+
+    <section class="dev-notes" aria-label="Development notes">
+      <h2 class="dev-notes-title">DEV NOTES</h2>
+      <ul class="dev-notes-list">
+        <li>QR Code Search -  opens the camera and reads the QR details, then filters the page on any found jobs</li>
+        <li>Search jobs - searches on model, serial, company name and address, then filters the page on any found jobs</li>
+      </ul>
     </section>
   </main>
 
