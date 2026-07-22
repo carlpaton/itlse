@@ -285,6 +285,74 @@
       gap: var(--space-1);
     }
 
+    .company-autocomplete {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-2);
+    }
+
+    .company-dropdown {
+      position: absolute;
+      top: calc(100% + var(--space-1));
+      left: 0;
+      right: 0;
+      z-index: 25;
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-sm);
+      background: #ffffff;
+      box-shadow: var(--shadow-soft);
+      padding: var(--space-2);
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-2);
+    }
+
+    .company-option-list {
+      max-height: 156px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-1);
+    }
+
+    .company-option {
+      width: 100%;
+      border: 0;
+      border-radius: var(--radius-sm);
+      background: transparent;
+      color: var(--color-text-body);
+      text-align: left;
+      font-family: var(--font-body);
+      font-size: 0.92rem;
+      padding: 10px 12px;
+      cursor: pointer;
+    }
+
+    .company-option:hover,
+    .company-option:focus-visible {
+      background: var(--color-accent-soft);
+      outline: none;
+    }
+
+    .company-empty {
+      margin: 0;
+      padding: 10px 12px;
+      color: var(--color-text-muted);
+      font-size: 0.9rem;
+    }
+
+    .company-add-btn {
+      width: 100%;
+      min-height: 40px;
+      font-weight: 600;
+    }
+
+    .company-dropdown[hidden],
+    .company-add-btn[hidden] {
+      display: none !important;
+    }
+
     .form-field--full {
       grid-column: 1 / -1;
     }
@@ -293,6 +361,16 @@
       font-size: 0.88rem;
       font-weight: 600;
       color: var(--color-text-muted);
+    }
+
+    .form-static-value {
+      margin: 0;
+      min-height: 44px;
+      display: flex;
+      align-items: center;
+      color: var(--color-text-strong);
+      font-size: 0.95rem;
+      font-weight: 700;
     }
 
     .form-input,
@@ -514,7 +592,7 @@
       <div class="job-layout">
         <section>
           <div class="job-meta-row">
-            <a class="btn-ghost" href="assets01.html">Scan QR Code</a>
+            <a class="btn-ghost" href="camera-job01.html" title="Scan QR code speeds up the populating of most of the fields when creating a job.&#10;&#10;Fields excluded from this are fault and fault description.">Scan QR Code</a>
             <div class="form-field">
               <label for="job-reference">Job #</label>
               <input class="form-input" id="job-reference" name="job_reference" type="text" placeholder="JOB#" value="JOB-0042" />
@@ -523,13 +601,19 @@
 
           <div class="detail-grid">
             <div class="form-field">
-              <label for="date-assigned">Date</label>
-              <input class="form-input" id="date-assigned" name="date_assigned" type="text" placeholder="Date" />
+              <label title="dates are set to same day as logging job">Date</label>
+              <p class="form-static-value" title="dates are set to same day as logging job">datetime.now</p>
             </div>
 
             <div class="form-field">
               <label for="company">Company</label>
-              <input class="form-input" id="company" name="company" type="text" placeholder="Company" />
+              <div class="company-autocomplete" data-company-autocomplete>
+                <input class="form-input" id="company" name="company" type="text" placeholder="Company" autocomplete="off" aria-autocomplete="list" aria-expanded="false" aria-controls="company-dropdown-options" />
+                <div class="company-dropdown" id="company-dropdown-options" role="listbox" hidden>
+                  <div class="company-option-list" data-company-options></div>
+                  <button class="btn-secondary company-add-btn" type="button" data-company-add hidden>Add New</button>
+                </div>
+              </div>
             </div>
 
             <div class="form-field">
@@ -618,5 +702,104 @@
       </div>
     </form>
   </main>
+
+  <script>
+    (function () {
+      const companyRoot = document.querySelector('[data-company-autocomplete]');
+      if (!companyRoot) {
+        return;
+      }
+
+      const companyInput = companyRoot.querySelector('#company');
+      const dropdown = companyRoot.querySelector('#company-dropdown-options');
+      const optionsList = companyRoot.querySelector('[data-company-options]');
+      const addButton = companyRoot.querySelector('[data-company-add]');
+      const companies = ['Company A', 'Company B', 'Company C'];
+
+      function setExpanded(isExpanded) {
+        companyInput.setAttribute('aria-expanded', String(isExpanded));
+      }
+
+      function hideDropdown() {
+        dropdown.hidden = true;
+        addButton.hidden = true;
+        setExpanded(false);
+      }
+
+      function showDropdown() {
+        dropdown.hidden = false;
+        setExpanded(true);
+      }
+
+      function normalize(value) {
+        return value.trim().toLowerCase();
+      }
+
+      function renderOptions() {
+        const query = normalize(companyInput.value);
+        const matches = companies.filter((name) => normalize(name).includes(query));
+
+        optionsList.innerHTML = '';
+
+        if (matches.length === 0) {
+          const emptyState = document.createElement('p');
+          emptyState.className = 'company-empty';
+          emptyState.textContent = 'No matching companies found.';
+          optionsList.appendChild(emptyState);
+          addButton.hidden = false;
+        } else {
+          addButton.hidden = true;
+          matches.forEach((name) => {
+            const option = document.createElement('button');
+            option.type = 'button';
+            option.className = 'company-option';
+            option.textContent = name;
+            option.setAttribute('role', 'option');
+            option.addEventListener('click', function () {
+              companyInput.value = name;
+              hideDropdown();
+            });
+            optionsList.appendChild(option);
+          });
+        }
+
+        addButton.textContent = query ? `Add New: ${companyInput.value.trim()}` : 'Add New';
+        addButton.disabled = query.length === 0 || matches.length > 0;
+      }
+
+      companyInput.addEventListener('input', function () {
+        if (!companyInput.value.trim()) {
+          hideDropdown();
+          return;
+        }
+
+        renderOptions();
+        showDropdown();
+      });
+
+      addButton.addEventListener('click', function () {
+        const value = companyInput.value.trim();
+        if (!value) {
+          return;
+        }
+
+        const alreadyExists = companies.some((name) => normalize(name) === normalize(value));
+        if (!alreadyExists) {
+          companies.push(value);
+        }
+
+        companyInput.value = value;
+        hideDropdown();
+      });
+
+      document.addEventListener('click', function (event) {
+        if (!companyRoot.contains(event.target)) {
+          hideDropdown();
+        }
+      });
+
+      hideDropdown();
+    })();
+  </script>
 </body>
 </html>
