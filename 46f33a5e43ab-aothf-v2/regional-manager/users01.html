@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+  <title>AoTech - Manage Users</title>
+  <style>
+    @import url("https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700&family=Sora:wght@600;700&display=swap");
+
+    :root {
+      --font-display: "Sora", "Segoe UI", sans-serif;
+      --font-body: "Public Sans", "Segoe UI", sans-serif;
+
+      --color-nav-top: #2a3f56;
+      --color-nav-main: #334d69;
+      --color-nav-active: #3f5f80;
+      --color-nav-hover: #3a5878;
+
+      --color-page-bg: #f3f5f8;
+      --color-surface: #ffffff;
+      --color-surface-muted: #eef3f8;
+      --color-border: #d7e0ea;
+
+      --color-text-strong: #10233a;
+      --color-text-body: #26394f;
+      --color-text-muted: #5f7185;
+      --color-text-on-dark: #f7fbff;
+
+      --color-focus: #5b8cc2;
+      --shadow-soft: 0 1px 2px rgba(10, 24, 40, 0.08), 0 6px 16px rgba(17, 36, 56, 0.04);
+
+      --space-1: 4px;
+      --space-2: 8px;
+      --space-3: 12px;
+      --space-4: 16px;
+      --space-5: 20px;
+      --space-6: 24px;
+      --space-8: 32px;
+      --radius-sm: 6px;
+      --radius-md: 10px;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: var(--font-body);
+      color: var(--color-text-body);
+      background: var(--color-page-bg);
+    }
+
+    .app-header {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      box-shadow: 0 1px 0 rgba(7, 18, 32, 0.15);
+    }
+
+    .top-bar {
+      height: 56px;
+      background: var(--color-nav-top);
+      color: var(--color-text-on-dark);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 var(--space-6);
+    }
+
+    .brand-group {
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+    }
+
+    .brand {
+      color: var(--color-text-on-dark);
+      text-decoration: none;
+      font-family: var(--font-display);
+      font-size: 1.55rem;
+      font-weight: 700;
+      letter-spacing: 0.2px;
+    }
+
+    .icon-btn {
+      border: 0;
+      background: transparent;
+      color: inherit;
+      width: 36px;
+      height: 36px;
+      border-radius: 999px;
+      display: inline-grid;
+      place-items: center;
+      cursor: pointer;
+      position: relative;
+      font-size: 1rem;
+      line-height: 1;
+    }
+
+    .icon-btn:hover { background: rgba(255, 255, 255, 0.12); }
+
+    .icon-btn:focus-visible,
+    .nav-link:focus-visible,
+    .btn-primary:focus-visible,
+    .btn-secondary:focus-visible,
+    .btn-row:focus-visible,
+    .filter-tab:focus-visible,
+    .pager-btn:focus-visible,
+    .row-radio:focus-visible {
+      outline: 2px solid var(--color-focus);
+      outline-offset: 2px;
+    }
+
+    .has-dot::after {
+      content: "";
+      position: absolute;
+      top: 7px;
+      right: 7px;
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #ff4d4d;
+    }
+
+    .main-nav {
+      min-height: 44px;
+      background: var(--color-nav-main);
+      display: flex;
+      align-items: center;
+      gap: var(--space-2);
+      padding: 0 var(--space-5);
+      overflow-x: auto;
+    }
+
+    .nav-link {
+      color: rgba(247, 251, 255, 0.95);
+      text-decoration: none;
+      padding: 10px 12px;
+      border-radius: var(--radius-sm);
+      font-weight: 600;
+      white-space: nowrap;
+      transition: background 160ms ease;
+    }
+
+    .nav-link:hover { background: var(--color-nav-hover); }
+    .nav-link.is-active { background: var(--color-nav-active); }
+
+    .page-content {
+      max-width: 1220px;
+      margin: 0 auto;
+      padding: var(--space-8) var(--space-6);
+      animation: page-enter 320ms ease-out;
+    }
+
+    .page-toolbar {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: var(--space-4);
+      margin-bottom: var(--space-6);
+      flex-wrap: wrap;
+    }
+
+    .page-title {
+      margin: 0;
+      color: var(--color-text-strong);
+      font-family: var(--font-display);
+      font-size: clamp(1.7rem, 3vw, 2.15rem);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+
+    .page-subtitle {
+      margin: var(--space-2) 0 0;
+      color: var(--color-text-muted);
+      font-size: 1.02rem;
+    }
+
+    .toolbar-actions {
+      display: flex;
+      gap: var(--space-3);
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid transparent;
+      border-radius: var(--radius-sm);
+      background: linear-gradient(135deg, #324e6b, #3a5a7b);
+      color: #ffffff;
+      min-height: 44px;
+      padding: 0 var(--space-5);
+      font-size: 0.96rem;
+      font-weight: 700;
+      font-family: var(--font-body);
+      text-decoration: none;
+      cursor: pointer;
+      box-shadow: 0 6px 12px rgba(42, 63, 86, 0.18);
+      transition: transform 140ms ease, box-shadow 140ms ease, filter 140ms ease;
+      gap: var(--space-2);
+      white-space: nowrap;
+    }
+
+    .btn-primary:hover {
+      filter: brightness(0.95);
+      transform: translateY(-1px);
+      box-shadow: 0 10px 16px rgba(42, 63, 86, 0.2);
+    }
+
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid #b9c7d7;
+      border-radius: var(--radius-sm);
+      background: #ffffff;
+      color: var(--color-text-body);
+      min-height: 44px;
+      padding: 0 var(--space-5);
+      font-size: 0.95rem;
+      font-weight: 600;
+      font-family: var(--font-body);
+      cursor: pointer;
+      transition: background 140ms ease, border-color 140ms ease;
+    }
+
+    .btn-secondary:hover {
+      background: #f2f6fb;
+      border-color: #9fb1c6;
+    }
+
+    .filter-tabs {
+      display: flex;
+      align-items: center;
+      gap: var(--space-2);
+      flex-wrap: wrap;
+      margin-bottom: var(--space-5);
+      border-bottom: 1px solid var(--color-border);
+      padding-bottom: var(--space-3);
+    }
+
+    .filter-tab {
+      padding: 6px 14px;
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-sm);
+      background: var(--color-surface);
+      font-family: var(--font-body);
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: var(--color-text-body);
+      cursor: pointer;
+      transition: background 160ms ease, border-color 160ms ease;
+    }
+
+    .filter-tab:hover { background: #e9eef5; }
+
+    .filter-tab.active {
+      background: var(--color-nav-main);
+      color: var(--color-text-on-dark);
+      border-color: var(--color-nav-main);
+    }
+
+    .table-card {
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      background: var(--color-surface);
+      box-shadow: var(--shadow-soft);
+      overflow: hidden;
+    }
+
+    .table-scroll {
+      width: 100%;
+      overflow-x: auto;
+    }
+
+    .users-table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 760px;
+    }
+
+    .users-table thead th {
+      padding: var(--space-3) var(--space-4);
+      text-align: left;
+      font-weight: 700;
+      font-size: 0.82rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: var(--color-text-muted);
+      border-bottom: 1px solid var(--color-border);
+      white-space: nowrap;
+      background: linear-gradient(180deg, #f8fbff 0%, #f0f5fb 100%);
+    }
+
+    .users-table thead th:first-child {
+      width: 52px;
+      text-align: center;
+    }
+
+    .users-table tbody tr {
+      border-bottom: 1px solid #e3ebf5;
+      transition: background 120ms ease;
+    }
+
+    .users-table tbody tr:last-child {
+      border-bottom: none;
+    }
+
+    .users-table tbody tr:hover {
+      background: #f8fbff;
+    }
+
+    .users-table tbody tr.is-selected {
+      background: #eaf1f9;
+    }
+
+    .users-table td {
+      padding: var(--space-3) var(--space-4);
+      color: var(--color-text-body);
+      vertical-align: middle;
+      font-size: 0.95rem;
+    }
+
+    .users-table td:first-child {
+      text-align: center;
+    }
+
+    .row-radio {
+      appearance: none;
+      -webkit-appearance: none;
+      width: 18px;
+      height: 18px;
+      border: 2px solid var(--color-nav-main);
+      border-radius: 50%;
+      cursor: pointer;
+      position: relative;
+      transition: border-color 160ms ease;
+      background: #fff;
+    }
+
+    .row-radio:checked::after {
+      content: "";
+      position: absolute;
+      inset: 3px;
+      border-radius: 50%;
+      background: var(--color-nav-main);
+    }
+
+    .btn-row {
+      border: 1px solid #b9c7d7;
+      background: #ffffff;
+      border-radius: var(--radius-sm);
+      color: var(--color-text-body);
+      min-height: 34px;
+      padding: 0 12px;
+      font-family: var(--font-body);
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 140ms ease, border-color 140ms ease;
+    }
+
+    .btn-row:hover {
+      background: #f2f6fb;
+      border-color: #9fb1c6;
+    }
+
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      border: 0;
+    }
+
+    .table-footer {
+      border-top: 1px solid var(--color-border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--space-4);
+      padding: var(--space-4);
+      background: #ffffff;
+      flex-wrap: wrap;
+    }
+
+    .results-note {
+      margin: 0;
+      color: var(--color-text-muted);
+      font-size: 0.93rem;
+    }
+
+    .pager {
+      display: flex;
+      gap: var(--space-2);
+      align-items: center;
+    }
+
+    .pager-btn {
+      border: 1px solid var(--color-border);
+      background: #ffffff;
+      border-radius: var(--radius-sm);
+      color: var(--color-text-body);
+      min-height: 36px;
+      min-width: 36px;
+      padding: 0 var(--space-3);
+      font-family: var(--font-body);
+      font-size: 0.92rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 140ms ease, color 140ms ease, border-color 140ms ease;
+    }
+
+    .pager-btn:hover {
+      background: #f2f6fb;
+      border-color: #c6d5e5;
+    }
+
+    .pager-btn.is-current {
+      background: var(--color-nav-main);
+      color: #ffffff;
+      border-color: var(--color-nav-main);
+    }
+
+    @keyframes page-enter {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 768px) {
+      .top-bar { padding: 0 var(--space-4); }
+      .page-content { padding: var(--space-6) var(--space-4); }
+
+      .page-toolbar {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .toolbar-actions {
+        width: 100%;
+      }
+
+      .btn-primary,
+      .btn-secondary {
+        width: 100%;
+      }
+
+      .table-footer {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="app-header" role="banner">
+    <div class="top-bar">
+      <div class="brand-group">
+        <button class="icon-btn" aria-label="Open menu">&#9776;</button>
+        <a class="brand" href="dashboard.html">AoTech</a>
+      </div>
+      <div class="utility-icons" aria-label="Utility actions">
+        <button class="icon-btn" aria-label="Search">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.35-4.35"></path>
+          </svg>
+        </button>
+        <button class="icon-btn has-dot" aria-label="Notifications">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+            <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+          </svg>
+        </button>
+        <a class="icon-btn" href="./../index.html" aria-label="Profile">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+            <circle cx="12" cy="7" r="4"></circle>
+          </svg>
+        </a>
+      </div>
+    </div>
+
+    <nav class="main-nav" aria-label="Primary">
+      <a href="users01.html" class="nav-link is-active" aria-current="page">Users</a>
+      <a href="reports01.html" class="nav-link">Reports</a>
+      <a href="contractor01.html" class="nav-link">Contractor</a>
+      <a href="calendar01.html" class="nav-link">Calendar</a>
+      <a href="assets01.html" class="nav-link">Assets</a>
+      <a href="sites01.html" class="nav-link">Sites</a>
+    </nav>
+  </header>
+
+  <main class="page-content" id="page-content">
+    <section class="page-toolbar" aria-label="User management header">
+      <div>
+        <h1 class="page-title">Manage Users</h1>
+        <p class="page-subtitle">View access and manage user accounts</p>
+      </div>
+      <div class="toolbar-actions">
+        <a class="btn-primary" href="users02.html">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M12 5v14M5 12h14"></path>
+          </svg>
+          Add User
+        </a>
+        <button class="btn-secondary" type="button">Edit Info</button>
+      </div>
+    </section>
+
+    <section class="filter-tabs" role="tablist" aria-label="User filters">
+      <button class="filter-tab active" role="tab" aria-selected="true" type="button">All users</button>
+      <button class="filter-tab" role="tab" aria-selected="false" type="button">Managers</button>
+      <button class="filter-tab" role="tab" aria-selected="false" type="button">Contractors</button>
+      <button class="filter-tab" role="tab" aria-selected="false" type="button">Technicians</button>
+    </section>
+
+    <section class="table-card" aria-label="User list">
+      <div class="table-scroll">
+        <table class="users-table">
+          <thead>
+            <tr>
+              <th scope="col"><span class="sr-only">Select</span></th>
+              <th scope="col">Date Initiated</th>
+              <th scope="col">Full Name</th>
+              <th scope="col">Email Address</th>
+              <th scope="col">Position</th>
+              <th scope="col"><span class="sr-only">Actions</span></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><input class="row-radio" type="radio" name="user-select" aria-label="Select Jane Cooper" /></td>
+              <td>03 Jan 2026</td>
+              <td>Jane Cooper</td>
+              <td>jane.cooper@aotech.com</td>
+              <td>Regional Manager</td>
+              <td><button class="btn-row" type="button">Reset password</button></td>
+            </tr>
+            <tr>
+              <td><input class="row-radio" type="radio" name="user-select" aria-label="Select Mark Ellis" /></td>
+              <td>15 Feb 2026</td>
+              <td>Mark Ellis</td>
+              <td>mark.ellis@aotech.com</td>
+              <td>Contractor</td>
+              <td><button class="btn-row" type="button">Reset password</button></td>
+            </tr>
+            <tr class="is-selected">
+              <td><input class="row-radio" type="radio" name="user-select" aria-label="Select Sarah Nkosi" checked /></td>
+              <td>22 Mar 2026</td>
+              <td>Sarah Nkosi</td>
+              <td>sarah.nkosi@aotech.com</td>
+              <td>Asset Registrar</td>
+              <td><button class="btn-row" type="button">Reset password</button></td>
+            </tr>
+            <tr>
+              <td><input class="row-radio" type="radio" name="user-select" aria-label="Select Tom Becker" /></td>
+              <td>01 Apr 2026</td>
+              <td>Tom Becker</td>
+              <td>tom.becker@aotech.com</td>
+              <td>Technician</td>
+              <td><button class="btn-row" type="button">Reset password</button></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="table-footer">
+        <p class="results-note">Showing 1 to 4 of 4 users</p>
+        <nav class="pager" aria-label="Pagination">
+          <button class="pager-btn" type="button">Previous</button>
+          <button class="pager-btn is-current" type="button" aria-current="page">1</button>
+          <button class="pager-btn" type="button">Next</button>
+        </nav>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

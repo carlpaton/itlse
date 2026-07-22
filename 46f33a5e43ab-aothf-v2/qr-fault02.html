@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+  <title>AoTech - QR Fault Asset Details</title>
+  <style>
+    @import url("https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700&family=Sora:wght@600;700&display=swap");
+
+    :root {
+      --font-display: "Sora", "Segoe UI", sans-serif;
+      --font-body: "Public Sans", "Segoe UI", sans-serif;
+
+      --color-page-bg: #f3f5f8;
+      --color-surface: #ffffff;
+      --color-border: #d7e0ea;
+
+      --color-text-strong: #10233a;
+      --color-text-body: #26394f;
+      --color-text-muted: #5f7185;
+
+      --color-focus: #5b8cc2;
+      --shadow-soft: 0 1px 2px rgba(10, 24, 40, 0.08), 0 6px 16px rgba(17, 36, 56, 0.04);
+
+      --space-2: 8px;
+      --space-3: 12px;
+      --space-4: 16px;
+      --space-5: 20px;
+      --space-6: 24px;
+      --space-8: 32px;
+      --radius-sm: 6px;
+      --radius-md: 10px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      height: 100%;
+    }
+
+    body {
+      margin: 0;
+      font-family: var(--font-body);
+      background: radial-gradient(1200px 500px at -10% -20%, #e7edf5 0%, transparent 60%),
+        radial-gradient(800px 400px at 110% 120%, #e9eef6 0%, transparent 60%),
+        var(--color-page-bg);
+      color: var(--color-text-body);
+    }
+
+    .page-shell {
+      min-height: 100vh;
+      min-height: 100dvh;
+      display: grid;
+      place-items: center;
+      padding: var(--space-6);
+    }
+
+    .screen {
+      width: min(760px, 100%);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      background: var(--color-surface);
+      box-shadow: var(--shadow-soft);
+      padding: clamp(var(--space-6), 5vw, 56px);
+    }
+
+    .screen-title {
+      margin: 0;
+      font-family: var(--font-display);
+      color: var(--color-text-strong);
+      font-size: clamp(1.8rem, 4vw, 2.6rem);
+      letter-spacing: -0.02em;
+    }
+
+    .detail-list {
+      margin: var(--space-6) 0 0;
+      display: grid;
+      gap: var(--space-3);
+      max-width: 340px;
+    }
+
+    .detail-row {
+      display: grid;
+      grid-template-columns: 1fr 1.3fr;
+      gap: var(--space-3);
+      align-items: baseline;
+      font-size: 0.95rem;
+    }
+
+    .detail-label {
+      color: var(--color-text-muted);
+      font-weight: 600;
+    }
+
+    .detail-value {
+      color: var(--color-text-body);
+      font-weight: 500;
+    }
+
+    .fault-pick {
+      margin-top: var(--space-6);
+      max-width: 280px;
+    }
+
+    .select-field {
+      width: 100%;
+      min-height: 42px;
+      border: 1px solid #bcc9d8;
+      border-radius: var(--radius-sm);
+      padding: 0 var(--space-3);
+      font-family: var(--font-body);
+      color: var(--color-text-body);
+      background: #fff;
+    }
+
+    .select-field:focus-visible,
+    .btn-primary:focus-visible,
+    .btn-secondary:focus-visible {
+      outline: 2px solid var(--color-focus);
+      outline-offset: 2px;
+    }
+
+    .actions {
+      margin-top: clamp(var(--space-6), 6vw, 56px);
+      display: flex;
+      gap: var(--space-4);
+      flex-wrap: wrap;
+    }
+
+    .btn-primary,
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 44px;
+      min-width: 132px;
+      border-radius: var(--radius-sm);
+      font-size: 0.95rem;
+      font-weight: 700;
+      font-family: var(--font-body);
+      text-decoration: none;
+      cursor: pointer;
+      transition: transform 140ms ease, box-shadow 140ms ease, filter 140ms ease, background 140ms ease, border-color 140ms ease;
+    }
+
+    .btn-primary {
+      border: 1px solid transparent;
+      background: linear-gradient(135deg, #324e6b, #3a5a7b);
+      color: #ffffff;
+      box-shadow: 0 6px 12px rgba(42, 63, 86, 0.18);
+    }
+
+    .btn-primary:hover {
+      filter: brightness(0.95);
+      transform: translateY(-1px);
+      box-shadow: 0 10px 16px rgba(42, 63, 86, 0.2);
+    }
+
+    .btn-secondary {
+      border: 1px solid #b9c7d7;
+      background: #ffffff;
+      color: var(--color-text-body);
+    }
+
+    .btn-secondary:hover {
+      background: #f2f6fb;
+      border-color: #9fb1c6;
+    }
+
+    @media (max-width: 560px) {
+      .screen {
+        padding: var(--space-6);
+      }
+
+      .detail-row {
+        grid-template-columns: 1fr;
+        gap: 4px;
+      }
+
+      .actions {
+        flex-direction: column;
+      }
+
+      .btn-primary,
+      .btn-secondary {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page-shell">
+    <main class="screen" aria-labelledby="asset-detail-title">
+      <h1 class="screen-title" id="asset-detail-title">Asset Details</h1>
+
+      <section class="detail-list" aria-label="Asset details summary">
+        <div class="detail-row">
+          <span class="detail-label">QR Code #</span>
+          <span class="detail-value">Cxxxxxxxxxxxxxxx</span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-label">Asset Model #</span>
+          <span class="detail-value">XXXXXXXXXXXXXXX</span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-label">Asset Serial #</span>
+          <span class="detail-value">XXXXXXXXXXXXXXX</span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-label">Asset Type</span>
+          <span class="detail-value">Fridge</span>
+        </div>
+      </section>
+
+      <form action="qr-fault03.html" method="get">
+        <div class="fault-pick">
+          <label class="sr-only" for="predefined-faults">Predefined Faults</label>
+          <select class="select-field" id="predefined-faults" name="predefined_faults" aria-label="Predefined Faults">
+            <option value="" selected disabled>Predefined Faults</option>
+            <option value="compressor">Compressor Fault</option>
+            <option value="thermostat">Thermostat Fault</option>
+            <option value="leak">Gas Leak</option>
+            <option value="power">Power Failure</option>
+            <option value="other">Other Fault</option>
+          </select>
+        </div>
+
+        <div class="actions">
+          <a class="btn-secondary" href="qr-fault01.html">Cancel</a>
+          <button class="btn-primary" type="submit">Submit</button>
+        </div>
+      </form>
+    </main>
+  </div>
+
+  <style>
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+  </style>
+</body>
+</html>

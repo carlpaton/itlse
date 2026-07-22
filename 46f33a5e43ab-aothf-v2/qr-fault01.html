@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+  <title>AoTech - QR Fault Security Check</title>
+  <style>
+    @import url("https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700&family=Sora:wght@600;700&display=swap");
+
+    :root {
+      --font-display: "Sora", "Segoe UI", sans-serif;
+      --font-body: "Public Sans", "Segoe UI", sans-serif;
+
+      --color-page-bg: #f3f5f8;
+      --color-surface: #ffffff;
+      --color-border: #d7e0ea;
+
+      --color-text-strong: #10233a;
+      --color-text-body: #26394f;
+      --color-text-muted: #5f7185;
+
+      --color-focus: #5b8cc2;
+      --shadow-soft: 0 1px 2px rgba(10, 24, 40, 0.08), 0 6px 16px rgba(17, 36, 56, 0.04);
+
+      --space-2: 8px;
+      --space-3: 12px;
+      --space-4: 16px;
+      --space-5: 20px;
+      --space-6: 24px;
+      --space-8: 32px;
+      --radius-sm: 6px;
+      --radius-md: 10px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      height: 100%;
+    }
+
+    body {
+      margin: 0;
+      font-family: var(--font-body);
+      background: radial-gradient(1200px 500px at -10% -20%, #e7edf5 0%, transparent 60%),
+        radial-gradient(800px 400px at 110% 120%, #e9eef6 0%, transparent 60%),
+        var(--color-page-bg);
+      color: var(--color-text-body);
+    }
+
+    .page-shell {
+      min-height: 100vh;
+      min-height: 100dvh;
+      display: grid;
+      place-items: center;
+      padding: var(--space-6);
+    }
+
+    .screen {
+      width: min(760px, 100%);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      background: var(--color-surface);
+      box-shadow: var(--shadow-soft);
+      padding: clamp(var(--space-6), 5vw, 56px);
+      text-align: center;
+    }
+
+    .screen-title {
+      margin: 0;
+      font-family: var(--font-display);
+      color: var(--color-text-strong);
+      font-size: clamp(1.8rem, 4vw, 2.35rem);
+      letter-spacing: -0.02em;
+    }
+
+    .form-row {
+      margin: clamp(var(--space-6), 6vw, 58px) auto 0;
+      width: min(360px, 100%);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-3);
+    }
+
+    .input-field {
+      min-height: 42px;
+      width: 100%;
+      border: 1px solid #bcc9d8;
+      border-radius: var(--radius-sm);
+      padding: 0 var(--space-3);
+      font-family: var(--font-body);
+      color: var(--color-text-body);
+      background: #fff;
+    }
+
+    .input-field::placeholder {
+      color: #96a5b8;
+    }
+
+    .input-field:focus-visible,
+    .btn-primary:focus-visible {
+      outline: 2px solid var(--color-focus);
+      outline-offset: 2px;
+    }
+
+    .actions {
+      margin-top: clamp(var(--space-6), 5vw, 46px);
+      display: flex;
+      justify-content: center;
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 44px;
+      min-width: 132px;
+      border-radius: var(--radius-sm);
+      border: 1px solid transparent;
+      background: linear-gradient(135deg, #324e6b, #3a5a7b);
+      color: #ffffff;
+      text-decoration: none;
+      font-size: 0.95rem;
+      font-weight: 700;
+      font-family: var(--font-body);
+      cursor: pointer;
+      box-shadow: 0 6px 12px rgba(42, 63, 86, 0.18);
+      transition: transform 140ms ease, box-shadow 140ms ease, filter 140ms ease;
+    }
+
+    .btn-primary:hover {
+      filter: brightness(0.95);
+      transform: translateY(-1px);
+      box-shadow: 0 10px 16px rgba(42, 63, 86, 0.2);
+    }
+
+    @media (max-width: 560px) {
+      .screen {
+        padding: var(--space-6);
+      }
+
+      .form-row {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page-shell">
+    <main class="screen" aria-labelledby="fault-security-title">
+      <h1 class="screen-title" id="fault-security-title">Enter Security Code</h1>
+
+      <form action="qr-fault02.html" method="get">
+        <div class="form-row">
+          <input class="input-field" type="text" name="security-label" placeholder="Security Code #" aria-label="Security Code label" />
+          <input class="input-field" type="text" name="security-code" placeholder="XXXXXXXXXXXX" aria-label="Security Code" required />
+        </div>
+
+        <div class="actions">
+          <button class="btn-primary" type="submit">Submit</button>
+        </div>
+      </form>
+    </main>
+  </div>
+</body>
+</html>
