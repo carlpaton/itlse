@@ -514,8 +514,8 @@
 
   <main class="page-content" id="page-content">
     <section class="page-toolbar" aria-label="Create site page heading">
-      <h1 class="page-title">Edit Site</h1>
-      <p class="page-subtitle">Edit an existing site record and assign primary contact details</p>
+      <h1 class="page-title">Create Site</h1>
+      <p class="page-subtitle">Create a new site record and add the primary contact details</p>
     </section>
 
     <section class="form-card" aria-label="Create site form">
@@ -523,22 +523,22 @@
       <form class="site-form" method="post" novalidate>
         <div class="form-field">
           <label for="site-code">Site Code</label>
-          <input class="form-input" id="site-code" name="site_code" type="text" placeholder="Site Code" value="ST-1042" required />
+          <input class="form-input" id="site-code" name="site_code" type="text" placeholder="Site Code" required />
         </div>
 
         <div class="form-field">
           <label for="site-name">Site Name</label>
-          <input class="form-input" id="site-name" name="site_name" type="text" placeholder="Site Name" value="Northwind Transfer Hub" required />
+          <input class="form-input" id="site-name" name="site_name" type="text" placeholder="Site Name" required />
         </div>
 
         <div class="form-field">
           <label for="site-contact">Site Contact</label>
-          <input class="form-input" id="site-contact" name="site_contact" type="text" placeholder="Site Contact" value="Abigail Rhodes" required />
+          <input class="form-input" id="site-contact" name="site_contact" type="text" placeholder="Site Contact" required />
         </div>
 
         <div class="form-field">
           <label for="site-number">Site Number</label>
-          <input class="form-input" id="site-number" name="site_number" type="tel" placeholder="Site Number" value="+44 20 7946 1123" required />
+          <input class="form-input" id="site-number" name="site_number" type="tel" placeholder="Site Number" required />
         </div>
 
         <div class="form-field">
@@ -548,22 +548,22 @@
 
         <div class="form-field">
           <label for="site-email">Site Email</label>
-          <input class="form-input" id="site-email" name="site_email" type="email" placeholder="Site Email" value="northwind@aotech.com" required />
+          <input class="form-input" id="site-email" name="site_email" type="email" placeholder="Site Email" required />
         </div>
 
         <div class="form-field">
           <label for="contract-period">Contract Period</label>
           <select class="form-select" id="contract-period" name="contract_period" required>
-            <option value="" disabled>Please select</option>
+            <option value="" disabled selected>Please select</option>
             <option value="12-months">12 months</option>
-            <option value="18-months" selected>18 months</option>
+            <option value="18-months">18 months</option>
             <option value="24-months">24 months</option>
           </select>
         </div>
 
         <div class="form-field form-field--full">
           <label for="site-address">Site Address</label>
-          <input class="form-input" id="site-address" name="site_address" type="text" placeholder="Site Address" value="14 Kingsway Industrial Estate, London WC2B 6LE" required />
+          <input class="form-input" id="site-address" name="site_address" type="text" placeholder="Site Address" required />
         </div>
 
         <div class="section-divider">
@@ -584,17 +584,7 @@
         </div>
 
         <div class="contacts-list" id="contacts-list" aria-live="polite">
-          <div class="contact-row">
-            <p class="contact-cell"><span class="contact-cell-label">Name:</span>Mark Benson</p>
-            <p class="contact-cell"><span class="contact-cell-label">Email:</span>mark.benson@northwind.com</p>
-            <button class="btn-delete-contact" type="button" aria-label="Delete additional contact Mark Benson">Delete</button>
-          </div>
-          <div class="contact-row">
-            <p class="contact-cell"><span class="contact-cell-label">Name:</span>Sophie Lane</p>
-            <p class="contact-cell"><span class="contact-cell-label">Email:</span>sophie.lane@northwind.com</p>
-            <button class="btn-delete-contact" type="button" aria-label="Delete additional contact Sophie Lane">Delete</button>
-          </div>
-          <p class="contacts-empty" id="contacts-empty" hidden>No additional contacts added yet.</p>
+          <p class="contacts-empty" id="contacts-empty">No additional contacts added yet.</p>
         </div>
 
         <div class="form-actions">
