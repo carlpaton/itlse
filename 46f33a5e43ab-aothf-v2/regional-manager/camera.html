@@ -59,6 +59,23 @@
       line-height: 1.55;
     }
 
+    .qr-target {
+      margin-top: 10px;
+      word-break: break-all;
+    }
+
+    .qr-preview {
+      margin: 14px 0 0;
+    }
+
+    .qr-preview img {
+      display: block;
+      width: 100%;
+      max-width: 360px;
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-sm);
+    }
+
     .back-link {
       display: inline-block;
       margin-top: 16px;
@@ -80,6 +97,11 @@
   <main class="note-card" aria-label="QR camera information">
     <h1>Camera</h1>
     <p>qr search opens the camera and reads the qr details then finds jobs for that asset</p>
+    <figure class="qr-preview" aria-label="Example QR code image">
+      <img src="../qr.png" alt="Example QR code" />
+    </figure>
+    <p class="qr-target">This QR code links to: https://brandspeclogistix.com/scancode/?itemkey=VBYJ4510S&amp;clientkey=BSNZUNI001</p>
+    <p class="qr-target">Note: BSN (for example, BSNZUNI001) is the client or company key, and VBY (for example, VBYJ4510S) is the asset/item key from the QR code.</p>
     <a class="back-link" href="dashboard.html">Back to Dashboard</a>
   </main>
 </body>
