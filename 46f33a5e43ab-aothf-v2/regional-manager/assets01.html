@@ -220,6 +220,39 @@
       margin-bottom: var(--space-5);
     }
 
+    .refine-tabs {
+      display: flex;
+      align-items: center;
+      gap: var(--space-2);
+      flex-wrap: wrap;
+      margin-bottom: var(--space-5);
+      border-bottom: 1px solid var(--color-border);
+      padding-bottom: var(--space-3);
+    }
+
+    .refine-tab {
+      padding: 6px 14px;
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-sm);
+      background: var(--color-surface);
+      font-family: var(--font-body);
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: var(--color-text-body);
+      cursor: pointer;
+      transition: background 160ms ease, border-color 160ms ease;
+    }
+
+    .refine-tab:hover {
+      background: #e9eef5;
+    }
+
+    .refine-tab.is-active {
+      background: var(--color-nav-main);
+      color: var(--color-text-on-dark);
+      border-color: var(--color-nav-main);
+    }
+
     .stat-card {
       background: var(--color-surface);
       border: 1px solid var(--color-border);
@@ -346,6 +379,34 @@
       flex-wrap: wrap;
     }
 
+    .dev-notes {
+      margin-top: calc(var(--space-8) + var(--space-2));
+      padding: var(--space-5);
+      border: 1px solid #cfd9e4;
+      border-radius: var(--radius-md);
+      background: #ffffff;
+      box-shadow: 0 14px 32px rgba(16, 35, 58, 0.08);
+    }
+
+    .dev-notes-title {
+      margin: 0 0 var(--space-3);
+      color: var(--color-text-strong);
+      font-family: var(--font-display);
+      font-size: 1rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+    }
+
+    .dev-notes-list {
+      margin: 0;
+      padding-left: 1.25rem;
+      color: var(--color-text-body);
+    }
+
+    .dev-notes-list li + li {
+      margin-top: var(--space-2);
+    }
+
     .results-note {
       margin: 0;
       color: var(--color-text-muted);
@@ -382,6 +443,11 @@
       background: var(--color-nav-main);
       color: #ffffff;
       border-color: var(--color-nav-main);
+    }
+
+    .refine-tab:focus-visible {
+      outline: 2px solid var(--color-focus);
+      outline-offset: 2px;
     }
 
     @keyframes page-enter {
@@ -510,6 +576,12 @@
       </article>
     </section>
 
+    <section class="refine-tabs" aria-label="Refine assets">
+      <button class="refine-tab is-active" type="button" data-filter="all" aria-pressed="true">All assets</button>
+      <button class="refine-tab" type="button" data-filter="active" aria-pressed="false">Active</button>
+      <button class="refine-tab" type="button" data-filter="maintenance" aria-pressed="false">Maint/Repairs</button>
+    </section>
+
     <section class="table-card" aria-label="Asset list">
       <div class="table-scroll">
         <table>
@@ -525,7 +597,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr class="is-clickable" data-href="assets02.html">
+            <tr class="is-clickable" data-href="assets02.html" data-status="active">
               <td>QR-2024-001</td>
               <td>LAT-5520</td>
               <td>SN8472910</td>
@@ -534,7 +606,7 @@
               <td>Quarterly</td>
               <td>Office - Floor 2</td>
             </tr>
-            <tr class="is-clickable" data-href="assets02.html">
+            <tr class="is-clickable" data-href="assets02.html" data-status="active">
               <td>QR-2024-002</td>
               <td>IP14P-256</td>
               <td>SN9281374</td>
@@ -543,7 +615,7 @@
               <td>Bi-Annual</td>
               <td>Office - Floor 3</td>
             </tr>
-            <tr class="is-clickable" data-href="assets02.html">
+            <tr class="is-clickable" data-href="assets02.html" data-status="active">
               <td>QR-2023-045</td>
               <td>HPLJ-M404</td>
               <td>SN7362819</td>
@@ -552,7 +624,7 @@
               <td>Monthly</td>
               <td>Office - Floor 1</td>
             </tr>
-            <tr class="is-clickable" data-href="assets02.html">
+            <tr class="is-clickable" data-href="assets02.html" data-status="active">
               <td>QR-2024-003</td>
               <td>MBP-16-M3</td>
               <td>SN1928374</td>
@@ -561,7 +633,7 @@
               <td>Quarterly</td>
               <td>Office - Floor 2</td>
             </tr>
-            <tr class="is-clickable" data-href="assets02.html">
+            <tr class="is-clickable" data-href="assets02.html" data-status="active">
               <td>QR-2024-004</td>
               <td>SAM-M27</td>
               <td>SN8473625</td>
@@ -570,7 +642,7 @@
               <td>Annual</td>
               <td>Office - Floor 2</td>
             </tr>
-            <tr class="is-clickable" data-href="assets02.html">
+            <tr class="is-clickable" data-href="assets02.html" data-status="maintenance">
               <td><a class="row-link" href="assets02.html">QR-2023-032</a></td>
               <td><a class="row-link" href="assets02.html">TP-X1-G9</a></td>
               <td><a class="row-link" href="assets02.html">SN5648392</a></td>
@@ -579,7 +651,7 @@
               <td><a class="row-link" href="assets02.html">Quarterly</a></td>
               <td><a class="row-link" href="assets02.html">Warehouse</a></td>
             </tr>
-            <tr class="is-clickable" data-href="assets02.html">
+            <tr class="is-clickable" data-href="assets02.html" data-status="active">
               <td>QR-2024-005</td>
               <td>IPAD-AIR-5</td>
               <td>SN2847193</td>
@@ -588,7 +660,7 @@
               <td>Bi-Annual</td>
               <td>Office - Floor 3</td>
             </tr>
-            <tr class="is-clickable" data-href="assets02.html">
+            <tr class="is-clickable" data-href="assets02.html" data-status="inactive">
               <td>QR-2023-028</td>
               <td>CSC-RT-2901</td>
               <td>SN9384756</td>
@@ -611,9 +683,57 @@
         </nav>
       </div>
     </section>
+
+    <section class="dev-notes" aria-label="Development notes">
+      <h2 class="dev-notes-title">DEV NOTES</h2>
+      <ul class="dev-notes-list">
+        <li>All assets - shows everything.</li>
+        <li>Active - shows all active assets that are still in cycle/use and are not decomissioned.</li>
+        <li>Maint/Repairs - shows only units that are undergoing maintenance and repairs as part of an active job.</li>
+      </ul>
+    </section>
   </main>
 
   <script>
+    const refineTabs = document.querySelectorAll('.refine-tab');
+    const assetRows = Array.from(document.querySelectorAll('tbody tr[data-status]'));
+    const resultsNote = document.querySelector('.results-note');
+
+    const filterRows = (filter) => {
+      let visibleCount = 0;
+
+      assetRows.forEach((row) => {
+        const status = row.dataset.status;
+        const matches = filter === 'all'
+          || (filter === 'active' && status === 'active')
+          || (filter === 'maintenance' && status === 'maintenance');
+
+        row.style.display = matches ? '' : 'none';
+        if (matches) {
+          visibleCount += 1;
+        }
+      });
+
+      if (resultsNote) {
+        resultsNote.textContent = `Showing 1 to ${visibleCount} of ${visibleCount} results`;
+      }
+    };
+
+    refineTabs.forEach((tab) => {
+      tab.addEventListener('click', () => {
+        refineTabs.forEach((item) => {
+          item.classList.remove('is-active');
+          item.setAttribute('aria-pressed', 'false');
+        });
+
+        tab.classList.add('is-active');
+        tab.setAttribute('aria-pressed', 'true');
+        filterRows(tab.dataset.filter);
+      });
+    });
+
+    filterRows('all');
+
     document.querySelectorAll('tbody tr[data-href]').forEach((row) => {
       row.addEventListener('click', () => {
         window.location.href = row.dataset.href;
