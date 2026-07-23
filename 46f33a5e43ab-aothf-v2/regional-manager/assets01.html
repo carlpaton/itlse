@@ -169,6 +169,10 @@
       margin-bottom: var(--space-6);
     }
 
+    .page-toolbar .btn-primary {
+      margin-top: var(--space-4);
+    }
+
     .page-title {
       margin: 0;
       color: var(--color-text-strong);
@@ -317,6 +321,10 @@
 
     tbody tr:hover {
       background: #f8fbff;
+    }
+
+    tbody tr.is-clickable {
+      cursor: pointer;
     }
 
     tbody tr.is-selected {
@@ -477,10 +485,10 @@
   <main class="page-content" id="page-content">
     <section class="page-toolbar" aria-label="Asset register heading">
       <div>
-        <h1 class="page-title">Asset Register</h1>
+        <h1 class="page-title">Assets</h1>
         <p class="page-subtitle">Manage and track all company assets</p>
       </div>
-      <a class="btn-primary" href="assets02.html">+ Create Asset</a>
+      <a class="btn-primary" href="assets03.html">Create</a>
     </section>
 
     <section class="stat-grid" aria-label="Asset summary metrics">
@@ -517,7 +525,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr>
+            <tr class="is-clickable" data-href="assets02.html">
               <td>QR-2024-001</td>
               <td>LAT-5520</td>
               <td>SN8472910</td>
@@ -526,7 +534,7 @@
               <td>Quarterly</td>
               <td>Office - Floor 2</td>
             </tr>
-            <tr>
+            <tr class="is-clickable" data-href="assets02.html">
               <td>QR-2024-002</td>
               <td>IP14P-256</td>
               <td>SN9281374</td>
@@ -535,7 +543,7 @@
               <td>Bi-Annual</td>
               <td>Office - Floor 3</td>
             </tr>
-            <tr>
+            <tr class="is-clickable" data-href="assets02.html">
               <td>QR-2023-045</td>
               <td>HPLJ-M404</td>
               <td>SN7362819</td>
@@ -544,7 +552,7 @@
               <td>Monthly</td>
               <td>Office - Floor 1</td>
             </tr>
-            <tr>
+            <tr class="is-clickable" data-href="assets02.html">
               <td>QR-2024-003</td>
               <td>MBP-16-M3</td>
               <td>SN1928374</td>
@@ -553,7 +561,7 @@
               <td>Quarterly</td>
               <td>Office - Floor 2</td>
             </tr>
-            <tr>
+            <tr class="is-clickable" data-href="assets02.html">
               <td>QR-2024-004</td>
               <td>SAM-M27</td>
               <td>SN8473625</td>
@@ -562,16 +570,16 @@
               <td>Annual</td>
               <td>Office - Floor 2</td>
             </tr>
-            <tr class="is-selected">
-              <td><a class="row-link" href="assets03.html">QR-2023-032</a></td>
-              <td><a class="row-link" href="assets03.html">TP-X1-G9</a></td>
-              <td><a class="row-link" href="assets03.html">SN5648392</a></td>
-              <td><a class="row-link" href="assets03.html">2023-08-14</a></td>
-              <td><a class="row-link" href="assets03.html">3 Years</a></td>
-              <td><a class="row-link" href="assets03.html">Quarterly</a></td>
-              <td><a class="row-link" href="assets03.html">Warehouse</a></td>
+            <tr class="is-clickable" data-href="assets02.html">
+              <td><a class="row-link" href="assets02.html">QR-2023-032</a></td>
+              <td><a class="row-link" href="assets02.html">TP-X1-G9</a></td>
+              <td><a class="row-link" href="assets02.html">SN5648392</a></td>
+              <td><a class="row-link" href="assets02.html">2023-08-14</a></td>
+              <td><a class="row-link" href="assets02.html">3 Years</a></td>
+              <td><a class="row-link" href="assets02.html">Quarterly</a></td>
+              <td><a class="row-link" href="assets02.html">Warehouse</a></td>
             </tr>
-            <tr>
+            <tr class="is-clickable" data-href="assets02.html">
               <td>QR-2024-005</td>
               <td>IPAD-AIR-5</td>
               <td>SN2847193</td>
@@ -580,7 +588,7 @@
               <td>Bi-Annual</td>
               <td>Office - Floor 3</td>
             </tr>
-            <tr>
+            <tr class="is-clickable" data-href="assets02.html">
               <td>QR-2023-028</td>
               <td>CSC-RT-2901</td>
               <td>SN9384756</td>
@@ -604,5 +612,13 @@
       </div>
     </section>
   </main>
+
+  <script>
+    document.querySelectorAll('tbody tr[data-href]').forEach((row) => {
+      row.addEventListener('click', () => {
+        window.location.href = row.dataset.href;
+      });
+    });
+  </script>
 </body>
 </html>

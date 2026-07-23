@@ -155,7 +155,7 @@
     .page-toolbar {
       display: flex;
       align-items: flex-start;
-      justify-content: space-between;
+      justify-content: flex-start;
       gap: var(--space-4);
       margin-bottom: var(--space-6);
       flex-wrap: wrap;
@@ -181,6 +181,7 @@
       gap: var(--space-3);
       align-items: center;
       flex-wrap: wrap;
+      width: 100%;
     }
 
     .btn-primary {
@@ -270,6 +271,10 @@
       align-items: center;
       flex-wrap: wrap;
       margin-bottom: var(--space-5);
+    }
+
+    .filter-row .btn-primary {
+      margin-left: auto;
     }
 
     .filter-input,
@@ -529,9 +534,6 @@
         <h1 class="page-title">Sites</h1>
         <p class="page-subtitle">Manage active site records, contacts, and contract periods</p>
       </div>
-      <div class="toolbar-actions">
-        <a class="btn-primary" href="sites03.html">+ Create Site</a>
-      </div>
     </section>
 
     <section class="filter-row" aria-label="Search and filter controls">
@@ -545,6 +547,8 @@
         <option>91 to 180 days</option>
         <option>181+ days</option>
       </select>
+
+      <a class="btn-primary" href="sites03.html">Create</a>
     </section>
 
     <section class="table-card" aria-label="Sites register table">
