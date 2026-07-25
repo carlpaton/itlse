@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
-  <title>AoTech - Edit User</title>
+  <title>AoTech - Create User</title>
   <style>
     @import url("https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700&family=Sora:wght@600;700&display=swap");
 
@@ -369,13 +369,13 @@
   </header>
 
   <main class="page-content" id="page-content">
-    <section class="page-toolbar" aria-label="Edit user page heading">
-      <h1 class="page-title">Edit User</h1>
-      <p class="page-subtitle">Review and update the selected user's role, access, and linked site details.</p>
+    <section class="page-toolbar" aria-label="Create user page heading">
+      <h1 class="page-title">Create User</h1>
+      <p class="page-subtitle">Add a new user account with role access, company assignment, and linked site details.</p>
     </section>
 
-    <section class="form-card" aria-label="Edit user form">
-      <h2 class="form-heading">Edit User Details</h2>
+    <section class="form-card" aria-label="Create user form">
+      <h2 class="form-heading">User Details</h2>
       <form class="user-form" method="post" novalidate>
         <div class="form-field">
           <label for="email">Email Address</label>
@@ -422,29 +422,12 @@
     </section>
   </main>
   <script>
-    // Hard-coded defaults from first row of users01.html
-    const email = "sam.walters@aotech.com";
-    const role = "Regional Manager";
-    const company = "Northline Operations Ltd";
-    const sites = "Northwind Transfer Hub, Harborfield Storage";
-    const jobsPerDay = "10";
-
-    const roleMap = {
-      "Regional Manager": { position: "regional-manager", access: "manager" },
-      "Site Manager": { position: "regional-manager", access: "manager" },
-      "2IC": { position: "technician", access: "standard" },
-      "Contractor": { position: "contractor", access: "standard" },
-      "Technicial": { position: "technician", access: "standard" },
-      "Super Admin": { position: "regional-manager", access: "admin" }
-    };
-
-    const mappedRole = roleMap[role] || { position: "regional-manager", access: "manager" };
-
-    document.getElementById("email").value = email;
-    document.getElementById("position").value = mappedRole.position;
-    document.getElementById("access-level").value = mappedRole.access;
-    document.getElementById("jobs-per-day").value = jobsPerDay;
-    document.getElementById("notes").value = `Company: ${company}\nLinked sites: ${sites}`;
+    document.getElementById("full-name").value = "";
+    document.getElementById("email").value = "";
+    document.getElementById("position").value = "";
+    document.getElementById("access-level").value = "";
+    document.getElementById("jobs-per-day").value = "10";
+    document.getElementById("notes").value = "";
   </script>
 </body>
 </html>

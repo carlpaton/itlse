@@ -411,6 +411,36 @@
       border-color: #9fb1c6;
     }
 
+    .pin-row {
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+      flex-wrap: wrap;
+    }
+
+    .pin-display {
+      max-width: 220px;
+      font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+      letter-spacing: 0.18em;
+    }
+
+    .pin-actions {
+      display: flex;
+      gap: var(--space-2);
+      flex-wrap: wrap;
+    }
+
+    .pin-action-btn {
+      min-height: 44px;
+      padding: 0 var(--space-4);
+    }
+
+    .pin-hint {
+      margin: var(--space-2) 0 0;
+      color: var(--color-text-muted);
+      font-size: 0.85rem;
+    }
+
     .dev-notes {
       margin-top: calc(var(--space-8) + var(--space-2));
       padding: var(--space-5);
@@ -510,7 +540,7 @@
       <a href="assets01.html" class="nav-link">Assets</a>
       <a href="sites01.html" class="nav-link is-active" aria-current="page">Sites</a>
     
-      <a href="user01.html" class="nav-link">Users</a>
+      <a href="users01.html" class="nav-link">Users</a>
     </nav>
   </header>
 
@@ -569,6 +599,22 @@
         </div>
 
         <div class="section-divider">
+          <h3 class="section-title">Site Access</h3>
+        </div>
+
+        <div class="form-field form-field--full">
+          <label for="site-pin-display">Site PIN</label>
+          <div class="pin-row">
+            <input class="form-input pin-display" id="site-pin-display" name="site_pin" type="text" value="••••" readonly aria-describedby="pin-status" />
+            <div class="pin-actions">
+              <button class="btn-secondary pin-action-btn" id="view-pin" type="button">View</button>
+              <button class="btn-primary pin-action-btn" id="reset-pin" type="button">Reset</button>
+            </div>
+          </div>
+          <p class="pin-hint" id="pin-status">The current site PIN is hidden for security.</p>
+        </div>
+
+        <div class="section-divider">
           <h3 class="section-title">Additional Contact Person</h3>
         </div>
 
@@ -613,6 +659,7 @@
         <li>Additional Contact Person - no limit on how many additional contacts can be added</li>
         <li>Cancel - cancels the action, so changes are not saved</li>
         <li>Save - saves the changes made to the site details</li>
+        <li>Site PIN can be viewed or reset from the Site Access section</li>
       </ul>
     </section>
   </main>
@@ -624,6 +671,12 @@
       var contactEmailInput = document.getElementById("contact-email");
       var contactsList = document.getElementById("contacts-list");
       var contactsEmpty = document.getElementById("contacts-empty");
+      var sitePinInput = document.getElementById("site-pin-display");
+      var viewPinButton = document.getElementById("view-pin");
+      var resetPinButton = document.getElementById("reset-pin");
+      var pinStatus = document.getElementById("pin-status");
+      var sitePinValue = "4827";
+      var pinVisible = false;
 
       function setEmptyState() {
         var hasRows = contactsList.querySelectorAll(".contact-row").length > 0;
@@ -668,6 +721,25 @@
         contactsList.appendChild(row);
       }
 
+      function renderPinState() {
+        sitePinInput.value = pinVisible ? sitePinValue : "••••";
+        viewPinButton.textContent = pinVisible ? "Hide" : "View";
+        pinStatus.textContent = pinVisible
+          ? "The site PIN is currently visible."
+          : "The current site PIN is hidden for security.";
+      }
+
+      viewPinButton.addEventListener("click", function () {
+        pinVisible = !pinVisible;
+        renderPinState();
+      });
+
+      resetPinButton.addEventListener("click", function () {
+        sitePinValue = String(Math.floor(1000 + Math.random() * 9000));
+        pinVisible = true;
+        renderPinState();
+      });
+
       addContactButton.addEventListener("click", function () {
         var name = contactNameInput.value.trim();
         var email = contactEmailInput.value.trim();
@@ -701,6 +773,7 @@
         });
       });
 
+      renderPinState();
       setEmptyState();
     })();
   </script>
