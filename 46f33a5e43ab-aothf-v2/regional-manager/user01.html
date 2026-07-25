@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
-  <title>AoTech - Manage Users</title>
+  <title>AoTech - Users</title>
   <style>
     @import url("https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700&family=Sora:wght@600;700&display=swap");
 
@@ -19,7 +19,6 @@
 
       --color-page-bg: #f3f5f8;
       --color-surface: #ffffff;
-      --color-surface-muted: #eef3f8;
       --color-border: #d7e0ea;
 
       --color-text-strong: #10233a;
@@ -103,10 +102,11 @@
     .nav-link:focus-visible,
     .btn-primary:focus-visible,
     .btn-secondary:focus-visible,
-    .btn-row:focus-visible,
     .filter-tab:focus-visible,
+    .filter-input:focus-visible,
+    .filter-select:focus-visible,
     .pager-btn:focus-visible,
-    .row-radio:focus-visible {
+    .btn-row:focus-visible {
       outline: 2px solid var(--color-focus);
       outline-offset: 2px;
     }
@@ -155,7 +155,7 @@
     .page-toolbar {
       display: flex;
       align-items: flex-start;
-      justify-content: space-between;
+      justify-content: flex-start;
       gap: var(--space-4);
       margin-bottom: var(--space-6);
       flex-wrap: wrap;
@@ -181,6 +181,7 @@
       gap: var(--space-3);
       align-items: center;
       flex-wrap: wrap;
+      width: 100%;
     }
 
     .btn-primary {
@@ -200,7 +201,6 @@
       cursor: pointer;
       box-shadow: 0 6px 12px rgba(42, 63, 86, 0.18);
       transition: transform 140ms ease, box-shadow 140ms ease, filter 140ms ease;
-      gap: var(--space-2);
       white-space: nowrap;
     }
 
@@ -225,6 +225,8 @@
       font-family: var(--font-body);
       cursor: pointer;
       transition: background 140ms ease, border-color 140ms ease;
+      text-decoration: none;
+      white-space: nowrap;
     }
 
     .btn-secondary:hover {
@@ -237,7 +239,7 @@
       align-items: center;
       gap: var(--space-2);
       flex-wrap: wrap;
-      margin-bottom: var(--space-5);
+      margin-bottom: var(--space-4);
       border-bottom: 1px solid var(--color-border);
       padding-bottom: var(--space-3);
     }
@@ -263,10 +265,40 @@
       border-color: var(--color-nav-main);
     }
 
+    .filter-row {
+      display: flex;
+      gap: var(--space-3);
+      align-items: center;
+      flex-wrap: wrap;
+      margin-bottom: var(--space-5);
+    }
+
+    .filter-row .btn-primary {
+      margin-left: auto;
+    }
+
+    .filter-input,
+    .filter-select {
+      height: 40px;
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-sm);
+      background: #ffffff;
+      color: var(--color-text-body);
+      font-family: var(--font-body);
+      font-size: 0.95rem;
+      padding: 0 var(--space-3);
+      min-width: 190px;
+    }
+
+    .filter-select {
+      cursor: pointer;
+      min-width: 200px;
+    }
+
     .table-card {
       border: 1px solid var(--color-border);
       border-radius: var(--radius-md);
-      background: var(--color-surface);
+      background: #ffffff;
       box-shadow: var(--shadow-soft);
       overflow: hidden;
     }
@@ -279,7 +311,8 @@
     .users-table {
       width: 100%;
       border-collapse: collapse;
-      min-width: 760px;
+      min-width: 1100px;
+      background: #ffffff;
     }
 
     .users-table thead th {
@@ -291,62 +324,25 @@
       letter-spacing: 0.04em;
       color: var(--color-text-muted);
       border-bottom: 1px solid var(--color-border);
-      white-space: nowrap;
       background: linear-gradient(180deg, #f8fbff 0%, #f0f5fb 100%);
-    }
-
-    .users-table thead th:first-child {
-      width: 52px;
-      text-align: center;
+      white-space: nowrap;
     }
 
     .users-table tbody tr {
       border-bottom: 1px solid #e3ebf5;
       transition: background 120ms ease;
+      cursor: pointer;
     }
 
-    .users-table tbody tr:last-child {
-      border-bottom: none;
-    }
-
-    .users-table tbody tr:hover {
-      background: #f8fbff;
-    }
-
-    .users-table tbody tr.is-selected {
-      background: #eaf1f9;
-    }
+    .users-table tbody tr:last-child { border-bottom: none; }
+    .users-table tbody tr:hover { background: #f8fbff; }
 
     .users-table td {
       padding: var(--space-3) var(--space-4);
       color: var(--color-text-body);
       vertical-align: middle;
       font-size: 0.95rem;
-    }
-
-    .users-table td:first-child {
-      text-align: center;
-    }
-
-    .row-radio {
-      appearance: none;
-      -webkit-appearance: none;
-      width: 18px;
-      height: 18px;
-      border: 2px solid var(--color-nav-main);
-      border-radius: 50%;
-      cursor: pointer;
-      position: relative;
-      transition: border-color 160ms ease;
-      background: #fff;
-    }
-
-    .row-radio:checked::after {
-      content: "";
-      position: absolute;
-      inset: 3px;
-      border-radius: 50%;
-      background: var(--color-nav-main);
+      white-space: nowrap;
     }
 
     .btn-row {
@@ -361,22 +357,15 @@
       font-weight: 600;
       cursor: pointer;
       transition: background 140ms ease, border-color 140ms ease;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
     }
 
     .btn-row:hover {
       background: #f2f6fb;
       border-color: #9fb1c6;
-    }
-
-    .sr-only {
-      position: absolute;
-      width: 1px;
-      height: 1px;
-      padding: 0;
-      margin: -1px;
-      overflow: hidden;
-      clip: rect(0, 0, 0, 0);
-      border: 0;
     }
 
     .table-footer {
@@ -388,6 +377,34 @@
       padding: var(--space-4);
       background: #ffffff;
       flex-wrap: wrap;
+    }
+
+    .dev-notes {
+      margin-top: calc(var(--space-8) + var(--space-2));
+      padding: var(--space-5);
+      border: 1px solid #cfd9e4;
+      border-radius: var(--radius-md);
+      background: #ffffff;
+      box-shadow: 0 14px 32px rgba(16, 35, 58, 0.08);
+    }
+
+    .dev-notes-title {
+      margin: 0 0 var(--space-3);
+      color: var(--color-text-strong);
+      font-family: var(--font-display);
+      font-size: 1rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+    }
+
+    .dev-notes-list {
+      margin: 0;
+      padding-left: 1.25rem;
+      color: var(--color-text-body);
+    }
+
+    .dev-notes-list li + li {
+      margin-top: var(--space-2);
     }
 
     .results-note {
@@ -428,6 +445,17 @@
       border-color: var(--color-nav-main);
     }
 
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      border: 0;
+    }
+
     @keyframes page-enter {
       from { opacity: 0; transform: translateY(10px); }
       to { opacity: 1; transform: translateY(0); }
@@ -442,10 +470,14 @@
         align-items: stretch;
       }
 
-      .toolbar-actions {
-        width: 100%;
+      .toolbar-actions,
+      .filter-row {
+        flex-direction: column;
+        align-items: stretch;
       }
 
+      .filter-input,
+      .filter-select,
       .btn-primary,
       .btn-secondary {
         width: 100%;
@@ -487,97 +519,142 @@
     </div>
 
     <nav class="main-nav" aria-label="Primary">
-      <a href="users01.html" class="nav-link is-active" aria-current="page">Users</a>
+
       <a href="reports01.html" class="nav-link">Reports</a>
       <a href="contractor01.html" class="nav-link">Contractor</a>
       <a href="calendar01.html" class="nav-link">Calendar</a>
       <a href="assets01.html" class="nav-link">Assets</a>
+      <a href="sites01.html" class="nav-link">Sites</a>
+    
+      <a href="user01.html" class="nav-link is-active" aria-current="page">Users</a>
     </nav>
   </header>
 
   <main class="page-content" id="page-content">
-    <section class="page-toolbar" aria-label="User management header">
+    <section class="page-toolbar" aria-label="Users page heading">
       <div>
-        <h1 class="page-title">Manage Users</h1>
-        <p class="page-subtitle">View access and manage user accounts</p>
-      </div>
-      <div class="toolbar-actions">
-        <a class="btn-primary" href="users02.html">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <path d="M12 5v14M5 12h14"></path>
-          </svg>
-          Add User
-        </a>
-        <button class="btn-secondary" type="button">Edit Info</button>
+        <h1 class="page-title">Users</h1>
+        <p class="page-subtitle">Manage user identity, role access, company assignment, and linked sites</p>
       </div>
     </section>
 
-    <section class="filter-tabs" role="tablist" aria-label="User filters">
-      <button class="filter-tab active" role="tab" aria-selected="true" type="button">All users</button>
-      <button class="filter-tab" role="tab" aria-selected="false" type="button">Managers</button>
-      <button class="filter-tab" role="tab" aria-selected="false" type="button">Contractors</button>
-      <button class="filter-tab" role="tab" aria-selected="false" type="button">Technicians</button>
+    <section class="filter-row" aria-label="Search and filter controls">
+      <label class="sr-only" for="user-search">User search</label>
+      <input id="user-search" class="filter-input" type="search" placeholder="Search ..." />
+
+      <label class="sr-only" for="role-filter">Role filter</label>
+      <select id="role-filter" class="filter-select">
+        <option>All roles</option>
+        <option>Super Admin</option>
+        <option>Regional Manager</option>
+        <option>Site Manager</option>
+        <option>2IC</option>
+        <option>Contractor</option>
+        <option>Technicial</option>
+      </select>
+
+      <a class="btn-primary" href="users02.html">Create</a>
     </section>
 
-    <section class="table-card" aria-label="User list">
+    <section class="table-card" aria-label="Users register table">
       <div class="table-scroll">
         <table class="users-table">
           <thead>
             <tr>
-              <th scope="col"><span class="sr-only">Select</span></th>
-              <th scope="col">Date Initiated</th>
-              <th scope="col">Full Name</th>
+              <th scope="col">OID</th>
               <th scope="col">Email Address</th>
-              <th scope="col">Position</th>
-              <th scope="col"><span class="sr-only">Actions</span></th>
+              <th scope="col">Roles</th>
+              <th scope="col">Company</th>
+              <th scope="col">Linked Sites</th>
             </tr>
           </thead>
           <tbody>
             <tr>
-              <td><input class="row-radio" type="radio" name="user-select" aria-label="Select Jane Cooper" /></td>
-              <td>03 Jan 2026</td>
-              <td>Jane Cooper</td>
-              <td>jane.cooper@aotech.com</td>
+              <td>f2e68408-7f26-47ba-8c8a-1b8e9cf11ad3</td>
+              <td>sam.walters@aotech.com</td>
               <td>Regional Manager</td>
-              <td><button class="btn-row" type="button">Reset password</button></td>
+              <td>Northline Operations Ltd</td>
+              <td>Northwind Transfer Hub, Harborfield Storage</td>
             </tr>
             <tr>
-              <td><input class="row-radio" type="radio" name="user-select" aria-label="Select Mark Ellis" /></td>
-              <td>15 Feb 2026</td>
-              <td>Mark Ellis</td>
-              <td>mark.ellis@aotech.com</td>
+              <td>7a6b923b-45f3-4f2a-8d39-2f6dc0cc8f71</td>
+              <td>mia.owen@aotech.com</td>
+              <td>Site Manager</td>
+              <td>Beacon Services Group</td>
+              <td>Beacon Retail Point, Parkview Delivery Yard</td>
+            </tr>
+            <tr>
+              <td>1c44f018-89eb-4d9b-8e91-f6b9ce4d17bd</td>
+              <td>oliver.hayes@aotech.com</td>
+              <td>2IC</td>
+              <td>Crescent Infrastructure Pty</td>
+              <td>Crescent Metro Unit</td>
+            </tr>
+            <tr>
+              <td>c39df8fd-1fb3-4ec6-8f2b-25a8f97f502a</td>
+              <td>evie.russell@aotech.com</td>
               <td>Contractor</td>
-              <td><button class="btn-row" type="button">Reset password</button></td>
-            </tr>
-            <tr class="is-selected">
-              <td><input class="row-radio" type="radio" name="user-select" aria-label="Select Sarah Nkosi" checked /></td>
-              <td>22 Mar 2026</td>
-              <td>Sarah Nkosi</td>
-              <td>sarah.nkosi@aotech.com</td>
-              <td>Asset Registrar</td>
-              <td><button class="btn-row" type="button">Reset password</button></td>
+              <td>Broadway Field Services</td>
+              <td>Broadway Service Site, Westlake Operations</td>
             </tr>
             <tr>
-              <td><input class="row-radio" type="radio" name="user-select" aria-label="Select Tom Becker" /></td>
-              <td>01 Apr 2026</td>
-              <td>Tom Becker</td>
-              <td>tom.becker@aotech.com</td>
-              <td>Technician</td>
-              <td><button class="btn-row" type="button">Reset password</button></td>
+              <td>b57a36d4-fd61-4fca-9de6-8bc427ec0db8</td>
+              <td>noah.clark@aotech.com</td>
+              <td>Technicial</td>
+              <td>Delta Street Maintenance</td>
+              <td>Delta Street Facility</td>
+            </tr>
+            <tr>
+              <td>e4ed9fca-78e2-4d20-9bd6-fbe1384bcc0d</td>
+              <td>lily.morgan@aotech.com</td>
+              <td>Super Admin</td>
+              <td>AoTech Group</td>
+              <td>All sites</td>
+            </tr>
+            <tr>
+              <td>5a95ca70-9775-4d32-a654-9b1af4e6f2ce</td>
+              <td>isaac.turner@aotech.com</td>
+              <td>Regional Manager</td>
+              <td>Westfield Contracting</td>
+              <td>Westlake Operations, Delta Street Facility</td>
+            </tr>
+            <tr>
+              <td>d6c2ab42-3313-4c0f-a5b4-19cf3a41f90e</td>
+              <td>amelia.cooper@aotech.com</td>
+              <td>Site Manager</td>
+              <td>Harborline Support Services</td>
+              <td>Harborfield Storage</td>
             </tr>
           </tbody>
         </table>
       </div>
 
-      <div class="table-footer">
-        <p class="results-note">Showing 1 to 4 of 4 users</p>
-        <nav class="pager" aria-label="Pagination">
-          <button class="pager-btn" type="button">Previous</button>
+      <footer class="table-footer" aria-label="Users table pagination">
+        <p class="results-note">Showing 1 to 8 of 36 users</p>
+        <div class="pager">
+          <button class="pager-btn" type="button" aria-label="Previous page">&lt;</button>
           <button class="pager-btn is-current" type="button" aria-current="page">1</button>
-          <button class="pager-btn" type="button">Next</button>
-        </nav>
-      </div>
+          <button class="pager-btn" type="button">2</button>
+          <button class="pager-btn" type="button">3</button>
+          <button class="pager-btn" type="button" aria-label="Next page">&gt;</button>
+        </div>
+      </footer>
+    </section>
+
+    <section class="dev-notes" aria-label="Development notes">
+      <h2 class="dev-notes-title">DEV NOTES</h2>
+      <ul class="dev-notes-list">
+        <li>OID is what links the user to Entra.</li>
+      </ul>
     </section>
   </main>
+
+  <script>
+    document.querySelectorAll(".users-table tbody tr").forEach((row) => {
+      row.addEventListener("click", () => {
+        window.location.href = "users02.html";
+      });
+    });
+  </script>
 </body>
 </html>
