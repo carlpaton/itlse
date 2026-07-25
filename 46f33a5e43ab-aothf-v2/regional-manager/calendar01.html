@@ -210,6 +210,11 @@
       padding-bottom: var(--space-3);
     }
 
+    .filter-tabs.calendar-range-controls {
+      border-bottom: none;
+      padding-bottom: 0;
+    }
+
     .filter-tab {
       padding: 6px 14px;
       border: 1px solid var(--color-border);
@@ -229,6 +234,33 @@
       background: var(--color-nav-main);
       color: var(--color-text-on-dark);
       border-color: var(--color-nav-main);
+    }
+
+    .date-control {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      min-width: 220px;
+      flex: 1 1 220px;
+    }
+
+    .date-label {
+      color: var(--color-text-muted);
+      font-size: 0.84rem;
+      font-weight: 600;
+    }
+
+    .date-hint {
+      color: var(--color-text-muted);
+      font-size: 0.8rem;
+    }
+
+    .date-control input[type="date"] {
+      min-width: 100%;
+    }
+
+    .is-hidden {
+      display: none !important;
     }
 
     .calendar-card {
@@ -302,20 +334,232 @@
       border-top: none;
     }
 
+    .week-grid {
+      display: grid;
+      grid-template-columns: 72px repeat(7, minmax(0, 1fr));
+      grid-template-rows: 32px repeat(24, 20px);
+      border: 1px solid #6d7d92;
+      border-top: none;
+    }
+
+    .week-corner,
+    .week-day-head,
+    .day-time,
+    .day-slot {
+      border-top: 1px solid #6d7d92;
+      background: #ffffff;
+      min-height: 20px;
+    }
+
+    .week-corner,
+    .week-day-head {
+      min-height: 32px;
+      background: #f4f7fb;
+      font-size: 0.92rem;
+      font-weight: 700;
+      color: #1e2f43;
+      text-transform: uppercase;
+    }
+
+    .week-corner {
+      border-right: 1px solid #6d7d92;
+    }
+
+    .week-day-head {
+      padding: 6px 8px;
+      text-align: center;
+      border-right: 1px solid #6d7d92;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 2px;
+      line-height: 1.05;
+    }
+
+    .week-day-head:last-child {
+      border-right: none;
+    }
+
+    .week-day-name {
+      font-size: 0.76rem;
+      letter-spacing: 0.04em;
+    }
+
+    .week-day-date {
+      font-size: 0.92rem;
+    }
+
+    .week-event {
+      grid-column: 2 / span 1;
+      grid-row: 12 / span 3;
+      margin: 2px 4px;
+      padding: 8px 10px;
+      border-radius: 8px;
+      background: linear-gradient(135deg, #314d6a, #476a8f);
+      color: #ffffff;
+      box-shadow: 0 8px 18px rgba(42, 63, 86, 0.22);
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 2px;
+      text-decoration: none;
+      transition: transform 120ms ease, box-shadow 120ms ease, filter 120ms ease;
+    }
+
+    .week-event:hover {
+      filter: brightness(0.96);
+      transform: translateY(-1px);
+      box-shadow: 0 12px 20px rgba(42, 63, 86, 0.26);
+    }
+
+    .week-event:focus-visible {
+      outline: 2px solid #d5e8ff;
+      outline-offset: 1px;
+    }
+
+    .week-event-title {
+      font-size: 0.84rem;
+      font-weight: 700;
+      line-height: 1.1;
+    }
+
+    .week-event-address {
+      font-size: 0.76rem;
+      line-height: 1.2;
+      opacity: 0.95;
+    }
+
+    .week-event-time {
+      font-size: 0.76rem;
+      opacity: 0.9;
+    }
+
+    .week-event-priority {
+      align-self: flex-start;
+      margin-top: 2px;
+      padding: 2px 6px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.22);
+      border: 1px solid rgba(255, 255, 255, 0.4);
+      color: #ffffff;
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+    }
+
+    .month-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--space-3);
+      padding: 0 var(--space-4) var(--space-3);
+      border-bottom: 1px solid var(--color-border);
+      background: #ffffff;
+    }
+
+    .month-title {
+      margin: 0;
+      color: var(--color-text-strong);
+      font-family: var(--font-display);
+      font-size: 1.05rem;
+      font-weight: 700;
+    }
+
+    .month-grid {
+      grid-template-rows: repeat(6, 92px);
+    }
+
+    .day-time {
+      padding: 2px 8px;
+      border-right: 1px solid #6d7d92;
+      color: #1e2f43;
+      font-size: 0.8rem;
+      font-weight: 700;
+      line-height: 16px;
+      text-align: left;
+    }
+
+    .day-slot {
+      padding: 0 8px;
+      border-right: 1px solid #6d7d92;
+    }
+
+    .day-slot:nth-child(8n) {
+      border-right: none;
+    }
+
     .calendar-day {
+      display: flex;
+      align-items: flex-start;
+      justify-content: flex-start;
       border-right: 1px solid #6d7d92;
       border-top: 1px solid #6d7d92;
       background: #ffffff;
       padding: 8px;
       outline: none;
+      position: relative;
     }
 
     .calendar-day:nth-child(7n) {
       border-right: none;
     }
 
+    .calendar-day-number {
+      font-size: 0.92rem;
+      font-weight: 700;
+      color: inherit;
+    }
+
+    .calendar-dot {
+      width: 16px;
+      height: 16px;
+      margin-top: 4px;
+      border-radius: 50%;
+      background: #f4a6a6;
+    }
+
+    .calendar-day.is-outside-month {
+      background: #f7f9fc;
+      color: #93a1b3;
+    }
+
+    .calendar-day.is-in-range {
+      background: #e8f0fa;
+    }
+
     .calendar-day:hover {
       background: #f8fbff;
+    }
+
+    .dev-notes {
+      margin-top: calc(var(--space-8) + var(--space-2));
+      padding: var(--space-5);
+      border: 1px solid #cfd9e4;
+      border-radius: var(--radius-md);
+      background: #ffffff;
+      box-shadow: 0 14px 32px rgba(16, 35, 58, 0.08);
+    }
+
+    .dev-notes-title {
+      margin: 0 0 var(--space-3);
+      color: var(--color-text-strong);
+      font-family: var(--font-display);
+      font-size: 1rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+    }
+
+    .dev-notes-list {
+      margin: 0;
+      padding-left: 1.25rem;
+      color: var(--color-text-body);
+    }
+
+    .dev-notes-list li + li {
+      margin-top: var(--space-2);
     }
 
     @keyframes page-enter {
@@ -351,6 +595,15 @@
       .days-grid {
         grid-template-rows: repeat(5, 64px);
       }
+
+      .week-grid {
+        grid-template-columns: 64px repeat(7, minmax(0, 1fr));
+        grid-template-rows: 32px repeat(24, 20px);
+      }
+
+      .month-grid {
+        grid-template-rows: repeat(6, 64px);
+      }
     }
   </style>
 </head>
@@ -359,7 +612,7 @@
     <div class="top-bar">
       <div class="brand-group">
         <button class="icon-btn" aria-label="Open menu">&#9776;</button>
-        <a class="brand" href="dashboard.html">AoTech</a>
+        <a class="brand" href="dashboard.html"> Asset Oversight </a>
       </div>
       <div class="utility-icons" aria-label="Utility actions">
         <button class="icon-btn" aria-label="Search">
@@ -396,44 +649,266 @@
     <section class="page-toolbar" aria-label="Calendar heading">
       <div>
         <h1 class="page-title">Calendar</h1>
-        <p class="page-subtitle">Schedule upcoming jobs and review weekly availability</p>
+        <p class="page-subtitle">Calendar view of your scheduled jobs</p>
       </div>
       <a class="btn-primary" href="job01.html">Schedule Job</a>
     </section>
 
-    <section class="filter-tabs" role="tablist" aria-label="Calendar filters">
-      <button class="filter-tab active" role="tab" aria-selected="true" type="button">All</button>
-      <button class="filter-tab" role="tab" aria-selected="false" type="button">Free slots</button>
-      <button class="filter-tab" role="tab" aria-selected="false" type="button">Maintenance</button>
-      <button class="filter-tab" role="tab" aria-selected="false" type="button">Repairs</button>
+    <section class="filter-tabs calendar-range-controls" aria-label="Calendar date range">
+      <label class="date-control" for="date-from">
+        <span class="date-label">Date From</span>
+        <input class="date-input" id="date-from" type="date" aria-label="Date from" />
+        <span class="date-hint">Start of the current week</span>
+      </label>
+      <label class="date-control" for="date-to">
+        <span class="date-label">Date To</span>
+        <input class="date-input" id="date-to" type="date" aria-label="Date to" />
+        <span class="date-hint">End of the current week</span>
+      </label>
     </section>
 
-    <section class="calendar-card" aria-label="Calendar view">
-      <div class="calendar-controls">
-        <input class="date-input" type="text" placeholder="Date from" aria-label="Date from" />
-        <input class="date-input" type="text" placeholder="Date to" aria-label="Date to" />
+    <section class="calendar-card" id="week-calendar" aria-label="Week view calendar">
+      <div class="calendar-grid-wrap" role="table" aria-label="Weekly schedule grid">
+        <div class="week-grid" id="week-grid" role="rowgroup"></div>
       </div>
+    </section>
 
+    <section class="calendar-card is-hidden" id="full-calendar" aria-label="Calendar view">
+      <div class="month-header">
+        <h2 class="month-title" id="month-title">Month view</h2>
+      </div>
       <div class="calendar-grid-wrap" role="table" aria-label="Monthly schedule grid">
         <div class="weekday-row" role="row">
-          <div class="weekday" role="columnheader">Sun</div>
           <div class="weekday" role="columnheader">Mon</div>
           <div class="weekday" role="columnheader">Tue</div>
           <div class="weekday" role="columnheader">Wed</div>
           <div class="weekday" role="columnheader">Thu</div>
           <div class="weekday" role="columnheader">Fri</div>
           <div class="weekday" role="columnheader">Sat</div>
+          <div class="weekday" role="columnheader">Sun</div>
         </div>
 
-        <div class="days-grid" role="rowgroup">
-          <div class="calendar-day" tabindex="0"></div><div class="calendar-day" tabindex="0"></div><div class="calendar-day" tabindex="0"></div><div class="calendar-day" tabindex="0"></div><div class="calendar-day" tabindex="0"></div><div class="calendar-day" tabindex="0"></div><div class="calendar-day" tabindex="0"></div>
-          <div class="calendar-day" tabindex="0"></div><div class="calendar-day" tabindex="0"></div><div class="calendar-day" tabindex="0"></div><div class="calendar-day" tabindex="0"></div><div class="calendar-day" tabindex="0"></div><div class="calendar-day" tabindex="0"></div><div class="calendar-day" tabindex="0"></div>
-          <div class="calendar-day" tabindex="0"></div><div class="calendar-day" tabindex="0"></div><div class="calendar-day" tabindex="0"></div><div class="calendar-day" tabindex="0"></div><div class="calendar-day" tabindex="0"></div><div class="calendar-day" tabindex="0"></div><div class="calendar-day" tabindex="0"></div>
-          <div class="calendar-day" tabindex="0"></div><div class="calendar-day" tabindex="0"></div><div class="calendar-day" tabindex="0"></div><div class="calendar-day" tabindex="0"></div><div class="calendar-day" tabindex="0"></div><div class="calendar-day" tabindex="0"></div><div class="calendar-day" tabindex="0"></div>
-          <div class="calendar-day" tabindex="0"></div><div class="calendar-day" tabindex="0"></div><div class="calendar-day" tabindex="0"></div><div class="calendar-day" tabindex="0"></div><div class="calendar-day" tabindex="0"></div><div class="calendar-day" tabindex="0"></div><div class="calendar-day" tabindex="0"></div>
-        </div>
+        <div class="days-grid month-grid" id="month-grid" role="rowgroup"></div>
       </div>
     </section>
+
+    <section class="dev-notes" aria-label="Development notes">
+      <h2 class="dev-notes-title">DEV NOTES</h2>
+      <ul class="dev-notes-list">
+        <li>Default to the week view but we do need a month view</li>
+        <li>Calendar also needs to sync up with public holidays</li>
+        <li>Month view would just show a dot that something is booked on this day, you need to click into the day to see the details, once in the day view, clicking a job takes you to that job</li>
+        <li>On average, a technician's day will only allow between 3 - 6 bookings.</li>
+        <li>Need to be able to block out time slots or day or multiple days.</li>
+        <li>Allocated week-view jobs should show job#, address, and priority status; clicking the allocated job should open the job page.</li>
+      </ul>
+    </section>
   </main>
+  <script>
+    const dateFromInput = document.getElementById("date-from");
+    const dateToInput = document.getElementById("date-to");
+    const fullCalendar = document.getElementById("full-calendar");
+    const weekCalendar = document.getElementById("week-calendar");
+    const weekGrid = document.getElementById("week-grid");
+    const monthGrid = document.getElementById("month-grid");
+    const monthTitle = document.getElementById("month-title");
+    const weekDayHeads = Array.from(document.querySelectorAll(".week-day-head"));
+
+    const weekdayLabels = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+    const demoJobDay = 18;
+    const demoJobStartHour = 10;
+    const demoJobDurationHours = 3;
+    const demoJobNumber = "JOB-8472";
+    const demoJobAddress = "12 Kingsway Rd";
+    const demoJobPriority = "Priority: High";
+    const demoJobTitle = `${demoJobNumber}`;
+    const demoJobUrl = "job02.html";
+
+    const parseLocalDate = (value) => {
+      const [year, month, day] = value.split("-").map(Number);
+      return new Date(year, month - 1, day);
+    };
+
+    const formatDateForInput = (date) => {
+      const year = date.getFullYear();
+      const month = String(date.getMonth() + 1).padStart(2, "0");
+      const day = String(date.getDate()).padStart(2, "0");
+      return `${year}-${month}-${day}`;
+    };
+
+    const formatDateLabel = (date) =>
+      date.toLocaleDateString("en-GB", {
+        day: "numeric",
+        month: "short",
+      });
+
+    const formatMonthTitle = (date) =>
+      date.toLocaleDateString("en-GB", {
+        month: "long",
+        year: "numeric",
+      });
+
+    const isDateInRange = (date, fromDate, toDate) => date >= fromDate && date <= toDate;
+
+    const getMonthDayIndex = (date) => {
+      const startOfMonth = new Date(date.getFullYear(), date.getMonth(), 1);
+      return Math.floor((date - startOfMonth) / (24 * 60 * 60 * 1000));
+    };
+
+    const renderWeekCalendar = (fromDate) => {
+      if (!weekGrid) {
+        return;
+      }
+
+      const visibleWeekDates = Array.from({ length: 7 }, (_, index) => {
+        const date = new Date(fromDate);
+        date.setDate(fromDate.getDate() + index);
+        return date;
+      });
+
+      const demoJobWeekIndex = visibleWeekDates.findIndex((date) => date.getDate() === demoJobDay);
+
+      weekGrid.innerHTML = `
+        <div class="week-corner" aria-hidden="true"></div>
+        ${visibleWeekDates
+          .map((date, index) => `
+            <div class="week-day-head" role="columnheader">
+              <span class="week-day-name">${weekdayLabels[index]}</span>
+              <span class="week-day-date">${formatDateLabel(date)}</span>
+            </div>
+          `)
+          .join("")}
+
+        ${Array.from({ length: 24 }, (_, hour) => {
+          const gridRow = hour + 2;
+
+          return `
+            <div class="day-time" role="rowheader" style="grid-column: 1; grid-row: ${gridRow};">${String(hour).padStart(2, "0")}:00</div>
+            ${Array.from({ length: 7 }, (_, dayIndex) => {
+              const gridColumn = dayIndex + 2;
+              return `<div class="day-slot" role="gridcell" tabindex="0" style="grid-column: ${gridColumn}; grid-row: ${gridRow};"></div>`;
+            }).join("")}
+          `;
+        }).join("")}
+
+        ${demoJobWeekIndex >= 0 ? `
+          <a class="week-event" href="${demoJobUrl}" style="grid-column: ${demoJobWeekIndex + 2}; grid-row: ${demoJobStartHour + 2} / span ${demoJobDurationHours};" aria-label="Open allocated job ${demoJobNumber}">
+            <span class="week-event-title">${demoJobTitle}</span>
+            <span class="week-event-address">${demoJobAddress}</span>
+            <span class="week-event-time">10:00 - 13:00</span>
+            <span class="week-event-priority">${demoJobPriority}</span>
+          </a>
+        ` : ""}
+      `;
+    };
+
+    const renderMonthCalendar = (referenceDate, rangeStart, rangeEnd) => {
+      if (!monthGrid || !monthTitle) {
+        return;
+      }
+
+      monthTitle.textContent = formatMonthTitle(referenceDate);
+
+      const year = referenceDate.getFullYear();
+      const month = referenceDate.getMonth();
+      const firstDayOfMonth = new Date(year, month, 1);
+      const firstVisibleOffset = (firstDayOfMonth.getDay() + 6) % 7;
+      const firstVisibleDate = new Date(year, month, 1 - firstVisibleOffset);
+      const cells = [];
+
+      for (let index = 0; index < 42; index += 1) {
+        const currentDate = new Date(firstVisibleDate);
+        currentDate.setDate(firstVisibleDate.getDate() + index);
+
+        const isCurrentMonth = currentDate.getMonth() === month;
+        const inRange = rangeStart && rangeEnd && isDateInRange(currentDate, rangeStart, rangeEnd);
+        const hasDemoJob = currentDate.getDate() === demoJobDay;
+
+        cells.push(`
+          <div class="calendar-day ${isCurrentMonth ? "" : "is-outside-month"} ${inRange ? "is-in-range" : ""}" tabindex="0" data-date="${formatDateForInput(currentDate)}" aria-label="${currentDate.toLocaleDateString("en-GB", {
+            weekday: "long",
+            day: "numeric",
+            month: "long",
+            year: "numeric",
+          })}">
+            <span class="calendar-day-number">${currentDate.getDate()}</span>
+            ${hasDemoJob ? `<span class="calendar-dot" aria-hidden="true"></span>` : ""}
+          </div>
+        `);
+      }
+
+      monthGrid.innerHTML = cells.join("");
+    };
+
+    const toggleFullCalendar = () => {
+      if (!dateFromInput || !dateToInput || !fullCalendar || !weekCalendar) {
+        return;
+      }
+
+      const fromDate = parseLocalDate(dateFromInput.value);
+      const toDate = parseLocalDate(dateToInput.value);
+
+      if (Number.isNaN(fromDate.getTime()) || Number.isNaN(toDate.getTime())) {
+        fullCalendar.classList.add("is-hidden");
+        weekCalendar.classList.remove("is-hidden");
+        return;
+      }
+
+      const millisecondsPerDay = 24 * 60 * 60 * 1000;
+      const dayCount = Math.floor((toDate - fromDate) / millisecondsPerDay) + 1;
+      const showMonthView = dayCount > 7;
+
+      renderWeekCalendar(fromDate);
+      renderMonthCalendar(fromDate, fromDate, toDate);
+      fullCalendar.classList.toggle("is-hidden", !showMonthView);
+      weekCalendar.classList.toggle("is-hidden", showMonthView);
+    };
+
+    if (dateFromInput && dateToInput) {
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+
+      const dayIndex = today.getDay();
+      const mondayOffset = dayIndex === 0 ? -6 : 1 - dayIndex;
+      const monday = new Date(today);
+      monday.setDate(today.getDate() + mondayOffset);
+
+      const sunday = new Date(monday);
+      sunday.setDate(monday.getDate() + 6);
+
+      dateFromInput.value = formatDateForInput(monday);
+      dateToInput.value = formatDateForInput(sunday);
+
+      if (monthGrid) {
+        monthGrid.addEventListener("click", (event) => {
+          const dayCell = event.target.closest(".calendar-day");
+          if (!dayCell || !dayCell.dataset.date) {
+            return;
+          }
+
+          const selectedDate = parseLocalDate(dayCell.dataset.date);
+          if (Number.isNaN(selectedDate.getTime())) {
+            return;
+          }
+
+          const fromDate = new Date(selectedDate);
+          fromDate.setDate(selectedDate.getDate() - 3);
+
+          const toDate = new Date(selectedDate);
+          toDate.setDate(selectedDate.getDate() + 3);
+
+          dateFromInput.value = formatDateForInput(fromDate);
+          dateToInput.value = formatDateForInput(toDate);
+          toggleFullCalendar();
+        });
+      }
+
+      dateFromInput.addEventListener("input", toggleFullCalendar);
+      dateToInput.addEventListener("input", toggleFullCalendar);
+      dateFromInput.addEventListener("change", toggleFullCalendar);
+      dateToInput.addEventListener("change", toggleFullCalendar);
+      toggleFullCalendar();
+    }
+  </script>
 </body>
 </html>
