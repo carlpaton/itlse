@@ -1,0 +1,846 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+  <title>AoTech - Home</title>
+  <style>
+    @import url("https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700&family=Sora:wght@600;700&display=swap");
+
+    :root {
+      --font-display: "Sora", "Segoe UI", sans-serif;
+      --font-body: "Public Sans", "Segoe UI", sans-serif;
+
+      --color-nav-top: #2a3f56;
+      --color-nav-main: #334d69;
+      --color-nav-active: #3f5f80;
+      --color-nav-hover: #3a5878;
+
+      --color-page-bg: #f3f5f8;
+      --color-surface: #ffffff;
+      --color-surface-muted: #eef3f8;
+      --color-border: #d7e0ea;
+
+      --color-text-strong: #10233a;
+      --color-text-body: #26394f;
+      --color-text-muted: #5f7185;
+      --color-text-on-dark: #f7fbff;
+
+      --color-success: #0aa85e;
+      --color-warning: #c9921a;
+      --color-danger: #c44536;
+
+      --color-focus: #5b8cc2;
+      --shadow-soft: 0 1px 2px rgba(10, 24, 40, 0.08), 0 6px 16px rgba(17, 36, 56, 0.04);
+
+      --space-2: 8px;
+      --space-3: 12px;
+      --space-4: 16px;
+      --space-5: 20px;
+      --space-6: 24px;
+      --space-8: 32px;
+      --radius-sm: 6px;
+      --radius-md: 10px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: var(--font-body);
+      color: var(--color-text-body);
+      background: var(--color-page-bg);
+    }
+
+    .app-header {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      box-shadow: 0 1px 0 rgba(7, 18, 32, 0.15);
+    }
+
+    .top-bar {
+      height: 56px;
+      background: var(--color-nav-top);
+      color: var(--color-text-on-dark);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 var(--space-6);
+    }
+
+    .brand-group {
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+    }
+
+    .brand {
+      color: var(--color-text-on-dark);
+      text-decoration: none;
+      font-family: var(--font-display);
+      font-size: 1.55rem;
+      font-weight: 700;
+      letter-spacing: 0.2px;
+    }
+
+    .top-right {
+      display: flex;
+      align-items: center;
+      gap: var(--space-4);
+    }
+
+    .company-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 6px 10px 6px 6px;
+      border-radius: 999px;
+      border: 1px solid rgba(247, 251, 255, 0.35);
+      background: rgba(255, 255, 255, 0.08);
+      color: var(--color-text-on-dark);
+      line-height: 1;
+      min-height: 36px;
+    }
+
+    .company-logo {
+      width: 24px;
+      height: 24px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, #e6eef8, #b7cee6);
+      color: #14314f;
+      display: inline-grid;
+      place-items: center;
+      font-weight: 800;
+      font-size: 0.64rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      flex-shrink: 0;
+    }
+
+    .company-name {
+      font-size: 0.79rem;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      white-space: nowrap;
+    }
+
+    .utility-icons {
+      display: flex;
+      align-items: center;
+      gap: var(--space-2);
+    }
+
+    .icon-btn {
+      border: 0;
+      background: transparent;
+      color: inherit;
+      width: 36px;
+      height: 36px;
+      border-radius: 999px;
+      display: inline-grid;
+      place-items: center;
+      cursor: pointer;
+      position: relative;
+      font-size: 1rem;
+      line-height: 1;
+    }
+
+    .icon-btn:hover {
+      background: rgba(255, 255, 255, 0.12);
+    }
+
+    .icon-btn:focus-visible,
+    .nav-link:focus-visible,
+    .btn-primary:focus-visible,
+    .search-input:focus-visible,
+    .filter-tab:focus-visible,
+    .pager-btn:focus-visible {
+      outline: 2px solid var(--color-focus);
+      outline-offset: 2px;
+    }
+
+    .has-dot::after {
+      content: "";
+      position: absolute;
+      top: 7px;
+      right: 7px;
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #ff4d4d;
+    }
+
+    .main-nav {
+      min-height: 44px;
+      background: var(--color-nav-main);
+      display: flex;
+      align-items: center;
+      gap: var(--space-2);
+      padding: 0 var(--space-5);
+      overflow-x: auto;
+    }
+
+    .nav-link {
+      color: rgba(247, 251, 255, 0.95);
+      text-decoration: none;
+      padding: 10px 12px;
+      border-radius: var(--radius-sm);
+      font-weight: 600;
+      white-space: nowrap;
+      transition: background 160ms ease;
+    }
+
+    .nav-link:hover {
+      background: var(--color-nav-hover);
+    }
+
+    .nav-link.is-active {
+      background: var(--color-nav-active);
+    }
+
+    .page-content {
+      max-width: 1220px;
+      margin: 0 auto;
+      padding: var(--space-8) var(--space-6);
+      animation: page-enter 320ms ease-out;
+    }
+
+    .page-toolbar {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: var(--space-4);
+      margin-bottom: var(--space-6);
+      flex-wrap: wrap;
+    }
+
+    .page-title {
+      margin: 0;
+      color: var(--color-text-strong);
+      font-family: var(--font-display);
+      font-size: clamp(1.75rem, 3vw, 2.2rem);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+
+    .page-subtitle {
+      margin: var(--space-2) 0 0;
+      color: var(--color-text-muted);
+      font-size: 1.02rem;
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid transparent;
+      border-radius: var(--radius-sm);
+      background: linear-gradient(135deg, #324e6b, #3a5a7b);
+      color: #ffffff;
+      min-height: 44px;
+      padding: 0 var(--space-5);
+      font-size: 0.96rem;
+      font-weight: 700;
+      font-family: var(--font-body);
+      text-decoration: none;
+      cursor: pointer;
+      box-shadow: 0 6px 12px rgba(42, 63, 86, 0.18);
+      transition: transform 140ms ease, box-shadow 140ms ease, filter 140ms ease;
+      gap: var(--space-2);
+      white-space: nowrap;
+    }
+
+    .btn-primary:hover {
+      filter: brightness(0.95);
+      transform: translateY(-1px);
+      box-shadow: 0 10px 16px rgba(42, 63, 86, 0.2);
+    }
+
+    .search-group {
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+      flex-wrap: wrap;
+      margin-bottom: var(--space-5);
+    }
+
+    .search-actions {
+      margin-left: auto;
+      display: inline-flex;
+    }
+
+    .search-input {
+      min-width: 220px;
+      height: 38px;
+      padding: 0 var(--space-4);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-sm);
+      background: var(--color-surface);
+      font-family: var(--font-body);
+      font-size: 0.9rem;
+      color: var(--color-text-body);
+      transition: border-color 160ms ease, box-shadow 160ms ease;
+    }
+
+    .search-input:focus {
+      border-color: var(--color-focus);
+      box-shadow: 0 0 0 3px rgba(91, 140, 194, 0.18);
+      outline: none;
+    }
+
+    .stat-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: var(--space-3);
+      margin-bottom: var(--space-5);
+    }
+
+    .stat-card {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      padding: var(--space-4);
+      box-shadow: var(--shadow-soft);
+      cursor: pointer;
+      transition: background 160ms ease, border-color 160ms ease;
+    }
+
+    .stat-card:hover {
+      background: #e9eef5;
+    }
+
+    .stat-label {
+      display: block;
+      font-size: 0.92rem;
+      color: var(--color-text-muted);
+      margin-bottom: var(--space-2);
+    }
+
+    .stat-value {
+      margin: 0;
+      font-family: var(--font-display);
+      font-size: 2rem;
+      color: var(--color-text-strong);
+      letter-spacing: -0.03em;
+      line-height: 1;
+    }
+
+    .stat-value.is-success { color: var(--color-success); }
+    .stat-value.is-warning { color: var(--color-warning); }
+    .stat-value.is-danger { color: var(--color-danger); }
+
+    .filter-tabs {
+      display: flex;
+      align-items: center;
+      gap: var(--space-2);
+      flex-wrap: wrap;
+      margin-bottom: var(--space-5);
+      border-bottom: 1px solid var(--color-border);
+      padding-bottom: var(--space-3);
+    }
+
+    .filter-tab {
+      padding: 6px 14px;
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-sm);
+      background: var(--color-surface);
+      font-family: var(--font-body);
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: var(--color-text-body);
+      cursor: pointer;
+      transition: background 160ms ease, border-color 160ms ease;
+    }
+
+    .filter-tab:hover {
+      background: #e9eef5;
+    }
+
+    .filter-tab.active {
+      background: var(--color-nav-main);
+      color: var(--color-text-on-dark);
+      border-color: var(--color-nav-main);
+    }
+
+    .table-card {
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      background: var(--color-surface);
+      box-shadow: var(--shadow-soft);
+      overflow: hidden;
+    }
+
+    .table-scroll {
+      width: 100%;
+      overflow-x: auto;
+    }
+
+    .jobs-table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 900px;
+    }
+
+    .jobs-table thead th {
+      padding: var(--space-3) var(--space-4);
+      text-align: left;
+      font-weight: 700;
+      font-size: 0.82rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: var(--color-text-muted);
+      border-bottom: 1px solid var(--color-border);
+      white-space: nowrap;
+      background: linear-gradient(180deg, #f8fbff 0%, #f0f5fb 100%);
+    }
+
+    .jobs-table tbody tr {
+      border-bottom: 1px solid #e3ebf5;
+      transition: background 120ms ease;
+      cursor: pointer;
+    }
+
+    .jobs-table tbody tr:last-child {
+      border-bottom: none;
+    }
+
+    .jobs-table tbody tr:hover {
+      background: #f8fbff;
+    }
+
+    .jobs-table tbody tr:focus-visible {
+      outline: 2px solid var(--color-focus);
+      outline-offset: -2px;
+    }
+
+    .jobs-table td {
+      padding: var(--space-3) var(--space-4);
+      color: var(--color-text-body);
+      vertical-align: middle;
+      font-size: 0.95rem;
+    }
+
+    .job-num {
+      font-family: var(--font-display);
+      font-weight: 600;
+      color: var(--color-text-strong);
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: var(--radius-sm);
+      font-size: 0.82rem;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .badge-in-progress { background: #dbeafe; color: #1d4ed8; }
+    .badge-assigned { background: #fde8c8; color: #b45309; }
+    .badge-scheduled { background: #e0f2fe; color: #0369a1; }
+    .badge-completed { background: #dcfce7; color: #15803d; }
+
+    .priority-dot {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.88rem;
+    }
+
+    .priority-dot::before {
+      content: "";
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .priority-high::before { background: #ef4444; }
+    .priority-medium::before { background: #f59e0b; }
+    .priority-low::before { background: #22c55e; }
+
+    .table-footer {
+      border-top: 1px solid var(--color-border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--space-4);
+      padding: var(--space-4);
+      background: #ffffff;
+      flex-wrap: wrap;
+    }
+
+    .dev-notes {
+      margin-top: calc(var(--space-8) + var(--space-2));
+      padding: var(--space-5);
+      border: 1px solid #cfd9e4;
+      border-radius: var(--radius-md);
+      background: #ffffff;
+      box-shadow: 0 14px 32px rgba(16, 35, 58, 0.08);
+    }
+
+    .dev-notes-title {
+      margin: 0 0 var(--space-3);
+      color: var(--color-text-strong);
+      font-family: var(--font-display);
+      font-size: 1rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+    }
+
+    .dev-notes-list {
+      margin: 0;
+      padding-left: 1.25rem;
+      color: var(--color-text-body);
+    }
+
+    .dev-notes-list li + li {
+      margin-top: var(--space-2);
+    }
+
+    .results-note {
+      margin: 0;
+      color: var(--color-text-muted);
+      font-size: 0.93rem;
+    }
+
+    .pager {
+      display: flex;
+      gap: var(--space-2);
+      align-items: center;
+    }
+
+    .pager-btn {
+      border: 1px solid var(--color-border);
+      background: #ffffff;
+      border-radius: var(--radius-sm);
+      color: var(--color-text-body);
+      min-height: 36px;
+      min-width: 36px;
+      padding: 0 var(--space-3);
+      font-family: var(--font-body);
+      font-size: 0.92rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 140ms ease, color 140ms ease, border-color 140ms ease;
+    }
+
+    .pager-btn:hover {
+      background: #f2f6fb;
+      border-color: #c6d5e5;
+    }
+
+    .pager-btn.is-current {
+      background: var(--color-nav-main);
+      color: #ffffff;
+      border-color: var(--color-nav-main);
+    }
+
+    @keyframes page-enter {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 980px) {
+      .stat-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 768px) {
+      .top-bar {
+        padding: 0 var(--space-4);
+      }
+
+      .company-name {
+        display: none;
+      }
+
+      .page-content {
+        padding: var(--space-6) var(--space-4);
+      }
+
+      .page-toolbar {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .btn-primary {
+        width: 100%;
+      }
+
+      .search-group {
+        width: 100%;
+      }
+
+      .search-input {
+        width: 100%;
+      }
+
+      .search-actions {
+        margin-left: 0;
+        width: 100%;
+      }
+
+      .stat-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .table-footer {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+  </style>
+</head>
+<body data-user="regional_manager" data-company-name="Compass" data-company-logo="COM">
+  <header class="app-header" role="banner">
+    <div class="top-bar">
+      <div class="brand-group">
+        <button class="icon-btn" aria-label="Open menu">&#9776;</button>
+        <a class="brand" href="dashboard.html"> Asset Oversight </a>
+      </div>
+      <div class="top-right">
+        <div class="company-chip" aria-label="Company identity for logged in user">
+          <span class="company-logo" id="company-logo" aria-hidden="true">COM</span>
+          <span class="company-name" id="company-name">Compass</span>
+        </div>
+        <div class="utility-icons" aria-label="Utility actions">
+          <button class="icon-btn" aria-label="Search">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="11" cy="11" r="8"></circle>
+              <path d="m21 21-4.35-4.35"></path>
+            </svg>
+          </button>
+          <button class="icon-btn has-dot" aria-label="Notifications">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+              <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+            </svg>
+          </button>
+          <a class="icon-btn" href="./../index.html" aria-label="Profile">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+              <circle cx="12" cy="7" r="4"></circle>
+            </svg>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <nav class="main-nav" aria-label="Primary">
+      <a href="dashboard.html" class="nav-link is-active" aria-current="page">Dashboard</a>
+
+      <a href="reports01.html" class="nav-link">Reports</a>
+      <a href="contractor01.html" class="nav-link">Contractor</a>
+      <a href="calendar01.html" class="nav-link">Calendar</a>
+      <a href="assets01.html" class="nav-link">Assets</a>
+    
+      <a href="users01.html" class="nav-link">Users</a>
+    </nav>
+  </header>
+
+  <main class="page-content" id="page-content">
+    <section class="page-toolbar" aria-label="Dashboard heading and action">
+      <div>
+        <h1 class="page-title">Main Dashboard</h1>
+        <p class="page-subtitle">All jobs across managed regions</p>
+      </div>
+    </section>
+
+    <section class="search-group" aria-label="Dashboard searches">
+      <a class="btn-primary" href="camera-dashboard.html" aria-label="Open QR code camera search">QR Code Search</a>
+      <input class="search-input" type="search" placeholder="Search Jobs" aria-label="Search Jobs" />
+      <span class="search-actions">
+        <a class="btn-primary" href="job01.html">
+          Create
+        </a>
+      </span>
+    </section>
+
+    <section class="stat-grid" aria-label="Job summary metrics">
+      <article class="stat-card">
+        <span class="stat-label">Total Jobs</span>
+        <p class="stat-value">41</p>
+      </article>
+      <article class="stat-card">
+        <span class="stat-label">In Progress</span>
+        <p class="stat-value is-warning">9</p>
+      </article>
+      <article class="stat-card">
+        <span class="stat-label">Completed</span>
+        <p class="stat-value is-success">25</p>
+      </article>
+      <article class="stat-card">
+        <span class="stat-label">High Priority</span>
+        <p class="stat-value is-danger">7</p>
+      </article>
+    </section>
+
+    <section class="filter-tabs" role="tablist" aria-label="Job filters">
+      <button class="filter-tab" role="tab" aria-selected="false" type="button" title="Filter to show jobs with the status public or staff">Public queues</button>
+      <button class="filter-tab" role="tab" aria-selected="false" type="button" title="Filter to show jobs for regional sites only">Regional sites</button>
+    </section>
+
+    <section class="table-card" aria-label="Jobs list">
+      <div class="table-scroll">
+        <table class="jobs-table">
+          <thead>
+            <tr>
+              <th scope="col">Job #</th>
+              <th scope="col">Priority</th>
+              <th scope="col">Date Assigned</th>
+              <th scope="col">Date Completed</th>
+              <th scope="col">Job Status</th>
+              <th scope="col">Job Type</th>
+              <th scope="col">Asset Details</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr data-job-type="maintenance">
+              <td class="job-num">JOB-0041</td>
+              <td><span class="priority-dot priority-high">High</span></td>
+              <td>08 May 2026</td>
+              <td>-</td>
+              <td><span class="badge badge-in-progress">In progress</span></td>
+              <td>maintenance</td>
+              <td>Generator - Site A</td>
+            </tr>
+            <tr data-job-type="repair">
+              <td class="job-num">JOB-0040</td>
+              <td><span class="priority-dot priority-medium">Medium</span></td>
+              <td>06 May 2026</td>
+              <td>-</td>
+              <td><span class="badge badge-assigned">Assigned</span></td>
+              <td>repair</td>
+              <td>HVAC Unit 3 - Site B</td>
+            </tr>
+            <tr data-job-type="maintenance">
+              <td class="job-num">JOB-0039</td>
+              <td><span class="priority-dot priority-low">Low</span></td>
+              <td>04 May 2026</td>
+              <td>-</td>
+              <td><span class="badge badge-scheduled">Scheduled</span></td>
+              <td>maintenance</td>
+              <td>Fire Panel - Site C</td>
+            </tr>
+            <tr data-job-type="repair">
+              <td class="job-num">JOB-0038</td>
+              <td><span class="priority-dot priority-medium">Medium</span></td>
+              <td>01 May 2026</td>
+              <td>09 May 2026</td>
+              <td><span class="badge badge-completed">Completed</span></td>
+              <td>repair</td>
+              <td>Pump Station 2 - Site A</td>
+            </tr>
+            <tr data-job-type="maintenance">
+              <td class="job-num">JOB-0037</td>
+              <td><span class="priority-dot priority-high">High</span></td>
+              <td>28 Apr 2026</td>
+              <td>05 May 2026</td>
+              <td><span class="badge badge-completed">Completed</span></td>
+              <td>maintenance</td>
+              <td>Electrical Board - Site D</td>
+            </tr>
+            <tr data-job-type="repair">
+              <td class="job-num">JOB-0036</td>
+              <td><span class="priority-dot priority-low">Low</span></td>
+              <td>25 Apr 2026</td>
+              <td>-</td>
+              <td><span class="badge badge-assigned">Assigned</span></td>
+              <td>repair</td>
+              <td>Water Tank - Site B</td>
+            </tr>
+            <tr data-job-type="maintenance">
+              <td class="job-num">JOB-0035</td>
+              <td><span class="priority-dot priority-medium">Medium</span></td>
+              <td>22 Apr 2026</td>
+              <td>-</td>
+              <td><span class="badge badge-in-progress">In progress</span></td>
+              <td>maintenance</td>
+              <td>Cooling Tower - Site E</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="table-footer">
+        <p class="results-note">Showing 1 to 7 of 41 results</p>
+        <nav class="pager" aria-label="Pagination">
+          <button class="pager-btn" type="button">Previous</button>
+          <button class="pager-btn is-current" type="button" aria-current="page">1</button>
+          <button class="pager-btn" type="button">2</button>
+          <button class="pager-btn" type="button">Next</button>
+        </nav>
+      </div>
+    </section>
+
+    <section class="dev-notes" aria-label="Development notes">
+      <h2 class="dev-notes-title">DEV NOTES</h2>
+      <ul class="dev-notes-list">
+        <li>Search icon - TBA</li>
+        <li>Bell icon - notifications (for example: job completed, job updated, or an asset reaching its financial spend limit). MVP could be a new screen showing these as a table, and/or a stalled-job alert when a job has not been updated within a set timeframe. A customer could also press a follow-up button to notify the tech and request an update.</li>
+        <li>User icon - logs the user out</li>
+        <li>QR Code Search -  opens the camera and reads the QR details, then filters the page on any found jobs</li>
+        <li>Search jobs - searches on model, serial, company name and address, then filters the page on any found jobs</li>
+        <li>Total jobs - clicking filters the list of jobs to show all jobs that are not complete</li>
+        <li>In progress - clicking filters the list of jobs to show all jobs that are in progress</li>
+        <li>Complete - clicking shows complete jobs</li>
+        <li>High Priority - shows jobs with high priority status</li>
+        <li>Public queues - these are jobs with the status public or staff</li>
+        <li>Regional sites - To be confirmed</li>
+      </ul>
+    </section>
+  </main>
+
+  <script>
+    (function () {
+      var body = document.body;
+      var companyNameEl = document.getElementById("company-name");
+      var companyLogoEl = document.getElementById("company-logo");
+      var companyName = (body.dataset.companyName || "Company").trim();
+      var companyLogo = (body.dataset.companyLogo || "").trim();
+
+      if (!companyLogo) {
+        companyLogo = companyName
+          .split(/\s+/)
+          .map(function (part) { return part.charAt(0); })
+          .join("")
+          .slice(0, 3)
+          .toUpperCase();
+      }
+
+      companyNameEl.textContent = companyName;
+      companyLogoEl.textContent = companyLogo || "CO";
+      companyLogoEl.setAttribute("title", companyName);
+
+      var jobRows = document.querySelectorAll(".jobs-table tbody tr");
+      jobRows.forEach(function (row) {
+        var jobNumberCell = row.querySelector(".job-num");
+        var jobType = (row.dataset.jobType || "maintenance").trim();
+        var jobNumber = jobNumberCell ? jobNumberCell.textContent.trim() : "job";
+        var jobUrl = "job02.html?job_type=" + encodeURIComponent(jobType);
+
+        row.tabIndex = 0;
+        row.setAttribute("role", "link");
+        row.setAttribute("aria-label", "Open " + jobNumber + " in edit mode");
+
+        row.addEventListener("click", function () {
+          window.location.href = jobUrl;
+        });
+
+        row.addEventListener("keydown", function (event) {
+          if (event.key === "Enter" || event.key === " ") {
+            event.preventDefault();
+            window.location.href = jobUrl;
+          }
+        });
+      });
+    })();
+  </script>
+</body>
+</html>
