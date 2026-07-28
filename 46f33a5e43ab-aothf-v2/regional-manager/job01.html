@@ -880,17 +880,16 @@
 
         <aside class="side-stack" aria-label="Job side panels">
           <section class="summary-chart-card" aria-label="Cost distribution chart">
-            <h2 class="panel-title">Cost Distribution</h2>
+            <h2 class="panel-title">Cost Summary</h2>
             <div class="summary-chart-wrap">
               <canvas id="asset-cost-pie-chart" aria-label="Asset cost distribution pie chart" role="img"></canvas>
             </div>
           </section>
 
           <section class="cost-card" aria-label="Job cost summary">
-            <h2 class="panel-title">Cost Summary</h2>
             <div class="cost-list">
               <div class="cost-item">
-                <div class="cost-label asset">Asset Cost</div>
+                <div class="cost-label asset">Asset Value</div>
                 <div class="cost-value">$15,000.00</div>
               </div>
               <div class="cost-item">
@@ -926,6 +925,14 @@
         <li>Model # and Serial # are search fields to lookup the asset the job is attached to</li>
         <li>Assigned company - assigned company is a drop down of all contractor companies onboarded with a client, if not found they can add on the fly the same as Company</li>
         <li>Photos are displayed here, max 5, with an option to add a new photo or delete an existing one, delete action is confirmed</li>
+        <li>Cost Summary Pie Chart - distribution logic TBA</li>
+        <li>Asset Value - calculated based on inputs when creating the asset</li>
+        <li>Spend Limit - counts down and is constantly being recalculated as jobs are completed and invoiced. </li>
+        <li>Spend Limit - spend limit has a MAX, TBA - What do we do when it reaches zero?</li>
+        <li>Repair Cost, Maintenance Cost - counts up and are constantly being recalculated as jobs are completed and invoiced. </li>
+        <li>Decline button - cancel job while creating it.</li>
+        <li>Approve - creates and saves job, also emails it to the technician.</li>
+        <li>Schedule - creates approves job while also scheduling into calender. This will check the users "Jobs per day" setting as to not overload the user</li>
       </ul>
     </section>
   </main>
@@ -1061,13 +1068,13 @@
         new Chart(chartCanvas, {
           type: 'pie',
           data: {
-            labels: ['Asset Cost', 'Spend Limit', 'Repair Cost', 'Maintenance Cost'],
+            labels: ['Asset Value', 'Spend Limit', 'Repair Cost', 'Maintenance Cost'],
             datasets: [
               {
                 data: [15000, 1250, 450, 125],
-                backgroundColor: ['#2f4f6f', '#6f8fb4', '#e09a8d', '#8fc59d'],
-                borderColor: '#ffffff',
-                borderWidth: 3
+                backgroundColor: ['#f0d7cf', '#eddcb9', '#c8d9ef', '#cae4d0'],
+                hoverBackgroundColor: ['#e3c2b8', '#ddcb9f', '#b7c8e3', '#b8d6c0'],
+                borderWidth: 0
               }
             ]
           },
