@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
-  <title>AoTech - Expenses</title>
+  <title>AoTech - Create Expense</title>
   <style>
     @import url("https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700&family=Sora:wght@600;700&display=swap");
 
@@ -19,8 +19,8 @@
 
       --color-page-bg: #f3f5f8;
       --color-surface: #ffffff;
-      --color-surface-muted: #eef3f8;
       --color-border: #d7e0ea;
+      --color-surface-muted: #eef3f8;
 
       --color-text-strong: #10233a;
       --color-text-body: #26394f;
@@ -48,6 +48,9 @@
       font-family: var(--font-body);
       color: var(--color-text-body);
       background: var(--color-page-bg);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
     }
 
     .app-header {
@@ -123,6 +126,12 @@
       white-space: nowrap;
     }
 
+    .utility-icons {
+      display: flex;
+      align-items: center;
+      gap: var(--space-2);
+    }
+
     .icon-btn {
       border: 0;
       background: transparent;
@@ -142,11 +151,9 @@
 
     .icon-btn:focus-visible,
     .nav-link:focus-visible,
+    .form-input:focus-visible,
     .btn-primary:focus-visible,
-    .btn-secondary:focus-visible,
-    .filter-tab:focus-visible,
-    .search-input:focus-visible,
-    .pager-btn:focus-visible {
+    .btn-secondary:focus-visible {
       outline: 2px solid var(--color-focus);
       outline-offset: 2px;
     }
@@ -186,19 +193,16 @@
     .nav-link.is-active { background: var(--color-nav-active); }
 
     .page-content {
+      flex: 1;
       max-width: 1220px;
+      width: 100%;
       margin: 0 auto;
       padding: var(--space-8) var(--space-6);
       animation: page-enter 320ms ease-out;
     }
 
     .page-toolbar {
-      display: flex;
-      align-items: flex-start;
-      justify-content: space-between;
-      gap: var(--space-4);
       margin-bottom: var(--space-6);
-      flex-wrap: wrap;
     }
 
     .page-title {
@@ -214,13 +218,6 @@
       margin: var(--space-2) 0 0;
       color: var(--color-text-muted);
       font-size: 1.02rem;
-    }
-
-    .toolbar-actions {
-      display: flex;
-      gap: var(--space-3);
-      align-items: center;
-      flex-wrap: wrap;
     }
 
     .btn-primary {
@@ -240,7 +237,6 @@
       cursor: pointer;
       box-shadow: 0 6px 12px rgba(42, 63, 86, 0.18);
       transition: transform 140ms ease, box-shadow 140ms ease, filter 140ms ease;
-      gap: var(--space-2);
       white-space: nowrap;
     }
 
@@ -264,6 +260,7 @@
       font-weight: 600;
       font-family: var(--font-body);
       cursor: pointer;
+      text-decoration: none;
       transition: background 140ms ease, border-color 140ms ease;
     }
 
@@ -272,161 +269,72 @@
       border-color: #9fb1c6;
     }
 
-    .search-group {
-      display: flex;
-      align-items: center;
-      gap: var(--space-3);
-      flex-wrap: wrap;
-      margin-bottom: var(--space-5);
+    .form-card {
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      background: var(--color-surface);
+      box-shadow: var(--shadow-soft);
+      padding: var(--space-6);
     }
 
-    .search-input {
-      min-width: 220px;
-      height: 38px;
+    .form-heading {
+      margin: 0 0 var(--space-5);
+      color: var(--color-text-strong);
+      font-family: var(--font-display);
+      font-size: 1.2rem;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+    }
+
+    .user-form {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: var(--space-4);
+    }
+
+    .form-field {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-1);
+    }
+
+    .form-field--full {
+      grid-column: 1 / -1;
+    }
+
+    .form-field label {
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: var(--color-text-muted);
+    }
+
+    .form-input {
+      height: 44px;
       padding: 0 var(--space-4);
       border: 1px solid var(--color-border);
       border-radius: var(--radius-sm);
       background: var(--color-surface);
-      font-family: var(--font-body);
-      font-size: 0.9rem;
       color: var(--color-text-body);
+      font-family: var(--font-body);
+      font-size: 0.95rem;
       transition: border-color 160ms ease, box-shadow 160ms ease;
+      width: 100%;
     }
 
-    .search-input:focus {
+    .form-input::placeholder { color: var(--color-text-muted); }
+
+    .form-input:focus {
       border-color: var(--color-focus);
       box-shadow: 0 0 0 3px rgba(91, 140, 194, 0.18);
       outline: none;
     }
 
-    .filter-tabs {
+    .form-actions {
+      grid-column: 1 / -1;
       display: flex;
-      align-items: center;
-      gap: var(--space-2);
-      flex-wrap: wrap;
-      margin-bottom: var(--space-5);
-      border-bottom: 1px solid var(--color-border);
-      padding-bottom: var(--space-3);
-    }
-
-    .filter-tab {
-      padding: 6px 14px;
-      border: 1px solid var(--color-border);
-      border-radius: var(--radius-sm);
-      background: var(--color-surface);
-      font-family: var(--font-body);
-      font-size: 0.88rem;
-      font-weight: 600;
-      color: var(--color-text-body);
-      cursor: pointer;
-      transition: background 160ms ease, border-color 160ms ease;
-    }
-
-    .filter-tab:hover { background: #e9eef5; }
-
-    .filter-tab.active {
-      background: var(--color-nav-main);
-      color: var(--color-text-on-dark);
-      border-color: var(--color-nav-main);
-    }
-
-    .table-card {
-      border: 1px solid var(--color-border);
-      border-radius: var(--radius-md);
-      background: var(--color-surface);
-      box-shadow: var(--shadow-soft);
-      overflow: hidden;
-    }
-
-    .table-scroll {
-      width: 100%;
-      overflow-x: auto;
-    }
-
-    .expenses-table {
-      width: 100%;
-      border-collapse: collapse;
-      min-width: 900px;
-      background: #ffffff;
-    }
-
-    .expenses-table thead th {
-      padding: var(--space-3) var(--space-4);
-      text-align: left;
-      font-weight: 700;
-      font-size: 0.82rem;
-      text-transform: uppercase;
-      letter-spacing: 0.04em;
-      color: var(--color-text-muted);
-      border-bottom: 1px solid var(--color-border);
-      white-space: nowrap;
-      background: linear-gradient(180deg, #f8fbff 0%, #f0f5fb 100%);
-    }
-
-    .expenses-table tbody tr {
-      border-bottom: 1px solid #e3ebf5;
-      transition: background 120ms ease;
-    }
-
-    .expenses-table tbody tr:last-child { border-bottom: none; }
-    .expenses-table tbody tr:hover { background: #f8fbff; }
-    .expenses-table tbody tr.is-clickable { cursor: pointer; }
-
-    .expenses-table td {
-      padding: var(--space-3) var(--space-4);
-      color: var(--color-text-body);
-      vertical-align: middle;
-      font-size: 0.95rem;
-      white-space: nowrap;
-    }
-
-    .table-footer {
-      border-top: 1px solid var(--color-border);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: var(--space-4);
-      padding: var(--space-4);
-      background: #ffffff;
-      flex-wrap: wrap;
-    }
-
-    .results-note {
-      margin: 0;
-      color: var(--color-text-muted);
-      font-size: 0.93rem;
-    }
-
-    .pager {
-      display: flex;
-      gap: var(--space-2);
-      align-items: center;
-    }
-
-    .pager-btn {
-      border: 1px solid var(--color-border);
-      background: #ffffff;
-      border-radius: var(--radius-sm);
-      color: var(--color-text-body);
-      min-height: 36px;
-      min-width: 36px;
-      padding: 0 var(--space-3);
-      font-family: var(--font-body);
-      font-size: 0.92rem;
-      font-weight: 600;
-      cursor: pointer;
-      transition: background 140ms ease, color 140ms ease, border-color 140ms ease;
-    }
-
-    .pager-btn:hover {
-      background: #f2f6fb;
-      border-color: #c6d5e5;
-    }
-
-    .pager-btn.is-current {
-      background: var(--color-nav-main);
-      color: #ffffff;
-      border-color: var(--color-nav-main);
+      justify-content: flex-end;
+      gap: var(--space-3);
+      padding-top: var(--space-2);
     }
 
     .dev-notes {
@@ -465,26 +373,18 @@
     @media (max-width: 768px) {
       .top-bar { padding: 0 var(--space-4); }
 
+      .user-form {
+        grid-template-columns: 1fr;
+      }
+
       .company-name {
         display: none;
       }
 
       .page-content { padding: var(--space-6) var(--space-4); }
-
-      .toolbar-actions {
-        width: 100%;
-      }
-
-      .toolbar-actions .btn-primary,
-      .toolbar-actions .btn-secondary,
-      .search-input {
-        width: 100%;
-      }
-
-      .table-footer {
-        flex-direction: column;
-        align-items: flex-start;
-      }
+      .form-actions { flex-direction: column-reverse; }
+      .btn-primary,
+      .btn-secondary { width: 100%; }
     }
   </style>
 </head>
@@ -537,138 +437,54 @@
   </header>
 
   <main class="page-content" id="page-content">
-    <section class="page-toolbar" aria-label="Expenses header">
+    <section class="page-toolbar" aria-label="Create expense heading">
       <div>
-        <h1 class="page-title">Expenses</h1>
-        <p class="page-subtitle">Expenses.</p>
-      </div>
-      <div class="toolbar-actions">
-        <a class="btn-primary" href="expenses02.html">Create</a>
+        <h1 class="page-title">Edit Expense</h1>
+        <p class="page-subtitle">Edit Expense</p>
       </div>
     </section>
 
-    <section class="search-group" aria-label="Search expenses">
-      <input class="search-input" type="search" placeholder="Search" aria-label="Search expenses" />
-    </section>
-
-    <section class="table-card" aria-label="Expense register">
-      <div class="table-scroll">
-        <table class="expenses-table">
-          <thead>
-            <tr>
-              <th>Item Code</th>
-              <th>Item Name</th>
-              <th>Description</th>
-              <th>Cost</th>
-              <th>Mark Up %</th>
-              <th>Total</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr class="is-clickable" role="link" tabindex="0" data-href="expenses03.html">
-              <td>E-1042</td>
-              <td>Compressor Oil</td>
-              <td>Industrial compressor lubricant 5L</td>
-              <td>$82.00</td>
-              <td>20%</td>
-              <td>$98.40</td>
-            </tr>
-            <tr class="is-clickable" role="link" tabindex="0" data-href="expenses03.html">
-              <td>E-2297</td>
-              <td>Copper Fitting</td>
-              <td>1/2 inch coupler and seal set</td>
-              <td>$36.50</td>
-              <td>18%</td>
-              <td>$43.07</td>
-            </tr>
-            <tr class="is-clickable" role="link" tabindex="0" data-href="expenses03.html">
-              <td>E-3015</td>
-              <td>Drive Belt</td>
-              <td>Motor drive belt replacement</td>
-              <td>$47.00</td>
-              <td>15%</td>
-              <td>$54.05</td>
-            </tr>
-            <tr class="is-clickable" role="link" tabindex="0" data-href="expenses03.html">
-              <td>E-4860</td>
-              <td>Service Kit</td>
-              <td>Filter and gasket maintenance kit</td>
-              <td>$120.00</td>
-              <td>22%</td>
-              <td>$146.40</td>
-            </tr>
-            <tr class="is-clickable" role="link" tabindex="0" data-href="expenses03.html">
-              <td>E-5178</td>
-              <td>Sealant</td>
-              <td>High-temp pipe sealant tube</td>
-              <td>$24.00</td>
-              <td>15%</td>
-              <td>$27.60</td>
-            </tr>
-            <tr class="is-clickable" role="link" tabindex="0" data-href="expenses03.html">
-              <td>E-6230</td>
-              <td>Fastener Pack</td>
-              <td>Stainless bolt pack (20 units)</td>
-              <td>$18.75</td>
-              <td>18%</td>
-              <td>$22.13</td>
-            </tr>
-            <tr class="is-clickable" role="link" tabindex="0" data-href="expenses03.html">
-              <td>E-7044</td>
-              <td>Sensor Lead</td>
-              <td>Temperature lead and connector</td>
-              <td>$55.00</td>
-              <td>20%</td>
-              <td>$66.00</td>
-            </tr>
-            <tr class="is-clickable" role="link" tabindex="0" data-href="expenses03.html">
-              <td>E-8096</td>
-              <td>Coolant</td>
-              <td>Equipment coolant concentrate 4L</td>
-              <td>$41.00</td>
-              <td>16%</td>
-              <td>$47.56</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-      <footer class="table-footer" aria-label="Expense table pagination">
-        <p class="results-note">Showing 1 to 8 of 8 expenses</p>
-        <div class="pager">
-          <button class="pager-btn" type="button" aria-label="Previous page">&lt;</button>
-          <button class="pager-btn is-current" type="button" aria-current="page">1</button>
-          <button class="pager-btn" type="button">2</button>
-          <button class="pager-btn" type="button">3</button>
-          <button class="pager-btn" type="button" aria-label="Next page">&gt;</button>
+    <section class="form-card" aria-label="Create expense form">
+      <h2 class="form-heading">Expense Details</h2>
+      <form class="user-form" method="post" novalidate>
+        <div class="form-field">
+          <label for="item-code">Item code</label>
+          <input class="form-input" id="item-code" name="item_code" type="text" value="E-1042" required />
         </div>
-      </footer>
+
+        <div class="form-field">
+          <label for="item-name">Item name</label>
+          <input class="form-input" id="item-name" name="item_name" type="text" value="Compressor Oil" required />
+        </div>
+
+        <div class="form-field form-field--full">
+          <label for="item-description">Item description</label>
+          <input class="form-input" id="item-description" name="item_description" type="text" value="Industrial compressor lubricant 5L" required />
+        </div>
+
+        <div class="form-field">
+          <label for="item-markup">Mark up %</label>
+          <input class="form-input" id="item-markup" name="item_markup" type="text" value="20%" required />
+        </div>
+
+        <div class="form-field">
+          <label for="item-cost">Item cost</label>
+          <input class="form-input" id="item-cost" name="item_cost" type="text" value="$82.00" required />
+        </div>
+
+        <div class="form-actions">
+          <a class="btn-secondary" href="expenses01.html">Cancel</a>
+          <a class="btn-primary" href="expenses01.html">Save</a>
+        </div>
+      </form>
     </section>
 
     <section class="dev-notes" aria-label="Development notes">
       <h2 class="dev-notes-title">DEV NOTES</h2>
       <ul class="dev-notes-list">
-        <li>Search - filters the table on item code, item name, description</li>
+        <li>Can all values be edited after they captured it?</li>
       </ul>
     </section>
   </main>
-
-  <script>
-    const clickableRows = document.querySelectorAll('.expenses-table tbody tr[data-href]');
-
-    clickableRows.forEach((row) => {
-      const target = row.dataset.href;
-
-      row.addEventListener('click', () => {
-        window.location.href = target;
-      });
-
-      row.addEventListener('keydown', (event) => {
-        if (event.key === 'Enter' || event.key === ' ') {
-          event.preventDefault();
-          window.location.href = target;
-        }
-      });
-    });
-  </script>
 </body>
 </html>
