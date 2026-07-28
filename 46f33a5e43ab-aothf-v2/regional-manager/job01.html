@@ -494,6 +494,30 @@
       font-weight: 600;
     }
 
+    .photo-controls {
+      display: flex;
+      align-items: center;
+      gap: var(--space-2);
+      margin-top: var(--space-4);
+      flex-wrap: wrap;
+    }
+
+    .summary-chart-card {
+      padding: var(--space-4);
+    }
+
+    .summary-chart-wrap {
+      width: min(340px, 100%);
+      margin: 0 auto;
+      aspect-ratio: 1;
+    }
+
+    .summary-chart-wrap canvas {
+      width: 100% !important;
+      height: 100% !important;
+      display: block;
+    }
+
     .captured-photo {
       min-height: 120px;
       border: 1px solid #bcc9d8;
@@ -779,7 +803,7 @@
               <p class="field-label">Photo</p>
               <div class="captured-photo" aria-label="Captured asset photo">
                 <div class="captured-photo-header">
-                  <button class="btn-danger" type="button" aria-label="Delete photo 1">Delete</button>
+                  <button class="btn-danger" type="button" aria-label="Delete current photo">Delete Photo</button>
                 </div>
                 <svg class="captured-photo-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" role="img" aria-labelledby="asset-photo-title asset-photo-desc">
                   <title id="asset-photo-title">Asset Photo QR-2023-032</title>
@@ -846,12 +870,22 @@
                   </g>
                 </svg>
               </div>
-              <button class="btn-add-contact" id="add-photo" type="button" aria-label="Add more photos">+</button>
+              <div class="photo-controls" aria-label="Photo controls">
+                <button class="btn-add-contact" id="add-photo" type="button" aria-label="Add photo">+</button>
+              </div>
             </div>
+
           </div>
         </section>
 
         <aside class="side-stack" aria-label="Job side panels">
+          <section class="summary-chart-card" aria-label="Cost distribution chart">
+            <h2 class="panel-title">Cost Distribution</h2>
+            <div class="summary-chart-wrap">
+              <canvas id="asset-cost-pie-chart" aria-label="Asset cost distribution pie chart" role="img"></canvas>
+            </div>
+          </section>
+
           <section class="cost-card" aria-label="Job cost summary">
             <h2 class="panel-title">Cost Summary</h2>
             <div class="cost-list">
@@ -891,10 +925,12 @@
         <li>Company - this is a search box, the user can select a result from the existing or click create new when not found, this adds a blank company with just the name set. Company is the company that owns the asset.</li>
         <li>Model # and Serial # are search fields to lookup the asset the job is attached to</li>
         <li>Assigned company - assigned company is a drop down of all contractor companies onboarded with a client, if not found they can add on the fly the same as Company</li>
-        <li>Photos are displayed here, max 5, with an option to add a new photo or delete an existing one</li>
+        <li>Photos are displayed here, max 5, with an option to add a new photo or delete an existing one, delete action is confirmed</li>
       </ul>
     </section>
   </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
   <script>
     (function () {
       const companyDefaults = ['Company A', 'Company B', 'Company C'];
@@ -1019,6 +1055,44 @@
         '[data-assigned-company-add]',
         assignedCompanyDefaults
       );
+
+      const chartCanvas = document.getElementById('asset-cost-pie-chart');
+      if (chartCanvas && typeof Chart !== 'undefined') {
+        new Chart(chartCanvas, {
+          type: 'pie',
+          data: {
+            labels: ['Asset Cost', 'Spend Limit', 'Repair Cost', 'Maintenance Cost'],
+            datasets: [
+              {
+                data: [15000, 1250, 450, 125],
+                backgroundColor: ['#2f4f6f', '#6f8fb4', '#e09a8d', '#8fc59d'],
+                borderColor: '#ffffff',
+                borderWidth: 3
+              }
+            ]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            layout: {
+              padding: 4
+            },
+            plugins: {
+              legend: {
+                position: 'bottom',
+                labels: {
+                  boxWidth: 14,
+                  color: '#26394f',
+                  font: {
+                    family: 'Public Sans, Segoe UI, sans-serif',
+                    size: 13
+                  }
+                }
+              }
+            }
+          }
+        });
+      }
     })();
 
   </script>
