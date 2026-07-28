@@ -145,7 +145,8 @@
     .btn-primary:focus-visible,
     .btn-secondary:focus-visible,
     .filter-tab:focus-visible,
-    .search-input:focus-visible {
+    .search-input:focus-visible,
+    .pager-btn:focus-visible {
       outline: 2px solid var(--color-focus);
       outline-offset: 2px;
     }
@@ -346,6 +347,7 @@
       width: 100%;
       border-collapse: collapse;
       min-width: 900px;
+      background: #ffffff;
     }
 
     .expenses-table thead th {
@@ -374,6 +376,84 @@
       color: var(--color-text-body);
       vertical-align: middle;
       font-size: 0.95rem;
+      white-space: nowrap;
+    }
+
+    .table-footer {
+      border-top: 1px solid var(--color-border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--space-4);
+      padding: var(--space-4);
+      background: #ffffff;
+      flex-wrap: wrap;
+    }
+
+    .results-note {
+      margin: 0;
+      color: var(--color-text-muted);
+      font-size: 0.93rem;
+    }
+
+    .pager {
+      display: flex;
+      gap: var(--space-2);
+      align-items: center;
+    }
+
+    .pager-btn {
+      border: 1px solid var(--color-border);
+      background: #ffffff;
+      border-radius: var(--radius-sm);
+      color: var(--color-text-body);
+      min-height: 36px;
+      min-width: 36px;
+      padding: 0 var(--space-3);
+      font-family: var(--font-body);
+      font-size: 0.92rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 140ms ease, color 140ms ease, border-color 140ms ease;
+    }
+
+    .pager-btn:hover {
+      background: #f2f6fb;
+      border-color: #c6d5e5;
+    }
+
+    .pager-btn.is-current {
+      background: var(--color-nav-main);
+      color: #ffffff;
+      border-color: var(--color-nav-main);
+    }
+
+    .dev-notes {
+      margin-top: calc(var(--space-8) + var(--space-2));
+      padding: var(--space-5);
+      border: 1px solid #cfd9e4;
+      border-radius: var(--radius-md);
+      background: #ffffff;
+      box-shadow: 0 14px 32px rgba(16, 35, 58, 0.08);
+    }
+
+    .dev-notes-title {
+      margin: 0 0 var(--space-3);
+      color: var(--color-text-strong);
+      font-family: var(--font-display);
+      font-size: 1rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+    }
+
+    .dev-notes-list {
+      margin: 0;
+      padding-left: 1.25rem;
+      color: var(--color-text-body);
+    }
+
+    .dev-notes-list li + li {
+      margin-top: var(--space-2);
     }
 
     @keyframes page-enter {
@@ -398,6 +478,11 @@
       .toolbar-actions .btn-secondary,
       .search-input {
         width: 100%;
+      }
+
+      .table-footer {
+        flex-direction: column;
+        align-items: flex-start;
       }
     }
   </style>
@@ -546,6 +631,23 @@
           </tbody>
         </table>
       </div>
+      <footer class="table-footer" aria-label="Expense table pagination">
+        <p class="results-note">Showing 1 to 8 of 8 expenses</p>
+        <div class="pager">
+          <button class="pager-btn" type="button" aria-label="Previous page">&lt;</button>
+          <button class="pager-btn is-current" type="button" aria-current="page">1</button>
+          <button class="pager-btn" type="button">2</button>
+          <button class="pager-btn" type="button">3</button>
+          <button class="pager-btn" type="button" aria-label="Next page">&gt;</button>
+        </div>
+      </footer>
+    </section>
+
+    <section class="dev-notes" aria-label="Development notes">
+      <h2 class="dev-notes-title">DEV NOTES</h2>
+      <ul class="dev-notes-list">
+        <li>Search - filters the table on item code, item name, description</li>
+      </ul>
     </section>
   </main>
 </body>
