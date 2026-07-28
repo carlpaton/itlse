@@ -789,6 +789,25 @@
       border-color: #2a527f;
     }
 
+    .asset-scan-row {
+      margin-top: var(--space-4);
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+      flex-wrap: wrap;
+    }
+
+    .asset-search-input {
+      width: 100%;
+      min-width: 0;
+    }
+
+    .asset-scan-row .company-autocomplete {
+      flex: 1;
+      min-width: 220px;
+      max-width: 360px;
+    }
+
     .dev-notes {
       margin-top: calc(var(--space-8) + var(--space-2));
       padding: var(--space-5);
@@ -1105,6 +1124,28 @@
       </div>
     </section>
 
+    <div class="asset-scan-row" aria-label="Asset scan and search">
+      <a class="btn-secondary" id="scan-qr-button" href="camera-job02.html">Scan QR Code</a>
+      <div class="company-autocomplete">
+        <input
+          class="form-input asset-search-input"
+          id="asset-search-input"
+          name="asset_search"
+          type="text"
+          placeholder="Search Asset"
+          aria-label="Search Asset"
+          autocomplete="off"
+          aria-autocomplete="list"
+          aria-expanded="false"
+          aria-controls="asset-search-dropdown-options"
+        />
+        <div class="company-dropdown" id="asset-search-dropdown-options" role="listbox" hidden>
+          <div class="company-option-list" data-asset-search-options></div>
+          <button class="btn-secondary company-add-btn" type="button" data-asset-search-add hidden>Add New</button>
+        </div>
+      </div>
+    </div>
+
     <section class="dev-notes" aria-label="Development notes">
       <h2 class="dev-notes-title">DEV NOTES</h2>
       <ul class="dev-notes-list">
@@ -1116,15 +1157,42 @@
   <script>
     (function () {
       var assetCard = document.getElementById("generator-asset-card");
-      var maintenanceGrid = document.getElementById("freezer-maintenance-grid");
-      var addMaintenanceRowButton = document.getElementById("add-maintenance-row");
-      var maintenanceOptionCount = 2;
+      var assetSearchRow = document.querySelector(".asset-scan-row");
+      var assetSearchInput = document.getElementById("asset-search-input");
+      var assetSearchDropdown = document.getElementById("asset-search-dropdown-options");
+      var assetSearchOptionsList = assetSearchDropdown ? assetSearchDropdown.querySelector("[data-asset-search-options]") : null;
+      var assetSearchAddButton = assetSearchDropdown ? assetSearchDropdown.querySelector("[data-asset-search-add]") : null;
+      var assetOptions = [
+        "Generator GX-1000",
+        "Generator GX-4800",
+        "Freezer FR-200",
+        "Fridge FG-320",
+        "Microwave MW-90"
+      ];
+      var cardCount = 1;
 
-      if (!assetCard) {
+      if (!assetCard || !assetSearchRow) {
         return;
       }
 
-      function createMaintenanceRow(optionNumber) {
+      function activateCard(card) {
+        document.querySelectorAll(".asset-identifiers").forEach(function (item) {
+          item.classList.remove("is-selected");
+          item.setAttribute("aria-pressed", "false");
+        });
+
+        card.classList.add("is-selected");
+        card.setAttribute("aria-pressed", "true");
+      }
+
+      function deactivateAllCards() {
+        document.querySelectorAll(".asset-identifiers").forEach(function (item) {
+          item.classList.remove("is-selected");
+          item.setAttribute("aria-pressed", "false");
+        });
+      }
+
+      function createMaintenanceRow(optionNumber, cardKey) {
         var row = document.createElement("div");
         row.className = "maintenance-row";
 
@@ -1134,7 +1202,7 @@
         var input = document.createElement("input");
         input.className = "maintenance-input";
         input.type = "text";
-        input.name = "maintenance_option_" + optionNumber;
+        input.name = "maintenance_option_" + cardKey + "_" + optionNumber;
         input.setAttribute("aria-label", "Maintenance option " + optionNumber);
         input.placeholder = "Maintenance option";
 
@@ -1157,7 +1225,7 @@
           var label = document.createElement("label");
           var radio = document.createElement("input");
           radio.type = "radio";
-          radio.name = "maintenance_option_status_" + optionNumber;
+          radio.name = "maintenance_option_status_" + cardKey + "_" + optionNumber;
           radio.value = status;
 
           label.appendChild(radio);
@@ -1173,47 +1241,238 @@
         return row;
       }
 
-      function addMaintenanceRow() {
-        if (!maintenanceGrid || !addMaintenanceRowButton) {
+      function assignUniqueFields(card, cardKey) {
+        card.querySelectorAll("[id]").forEach(function (node) {
+          var oldId = node.id;
+          var newId = oldId + "-" + cardKey;
+          node.id = newId;
+          card.querySelectorAll('label[for="' + oldId + '"]').forEach(function (label) {
+            label.setAttribute("for", newId);
+          });
+        });
+
+        card.querySelectorAll("[name]").forEach(function (node) {
+          node.name = node.name + "_" + cardKey;
+        });
+      }
+
+      function removeLoadedPhoto(card) {
+        var capturedPhoto = card.querySelector(".captured-photo");
+
+        if (!capturedPhoto) {
           return;
         }
 
-        maintenanceOptionCount += 1;
-        var row = createMaintenanceRow(maintenanceOptionCount);
-        maintenanceGrid.insertBefore(row, addMaintenanceRowButton.parentElement);
-        row.querySelector("input")?.focus();
+        capturedPhoto.innerHTML = "";
+        var noPhotoText = document.createElement("p");
+        noPhotoText.className = "company-empty";
+        noPhotoText.textContent = "No photo loaded.";
+        capturedPhoto.appendChild(noPhotoText);
       }
 
-      if (addMaintenanceRowButton) {
-        addMaintenanceRowButton.addEventListener("click", addMaintenanceRow);
+      function createAssetCard(assetName) {
+        var newCard = assetCard.cloneNode(true);
+        var cardKey;
+        var title;
+        var modelValue;
+        var maintenanceGrid;
+
+        cardCount += 1;
+        cardKey = "card-" + cardCount;
+
+        newCard.classList.remove("is-selected");
+        newCard.setAttribute("aria-pressed", "false");
+        newCard.id = "generator-asset-card-" + cardCount;
+
+        title = newCard.querySelector(".asset-identifiers-title");
+        modelValue = newCard.querySelector('[data-field="model_number"]');
+        if (title) {
+          title.textContent = assetName;
+        }
+        if (modelValue) {
+          modelValue.textContent = assetName;
+        }
+
+        assignUniqueFields(newCard, cardKey);
+        removeLoadedPhoto(newCard);
+
+        maintenanceGrid = newCard.querySelector(".maintenance-grid");
+        if (maintenanceGrid) {
+          maintenanceGrid.dataset.optionCount = "2";
+        }
+
+        assetSearchRow.parentNode.insertBefore(newCard, assetSearchRow);
+        return newCard;
       }
 
-      function activateCard() {
-        assetCard.classList.add("is-selected");
-        assetCard.setAttribute("aria-pressed", "true");
+      function addAssetFromSelection(assetName) {
+        var trimmedName = assetName.trim();
+        if (!trimmedName) {
+          return;
+        }
+
+        createAssetCard(trimmedName);
+        assetSearchInput.value = "";
+        hideAssetSearchDropdown();
       }
 
-      function deactivateCard() {
-        assetCard.classList.remove("is-selected");
-        assetCard.setAttribute("aria-pressed", "false");
+      function normalizeAssetSearch(value) {
+        return value.trim().toLowerCase();
       }
 
-      assetCard.addEventListener("click", function () {
-        activateCard();
-      });
+      function setAssetSearchExpanded(isExpanded) {
+        if (assetSearchInput) {
+          assetSearchInput.setAttribute("aria-expanded", String(isExpanded));
+        }
+      }
+
+      function hideAssetSearchDropdown() {
+        if (!assetSearchDropdown || !assetSearchAddButton) {
+          return;
+        }
+
+        assetSearchDropdown.hidden = true;
+        assetSearchAddButton.hidden = true;
+        setAssetSearchExpanded(false);
+      }
+
+      function showAssetSearchDropdown() {
+        if (!assetSearchDropdown) {
+          return;
+        }
+
+        assetSearchDropdown.hidden = false;
+        setAssetSearchExpanded(true);
+      }
+
+      function renderAssetSearchOptions() {
+        var query;
+        var matches;
+
+        if (!assetSearchInput || !assetSearchOptionsList || !assetSearchAddButton) {
+          return;
+        }
+
+        query = normalizeAssetSearch(assetSearchInput.value);
+        matches = assetOptions.filter(function (name) {
+          return normalizeAssetSearch(name).includes(query);
+        });
+
+        assetSearchOptionsList.innerHTML = "";
+
+        if (matches.length === 0) {
+          var emptyState = document.createElement("p");
+          emptyState.className = "company-empty";
+          emptyState.textContent = "No matching assets found.";
+          assetSearchOptionsList.appendChild(emptyState);
+          assetSearchAddButton.hidden = false;
+        } else {
+          assetSearchAddButton.hidden = true;
+          matches.forEach(function (name) {
+            var option = document.createElement("button");
+            option.type = "button";
+            option.className = "company-option";
+            option.textContent = name;
+            option.setAttribute("role", "option");
+            option.addEventListener("click", function () {
+              addAssetFromSelection(name);
+            });
+            assetSearchOptionsList.appendChild(option);
+          });
+        }
+
+        assetSearchAddButton.textContent = query ? "Add New: " + assetSearchInput.value.trim() : "Add New";
+        assetSearchAddButton.disabled = query.length === 0 || matches.length > 0;
+      }
+
+      if (assetSearchInput && assetSearchDropdown && assetSearchOptionsList && assetSearchAddButton) {
+        assetSearchInput.addEventListener("focus", function () {
+          renderAssetSearchOptions();
+          showAssetSearchDropdown();
+        });
+
+        assetSearchInput.addEventListener("input", function () {
+          renderAssetSearchOptions();
+          showAssetSearchDropdown();
+        });
+
+        assetSearchAddButton.addEventListener("click", function () {
+          var value = assetSearchInput.value.trim();
+          if (!value) {
+            return;
+          }
+
+          if (!assetOptions.some(function (name) { return normalizeAssetSearch(name) === normalizeAssetSearch(value); })) {
+            assetOptions.push(value);
+          }
+
+          addAssetFromSelection(value);
+        });
+
+        document.addEventListener("click", function (event) {
+          if (!assetSearchDropdown.contains(event.target) && event.target !== assetSearchInput) {
+            hideAssetSearchDropdown();
+          }
+        });
+      }
 
       document.addEventListener("click", function (event) {
-        if (!assetCard.contains(event.target)) {
-          deactivateCard();
+        var deleteButton = event.target.closest(".asset-delete-btn");
+        if (deleteButton) {
+          event.stopPropagation();
+          var cardToDelete = deleteButton.closest(".asset-identifiers");
+          if (cardToDelete) {
+            cardToDelete.remove();
+          }
+          return;
+        }
+
+        var addRowButton = event.target.closest(".btn-add-maintenance-row");
+        if (addRowButton) {
+          event.stopPropagation();
+          var currentCard = addRowButton.closest(".asset-identifiers");
+          var currentGrid = addRowButton.closest(".maintenance-grid");
+          var currentKey = currentCard ? currentCard.id : "card";
+          var optionCount;
+          var row;
+
+          if (!currentGrid) {
+            return;
+          }
+
+          optionCount = Number(currentGrid.dataset.optionCount || "2") + 1;
+          currentGrid.dataset.optionCount = String(optionCount);
+          row = createMaintenanceRow(optionCount, currentKey);
+          currentGrid.insertBefore(row, addRowButton.parentElement);
+          row.querySelector("input")?.focus();
+          return;
+        }
+
+        var clickedCard = event.target.closest(".asset-identifiers");
+        if (clickedCard) {
+          activateCard(clickedCard);
+          return;
+        }
+
+        deactivateAllCards();
+      });
+
+      document.addEventListener("keydown", function (event) {
+        var focusCard = event.target.closest(".asset-identifiers");
+        if (!focusCard) {
+          return;
+        }
+
+        if (event.key === "Enter" || event.key === " ") {
+          event.preventDefault();
+          activateCard(focusCard);
         }
       });
 
-      assetCard.addEventListener("keydown", function (event) {
-        if (event.key === "Enter" || event.key === " ") {
-          event.preventDefault();
-          activateCard();
-        }
-      });
+      var baseGrid = assetCard.querySelector(".maintenance-grid");
+      if (baseGrid) {
+        baseGrid.dataset.optionCount = "2";
+      }
     })();
   </script>
 </body>
