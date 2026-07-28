@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
-  <title>AoTech - Add Contractor</title>
+  <title>AoTech - Edit Contractor</title>
   <style>
     @import url("https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700&family=Sora:wght@600;700&display=swap");
 
@@ -457,37 +457,37 @@
   </header>
 
   <main class="page-content" id="page-content">
-    <section class="page-toolbar" aria-label="Add contractor page heading">
-      <h1 class="page-title">Add Contractor</h1>
-      <p class="page-subtitle">Create a customer record and assign primary site contacts</p>
+    <section class="page-toolbar" aria-label="Edit contractor page heading">
+      <h1 class="page-title">Edit Contractor</h1>
+      <p class="page-subtitle">Update customer record and primary site contacts</p>
     </section>
 
-    <section class="form-card" aria-label="Add contractor form">
+    <section class="form-card" aria-label="Edit contractor form">
       <h2 class="form-heading">Customer Details</h2>
       <form class="contractor-form" method="post" novalidate>
         <div class="form-field">
           <label for="customer-name">Customer Name</label>
-          <input class="form-input" id="customer-name" name="customer_name" type="text" placeholder="Customer Name" required />
+          <input class="form-input" id="customer-name" name="customer_name" type="text" placeholder="Customer Name" value="Acme Manufacturing" required />
         </div>
 
         <div class="form-field">
           <label for="site-contact">Site Contact</label>
-          <input class="form-input" id="site-contact" name="site_contact" type="text" placeholder="Site Contact" required />
+          <input class="form-input" id="site-contact" name="site_contact" type="text" placeholder="Site Contact" value="Jordan Lee" required />
         </div>
 
         <div class="form-field">
           <label for="contact-number">Contact Number</label>
-          <input class="form-input" id="contact-number" name="contact_number" type="tel" placeholder="Contact Number" required />
+          <input class="form-input" id="contact-number" name="contact_number" type="tel" placeholder="Contact Number" value="0401 345 889" required />
         </div>
 
         <div class="form-field">
           <label for="site-email">Site Email</label>
-          <input class="form-input" id="site-email" name="site_email" type="email" placeholder="Site Email" required />
+          <input class="form-input" id="site-email" name="site_email" type="email" placeholder="Site Email" value="jordan.lee@acme.example" required />
         </div>
 
         <div class="form-field form-field--full">
           <label for="site-address">Site Address</label>
-          <input class="form-input" id="site-address" name="site_address" type="text" placeholder="Site Address" required />
+          <input class="form-input" id="site-address" name="site_address" type="text" placeholder="Site Address" value="18 Mason Street, Brisbane" required />
         </div>
 
         <div class="section-divider">

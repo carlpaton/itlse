@@ -336,6 +336,16 @@
       font-size: 0.95rem;
     }
 
+    .clickable-row {
+      cursor: pointer;
+    }
+
+    .clickable-row:focus-visible {
+      outline: 2px solid var(--color-focus);
+      outline-offset: -2px;
+      background: #eef5ff;
+    }
+
     .table-footer {
       border-top: 1px solid var(--color-border);
       display: flex;
@@ -530,35 +540,35 @@
             </tr>
           </thead>
           <tbody>
-            <tr>
+            <tr class="clickable-row" tabindex="0" role="link" aria-label="Edit Acme Manufacturing" data-href="contractor03.html">
               <td>Acme Manufacturing</td>
               <td>Jordan Lee</td>
               <td>0401 345 889</td>
               <td>jordan.lee@acme.example</td>
               <td>18 Mason Street, Brisbane</td>
             </tr>
-            <tr>
+            <tr class="clickable-row" tabindex="0" role="link" aria-label="Edit Harbor Fresh Foods" data-href="contractor03.html">
               <td>Harbor Fresh Foods</td>
               <td>Taylor Grant</td>
               <td>0407 221 194</td>
               <td>tgrant@harborfresh.example</td>
               <td>42 Dockside Ave, Gold Coast</td>
             </tr>
-            <tr>
+            <tr class="clickable-row" tabindex="0" role="link" aria-label="Edit Northline Logistics" data-href="contractor03.html">
               <td>Northline Logistics</td>
               <td>Morgan Reed</td>
               <td>0410 558 730</td>
               <td>mreed@northline.example</td>
               <td>9 Freight Road, Toowoomba</td>
             </tr>
-            <tr>
+            <tr class="clickable-row" tabindex="0" role="link" aria-label="Edit Sunny Coast Retail" data-href="contractor03.html">
               <td>Sunny Coast Retail</td>
               <td>Riley Cooper</td>
               <td>0409 114 667</td>
               <td>rcooper@sunnycoast.example</td>
               <td>77 Bayview Drive, Noosa</td>
             </tr>
-            <tr>
+            <tr class="clickable-row" tabindex="0" role="link" aria-label="Edit Metro Care Clinics" data-href="contractor03.html">
               <td>Metro Care Clinics</td>
               <td>Sam Patel</td>
               <td>0418 020 555</td>
@@ -588,5 +598,27 @@
       </ul>
     </section>
   </main>
+
+  <script>
+    (function () {
+      var rows = document.querySelectorAll(".clickable-row");
+
+      rows.forEach(function (row) {
+        row.addEventListener("click", function () {
+          var href = row.getAttribute("data-href");
+          if (href) {
+            window.location.href = href;
+          }
+        });
+
+        row.addEventListener("keydown", function (event) {
+          if (event.key === "Enter" || event.key === " ") {
+            event.preventDefault();
+            row.click();
+          }
+        });
+      });
+    })();
+  </script>
 </body>
 </html>
