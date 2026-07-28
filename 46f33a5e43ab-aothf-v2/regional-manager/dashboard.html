@@ -697,64 +697,72 @@
               <th scope="col">Date Assigned</th>
               <th scope="col">Date Completed</th>
               <th scope="col">Job Status</th>
+              <th scope="col">Job Type</th>
               <th scope="col">Asset Details</th>
             </tr>
           </thead>
           <tbody>
-            <tr>
+            <tr data-job-type="maintenance">
               <td class="job-num">JOB-0041</td>
               <td><span class="priority-dot priority-high">High</span></td>
               <td>08 May 2026</td>
               <td>-</td>
               <td><span class="badge badge-in-progress">In progress</span></td>
+              <td>maintenance</td>
               <td>Generator - Site A</td>
             </tr>
-            <tr>
+            <tr data-job-type="repair">
               <td class="job-num">JOB-0040</td>
               <td><span class="priority-dot priority-medium">Medium</span></td>
               <td>06 May 2026</td>
               <td>-</td>
               <td><span class="badge badge-assigned">Assigned</span></td>
+              <td>repair</td>
               <td>HVAC Unit 3 - Site B</td>
             </tr>
-            <tr>
+            <tr data-job-type="maintenance">
               <td class="job-num">JOB-0039</td>
               <td><span class="priority-dot priority-low">Low</span></td>
               <td>04 May 2026</td>
               <td>-</td>
               <td><span class="badge badge-scheduled">Scheduled</span></td>
+              <td>maintenance</td>
               <td>Fire Panel - Site C</td>
             </tr>
-            <tr>
+            <tr data-job-type="repair">
               <td class="job-num">JOB-0038</td>
               <td><span class="priority-dot priority-medium">Medium</span></td>
               <td>01 May 2026</td>
               <td>09 May 2026</td>
               <td><span class="badge badge-completed">Completed</span></td>
+              <td>repair</td>
               <td>Pump Station 2 - Site A</td>
             </tr>
-            <tr>
+            <tr data-job-type="maintenance">
               <td class="job-num">JOB-0037</td>
               <td><span class="priority-dot priority-high">High</span></td>
               <td>28 Apr 2026</td>
               <td>05 May 2026</td>
               <td><span class="badge badge-completed">Completed</span></td>
+              <td>maintenance</td>
               <td>Electrical Board - Site D</td>
             </tr>
-            <tr>
+            <tr data-job-type="repair">
               <td class="job-num">JOB-0036</td>
               <td><span class="priority-dot priority-low">Low</span></td>
               <td>25 Apr 2026</td>
               <td>-</td>
               <td><span class="badge badge-assigned">Assigned</span></td>
+              <td>repair</td>
               <td>Water Tank - Site B</td>
             </tr>
-            <tr>
+            <tr data-job-type="maintenance">
               <td class="job-num">JOB-0035</td>
               <td><span class="priority-dot priority-medium">Medium</span></td>
               <td>22 Apr 2026</td>
               <td>-</td>
               <td><span class="badge badge-in-progress">In progress</span></td>
+              <td>maintenance</td>
               <td>Cooling Tower - Site E</td>
             </tr>
           </tbody>
@@ -814,20 +822,22 @@
       var jobRows = document.querySelectorAll(".jobs-table tbody tr");
       jobRows.forEach(function (row) {
         var jobNumberCell = row.querySelector(".job-num");
+        var jobType = (row.dataset.jobType || "maintenance").trim();
         var jobNumber = jobNumberCell ? jobNumberCell.textContent.trim() : "job";
+        var jobUrl = "job02.html?job_type=" + encodeURIComponent(jobType);
 
         row.tabIndex = 0;
         row.setAttribute("role", "link");
         row.setAttribute("aria-label", "Open " + jobNumber + " in edit mode");
 
         row.addEventListener("click", function () {
-          window.location.href = "job02.html";
+          window.location.href = jobUrl;
         });
 
         row.addEventListener("keydown", function (event) {
           if (event.key === "Enter" || event.key === " ") {
             event.preventDefault();
-            window.location.href = "job02.html";
+            window.location.href = jobUrl;
           }
         });
       });
