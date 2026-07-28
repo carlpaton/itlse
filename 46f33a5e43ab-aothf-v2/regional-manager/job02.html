@@ -692,6 +692,44 @@
       display: none;
     }
 
+    .job-history {
+      display: none;
+      margin-top: var(--space-4);
+      padding-top: var(--space-4);
+      border-top: 1px solid #d5dee9;
+    }
+
+    .asset-identifiers.is-repair-job .job-history {
+      display: block;
+    }
+
+    .job-history-title {
+      margin: 0 0 var(--space-2);
+      color: var(--color-text-strong);
+      font-family: var(--font-display);
+      font-size: 0.95rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+    }
+
+    .job-history-list {
+      margin: 0;
+      padding-left: 1.25rem;
+      color: var(--color-text-body);
+    }
+
+    .job-history-list li + li {
+      margin-top: var(--space-2);
+    }
+
+    .job-history-job {
+      color: #1d5fa7;
+      text-decoration: underline;
+      text-underline-offset: 2px;
+      font-weight: 700;
+      cursor: default;
+    }
+
     .asset-identifiers.is-repair-job .maintenance-options,
     .asset-identifiers.is-repair-job .job-notes {
       display: none;
@@ -1247,7 +1285,6 @@
               <button class="btn-add-maintenance-row" id="add-maintenance-row" type="button" aria-label="Add maintenance option">+</button>
             </div>
           </div>
-
           <div class="form-field job-notes" style="margin-top: var(--space-3);">
             <label for="freezer-maintenance-notes">Notes</label>
             <textarea
@@ -1338,6 +1375,13 @@
             </svg>
           </div>
           <button class="btn-add-contact" id="add-photo" type="button" aria-label="Add more photos">+</button>
+
+          <div class="job-history" aria-label="Job history">
+            <h3 class="job-history-title">Job History</h3>
+            <ul class="job-history-list">
+              <li><span class="job-history-job">JOB-0039</span> 8 July 2026 Compressor vibration found during load test</li>
+            </ul>
+          </div>
         </div>
       </div>
       <div class="asset-save-row">
@@ -1411,7 +1455,7 @@
       <h2 class="dev-notes-title">DEV NOTES</h2>
       <ul class="dev-notes-list">
         <li>What does Start do?</li>
-        <li>TODO</li>
+        <li>Repair job hostory would link to that job</li>
       </ul>
     </section>
   </main>
