@@ -155,6 +155,7 @@
     .nav-link:focus-visible,
     .input-field:focus,
     .btn-add-contact:focus-visible,
+    .btn-danger:focus-visible,
     .form-btn:focus-visible {
       outline: 2px solid var(--color-focus);
       outline-offset: 2px;
@@ -369,6 +370,14 @@
       align-content: center;
     }
 
+    .captured-photo-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--space-3);
+      flex-wrap: wrap;
+    }
+
     .captured-photo-svg {
       width: 100%;
       height: 160px;
@@ -390,13 +399,6 @@
       font-size: 0.9rem;
     }
 
-    .field-inline-action {
-      display: flex;
-      align-items: center;
-      gap: var(--space-2);
-      margin-top: var(--space-2);
-    }
-
     .btn-add-contact {
       width: 40px;
       height: 40px;
@@ -415,6 +417,26 @@
     .btn-add-contact:hover {
       background: #f2f6fb;
       border-color: #9fb1c6;
+    }
+
+    .btn-danger {
+      min-height: 40px;
+      padding: 0 var(--space-4);
+      border: 1px solid #e1b4af;
+      border-radius: var(--radius-sm);
+      background: #fff5f4;
+      color: #a63b30;
+      font-family: var(--font-body);
+      font-size: 0.9rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background 140ms ease, border-color 140ms ease, transform 140ms ease;
+    }
+
+    .btn-danger:hover {
+      background: #fce8e6;
+      border-color: #d69a94;
+      transform: translateY(-1px);
     }
 
     .metric-row {
@@ -664,6 +686,9 @@
             <div>
               <p class="field-label">Photo</p>
               <div class="captured-photo" aria-label="Captured asset photo">
+                <div class="captured-photo-header">
+                  <button class="btn-danger" type="button" aria-label="Delete photo 1">Delete</button>
+                </div>
                 <svg class="captured-photo-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" role="img" aria-labelledby="asset-photo-title asset-photo-desc">
                   <title id="asset-photo-title">Asset Photo QR-2023-032</title>
                   <desc id="asset-photo-desc">Generated photo-style image for Lenovo ThinkPad X1 Gen 9 asset in warehouse.</desc>
@@ -723,16 +748,13 @@
                     <text x="50" y="140" fill="#b8cae1" font-family="Public Sans, Segoe UI, sans-serif" font-size="22">SN5648392</text>
 
                     <rect x="50" y="182" width="320" height="86" rx="8" fill="#f7fbff"/>
-                    <text x="68" y="216" fill="#16304d" font-family="Public Sans, Segoe UI, sans-serif" font-size="22" font-weight="700">QR-2023-032</text>
                     <text x="68" y="246" fill="#496583" font-family="Public Sans, Segoe UI, sans-serif" font-size="18">Purchased: 2023-08-14</text>
 
                     <rect x="-30" y="320" width="660" height="24" rx="12" fill="#626d7a" opacity="0.45"/>
                   </g>
                 </svg>
               </div>
-              <div class="field-inline-action">
-                <button class="btn-add-contact" id="add-photo" type="button" aria-label="Add more photos">+</button>
-              </div>
+              <button class="btn-add-contact" id="add-photo" type="button" aria-label="Add more photos">+</button>
             </div>
           </div>
         </section>
