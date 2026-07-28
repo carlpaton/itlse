@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
-  <title>AoTech - Edit Job</title>
+  <title>AoTech - Job Details</title>
   <style>
     @import url("https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700&family=Sora:wght@600;700&display=swap");
 
@@ -159,6 +159,7 @@
     .form-input:focus-visible,
     .form-select:focus-visible,
     .form-textarea:focus-visible,
+    .btn-add-contact:focus-visible,
     .btn-primary:focus-visible,
     .btn-secondary:focus-visible,
     .btn-danger:focus-visible,
@@ -305,19 +306,23 @@
     }
 
     .job-meta-row {
-      display: flex;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
       align-items: end;
       gap: var(--space-4);
       margin-bottom: var(--space-5);
-      flex-wrap: wrap;
     }
 
     .job-meta-row .form-field {
-      min-width: 200px;
+      min-width: 0;
     }
 
     .btn-ghost {
       min-width: 128px;
+    }
+
+    .scan-qr-link {
+      margin-bottom: var(--space-4);
     }
 
     .detail-grid {
@@ -420,6 +425,27 @@
       font-weight: 700;
     }
 
+    .form-static-box {
+      width: 100%;
+      min-height: 0;
+      border: 0;
+      border-radius: 0;
+      background: transparent;
+      padding: 0;
+      display: block;
+      color: var(--color-text-strong);
+      font-size: 1rem;
+      line-height: 1.5;
+    }
+
+    .form-static-box.is-multiline {
+      white-space: normal;
+    }
+
+    .company-display {
+      font-weight: 700;
+    }
+
     .form-input,
     .form-select,
     .form-textarea {
@@ -489,19 +515,75 @@
       font-weight: 600;
     }
 
-    .photo-placeholder {
-      width: min(220px, 100%);
-      aspect-ratio: 1;
-      margin: 0 auto;
-      border: 2px dashed #8aa0b8;
-      border-radius: 50%;
-      background: radial-gradient(circle at 50% 35%, #ffffff 0%, #eef4fa 100%);
-      display: grid;
-      place-items: center;
-      text-align: center;
-      color: var(--color-text-muted);
+    .photo-controls {
+      display: flex;
+      align-items: center;
+      gap: var(--space-2);
+      margin-top: var(--space-4);
+      flex-wrap: wrap;
+    }
+
+    .summary-chart-card {
       padding: var(--space-4);
-      font-size: 0.92rem;
+    }
+
+    .summary-chart-wrap {
+      width: min(340px, 100%);
+      margin: 0 auto;
+      aspect-ratio: 1;
+    }
+
+    .summary-chart-wrap canvas {
+      width: 100% !important;
+      height: 100% !important;
+      display: block;
+    }
+
+    .captured-photo {
+      min-height: 120px;
+      border: 1px solid #bcc9d8;
+      border-radius: var(--radius-sm);
+      background: #f6f9fd;
+      padding: var(--space-3);
+      display: grid;
+      gap: var(--space-2);
+      align-content: center;
+    }
+
+    .captured-photo-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--space-3);
+      flex-wrap: wrap;
+    }
+
+    .captured-photo-svg {
+      width: 100%;
+      height: 160px;
+      border-radius: 4px;
+      border: 1px solid #c8d4e2;
+      background: #ffffff;
+    }
+
+    .btn-add-contact {
+      width: 40px;
+      height: 40px;
+      border: 1px solid #b9c7d7;
+      border-radius: var(--radius-sm);
+      background: #ffffff;
+      color: var(--color-text-body);
+      font-size: 1.4rem;
+      line-height: 1;
+      font-weight: 600;
+      cursor: pointer;
+      flex-shrink: 0;
+      transition: background 140ms ease, border-color 140ms ease;
+    }
+
+    .btn-add-contact:hover {
+      background: #f2f6fb;
+      border-color: #9fb1c6;
     }
 
     .cost-list {
@@ -552,6 +634,34 @@
       flex-wrap: wrap;
     }
 
+    .dev-notes {
+      margin-top: calc(var(--space-8) + var(--space-2));
+      padding: var(--space-5);
+      border: 1px solid #cfd9e4;
+      border-radius: var(--radius-md);
+      background: #ffffff;
+      box-shadow: 0 14px 32px rgba(16, 35, 58, 0.08);
+    }
+
+    .dev-notes-title {
+      margin: 0 0 var(--space-3);
+      color: var(--color-text-strong);
+      font-family: var(--font-display);
+      font-size: 1rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+    }
+
+    .dev-notes-list {
+      margin: 0;
+      padding-left: 1.25rem;
+      color: var(--color-text-body);
+    }
+
+    .dev-notes-list li + li {
+      margin-top: var(--space-2);
+    }
+
     @keyframes page-enter {
       from { opacity: 0; transform: translateY(10px); }
       to { opacity: 1; transform: translateY(0); }
@@ -576,10 +686,13 @@
         display: none;
       }
 
-      .job-meta-row,
       .form-actions {
         flex-direction: column;
         align-items: stretch;
+      }
+
+      .job-meta-row {
+        grid-template-columns: 1fr;
       }
 
       .job-meta-row .form-field,
@@ -640,101 +753,145 @@
   </header>
 
   <main class="page-content" id="page-content">
-    <section class="page-toolbar" aria-label="Edit job page heading">
+    <section class="page-toolbar" aria-label="Job details page heading">
       <div>
-        <h1 class="page-title">Edit Job</h1>
-        <p class="page-subtitle">Review and update the selected job details from the dashboard.</p>
+        <h1 class="page-title">Job Details</h1>
+        <p class="page-subtitle">Review the selected job from the dashboard.</p>
       </div>
       <a class="btn-secondary" href="dashboard.html">Main Dashboard</a>
     </section>
 
-    <form class="job-form-card" aria-label="Edit job form">
+    <section class="job-form-card" aria-label="Selected job details">
       <div class="job-layout">
         <section>
           <div class="job-meta-row">
             <div class="form-field">
-              <label>Job #</label>
-              <p class="form-static-value">JOB-0041</p>
+              <label for="job-reference">Job #</label>
+              <div class="form-static-box" id="job-reference" data-field="job_reference">JOB-0041</div>
+            </div>
+            <div class="form-field">
+              <label for="company">Company</label>
+              <div class="form-static-box company-display" id="company" data-field="company">Site A Facilities</div>
             </div>
           </div>
 
           <div class="detail-grid">
-            <div class="form-field">
-              <label title="dates are set to same day as logging job">Date</label>
-              <p class="form-static-value" title="dates are set to same day as logging job">08 May 2026</p>
-            </div>
-
-            <div class="form-field">
-              <label for="company">Company</label>
-              <div class="company-autocomplete" data-company-autocomplete>
-                <input class="form-input" id="company" name="company" type="text" placeholder="Company" value="Company A" autocomplete="off" aria-autocomplete="list" aria-expanded="false" aria-controls="company-dropdown-options" />
-                <div class="company-dropdown" id="company-dropdown-options" role="listbox" hidden>
-                  <div class="company-option-list" data-company-options></div>
-                  <button class="btn-secondary company-add-btn" type="button" data-company-add hidden>Add New</button>
-                </div>
-              </div>
-            </div>
 
             <div class="form-field">
               <label for="model-number">Model #</label>
-              <input class="form-input" id="model-number" name="model_number" type="text" placeholder="Model #" value="Generator" />
+              <div class="form-static-box" id="model-number" data-field="model_number">Generator GX-4800</div>
             </div>
 
             <div class="form-field">
               <label for="serial-number">Serial #</label>
-              <input class="form-input" id="serial-number" name="serial_number" type="text" placeholder="Serial #" value="-" />
+              <div class="form-static-box" id="serial-number" data-field="serial_number">SN-8842-AX19</div>
+            </div>
+
+            <div class="form-field">
+              <label for="job-date">Date</label>
+              <div class="form-static-box" id="job-date" data-field="job_date">28 July 2026</div>
             </div>
 
             <div class="form-field">
               <label for="job-type">Job Type</label>
-              <select class="form-select" id="job-type" name="job_type">
-                <option value="" disabled>Select job type</option>
-                <option value="maintenance">Maintenance</option>
-                <option value="repair" selected>Repair</option>
-                <option value="inspection">Inspection</option>
-                <option value="installation">Installation</option>
-              </select>
-            </div>
-
-            <div class="form-field">
-              <label for="work-category">Work Category</label>
-              <input class="form-input" id="work-category" name="work_category" type="text" placeholder="Maintenance or repair" value="In progress - High priority" />
+              <div class="form-static-box" id="job-type" data-field="job_type">repair</div>
             </div>
 
             <div class="form-field">
               <label for="assigned-company">Assigned Company</label>
-              <select class="form-select" id="assigned-company" name="assigned_company">
-                <option value="" disabled>Select assigned company</option>
-                <option value="north-ops">North Ops Ltd</option>
-                <option value="vertex-services">Vertex Services</option>
-                <option value="harbor-maintenance">Harbor Maintenance</option>
-                <option value="regional-team" selected>Regional Team</option>
-              </select>
+              <div class="form-static-box" id="assigned-company" data-field="assigned_company">North Ridge Mechanical</div>
             </div>
 
             <div class="form-field form-field--full">
-              <label for="fault-summary">Fault</label>
-              <input class="form-input" id="fault-summary" name="fault_summary" type="text" placeholder="Fault" value="Generator - Site A" />
+              <label for="fault-description">Work Description</label>
+              <div class="form-static-box is-multiline" id="fault-description" data-field="fault_description">Generator reported unstable output during load testing. Inspect the voltage regulator, confirm fuel delivery, and verify the unit can carry sustained demand before returning to service.</div>
             </div>
 
             <div class="form-field form-field--full">
-              <label for="fault-description">Fault Description</label>
-              <textarea class="form-textarea" id="fault-description" name="fault_description" placeholder="Describe the reported issue, requested work, or site notes">Imported from dashboard row: JOB-0041, Priority High, Status In progress, Date Assigned 08 May 2026.</textarea>
+              <p class="field-label">Photo</p>
+              <div class="captured-photo" aria-label="Captured asset photo">
+                <svg class="captured-photo-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" role="img" aria-labelledby="asset-photo-title asset-photo-desc">
+                  <title id="asset-photo-title">Asset Photo QR-2023-032</title>
+                  <desc id="asset-photo-desc">Generated photo-style image for Lenovo ThinkPad X1 Gen 9 asset in warehouse.</desc>
+                  <defs>
+                    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+                      <stop offset="0" stop-color="#2a3f56"/>
+                      <stop offset="1" stop-color="#4f6f92"/>
+                    </linearGradient>
+                    <linearGradient id="floor" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0" stop-color="#d2dbe5"/>
+                      <stop offset="1" stop-color="#b9c5d4"/>
+                    </linearGradient>
+                    <filter id="softShadow" x="-20%" y="-20%" width="140%" height="160%">
+                      <feDropShadow dx="0" dy="8" stdDeviation="12" flood-color="#12263f" flood-opacity="0.25"/>
+                    </filter>
+                  </defs>
+
+                  <rect width="1200" height="800" fill="url(#bg)"/>
+                  <rect y="520" width="1200" height="280" fill="url(#floor)"/>
+
+                  <rect x="80" y="80" width="310" height="130" rx="12" fill="#0f2137" opacity="0.9"/>
+                  <text x="105" y="128" fill="#e8f0f8" font-family="Public Sans, Segoe UI, sans-serif" font-size="36" font-weight="700">WAREHOUSE</text>
+                  <text x="105" y="170" fill="#b9cadc" font-family="Public Sans, Segoe UI, sans-serif" font-size="24">Aisle 4 / Bay 2</text>
+
+                  <g transform="translate(300 220)" filter="url(#softShadow)">
+                    <rect x="0" y="0" width="600" height="340" rx="18" fill="#1a1f26"/>
+                    <rect x="22" y="18" width="556" height="300" rx="10" fill="#101922"/>
+                    <rect x="42" y="38" width="516" height="260" rx="6" fill="#17304c"/>
+
+                    <rect x="440" y="52" width="102" height="102" rx="4" fill="#f9fcff"/>
+                    <rect x="450" y="62" width="12" height="12" fill="#0b1725"/>
+                    <rect x="464" y="62" width="12" height="12" fill="#0b1725"/>
+                    <rect x="478" y="62" width="12" height="12" fill="#0b1725"/>
+                    <rect x="492" y="62" width="12" height="12" fill="#0b1725"/>
+                    <rect x="506" y="62" width="12" height="12" fill="#0b1725"/>
+                    <rect x="520" y="62" width="12" height="12" fill="#0b1725"/>
+                    <rect x="450" y="76" width="12" height="12" fill="#0b1725"/>
+                    <rect x="478" y="76" width="12" height="12" fill="#0b1725"/>
+                    <rect x="506" y="76" width="12" height="12" fill="#0b1725"/>
+                    <rect x="520" y="76" width="12" height="12" fill="#0b1725"/>
+                    <rect x="450" y="90" width="12" height="12" fill="#0b1725"/>
+                    <rect x="464" y="90" width="12" height="12" fill="#0b1725"/>
+                    <rect x="492" y="90" width="12" height="12" fill="#0b1725"/>
+                    <rect x="520" y="90" width="12" height="12" fill="#0b1725"/>
+                    <rect x="450" y="104" width="12" height="12" fill="#0b1725"/>
+                    <rect x="478" y="104" width="12" height="12" fill="#0b1725"/>
+                    <rect x="492" y="104" width="12" height="12" fill="#0b1725"/>
+                    <rect x="506" y="104" width="12" height="12" fill="#0b1725"/>
+                    <rect x="520" y="104" width="12" height="12" fill="#0b1725"/>
+                    <rect x="450" y="118" width="12" height="12" fill="#0b1725"/>
+                    <rect x="464" y="118" width="12" height="12" fill="#0b1725"/>
+                    <rect x="478" y="118" width="12" height="12" fill="#0b1725"/>
+                    <rect x="506" y="118" width="12" height="12" fill="#0b1725"/>
+                    <rect x="520" y="118" width="12" height="12" fill="#0b1725"/>
+
+                    <text x="50" y="102" fill="#f2f8ff" font-family="Public Sans, Segoe UI, sans-serif" font-size="28" font-weight="700">TP-X1-G9</text>
+                    <text x="50" y="140" fill="#b8cae1" font-family="Public Sans, Segoe UI, sans-serif" font-size="22">SN5648392</text>
+
+                    <rect x="50" y="182" width="320" height="86" rx="8" fill="#f7fbff"/>
+                    <text x="68" y="246" fill="#496583" font-family="Public Sans, Segoe UI, sans-serif" font-size="18">Purchased: 2023-08-14</text>
+
+                    <rect x="-30" y="320" width="660" height="24" rx="12" fill="#626d7a" opacity="0.45"/>
+                  </g>
+                </svg>
+              </div>
             </div>
+
           </div>
         </section>
 
         <aside class="side-stack" aria-label="Job side panels">
-          <section class="photo-card" aria-label="Captured asset photo">
-            <h2 class="panel-title">Asset Photo</h2>
-            <div class="photo-placeholder">Captured asset image or QR-linked asset preview</div>
+          <section class="summary-chart-card" aria-label="Cost distribution chart">
+            <h2 class="panel-title">Cost Summary</h2>
+            <div class="summary-chart-wrap">
+              <canvas id="asset-cost-pie-chart" aria-label="Asset cost distribution pie chart" role="img"></canvas>
+            </div>
           </section>
 
           <section class="cost-card" aria-label="Job cost summary">
-            <h2 class="panel-title">Cost Summary</h2>
             <div class="cost-list">
               <div class="cost-item">
-                <div class="cost-label asset">Asset Cost</div>
+                <div class="cost-label asset">Asset Value</div>
                 <div class="cost-value">$15,000.00</div>
               </div>
               <div class="cost-item">
@@ -753,112 +910,76 @@
           </section>
         </aside>
       </div>
+    </section>
 
-      <div class="form-actions">
-        <a class="btn-danger" href="dashboard.html">Decline</a>
-        <a class="btn-secondary" href="dashboard.html">Approve</a>
-        <a class="btn-primary" href="calendar01.html">Schedule</a>
-      </div>
-    </form>
+    <section class="dev-notes" aria-label="Development notes">
+      <h2 class="dev-notes-title">DEV NOTES</h2>
+      <ul class="dev-notes-list">
+        <li>TODO</li>
+      </ul>
+    </section>
   </main>
 
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
   <script>
     (function () {
-      const companyRoot = document.querySelector('[data-company-autocomplete]');
-      if (!companyRoot) {
-        return;
-      }
+      var jobDetails = {
+        job_reference: 'JOB-0041',
+        company: 'Site A Facilities',
+        model_number: 'Generator GX-4800',
+        serial_number: 'SN-8842-AX19',
+        job_date: '08 May 2026',
+        job_type: 'Repair',
+        assigned_company: 'North Ridge Mechanical',
+        fault_description: 'Generator at Site A has unstable output under load. Check voltage regulator operation, verify fuel supply pressure, inspect control wiring, and run a sustained load test before returning the asset to service.'
+      };
 
-      const companyInput = companyRoot.querySelector('#company');
-      const dropdown = companyRoot.querySelector('#company-dropdown-options');
-      const optionsList = companyRoot.querySelector('[data-company-options]');
-      const addButton = companyRoot.querySelector('[data-company-add]');
-      const companies = ['Company A', 'Company B', 'Company C'];
-
-      function setExpanded(isExpanded) {
-        companyInput.setAttribute('aria-expanded', String(isExpanded));
-      }
-
-      function hideDropdown() {
-        dropdown.hidden = true;
-        addButton.hidden = true;
-        setExpanded(false);
-      }
-
-      function showDropdown() {
-        dropdown.hidden = false;
-        setExpanded(true);
-      }
-
-      function normalize(value) {
-        return value.trim().toLowerCase();
-      }
-
-      function renderOptions() {
-        const query = normalize(companyInput.value);
-        const matches = companies.filter((name) => normalize(name).includes(query));
-
-        optionsList.innerHTML = '';
-
-        if (matches.length === 0) {
-          const emptyState = document.createElement('p');
-          emptyState.className = 'company-empty';
-          emptyState.textContent = 'No matching companies found.';
-          optionsList.appendChild(emptyState);
-          addButton.hidden = false;
-        } else {
-          addButton.hidden = true;
-          matches.forEach((name) => {
-            const option = document.createElement('button');
-            option.type = 'button';
-            option.className = 'company-option';
-            option.textContent = name;
-            option.setAttribute('role', 'option');
-            option.addEventListener('click', function () {
-              companyInput.value = name;
-              hideDropdown();
-            });
-            optionsList.appendChild(option);
-          });
-        }
-
-        addButton.textContent = query ? `Add New: ${companyInput.value.trim()}` : 'Add New';
-        addButton.disabled = query.length === 0 || matches.length > 0;
-      }
-
-      companyInput.addEventListener('input', function () {
-        if (!companyInput.value.trim()) {
-          hideDropdown();
-          return;
-        }
-
-        renderOptions();
-        showDropdown();
-      });
-
-      addButton.addEventListener('click', function () {
-        const value = companyInput.value.trim();
-        if (!value) {
-          return;
-        }
-
-        const alreadyExists = companies.some((name) => normalize(name) === normalize(value));
-        if (!alreadyExists) {
-          companies.push(value);
-        }
-
-        companyInput.value = value;
-        hideDropdown();
-      });
-
-      document.addEventListener('click', function (event) {
-        if (!companyRoot.contains(event.target)) {
-          hideDropdown();
+      Object.keys(jobDetails).forEach(function (key) {
+        var valueEl = document.querySelector('[data-field="' + key + '"]');
+        if (valueEl) {
+          valueEl.textContent = jobDetails[key];
         }
       });
 
-      hideDropdown();
+      const chartCanvas = document.getElementById('asset-cost-pie-chart');
+      if (chartCanvas && typeof Chart !== 'undefined') {
+        new Chart(chartCanvas, {
+          type: 'pie',
+          data: {
+            labels: ['Asset Value', 'Spend Limit', 'Repair Cost', 'Maintenance Cost'],
+            datasets: [
+              {
+                data: [15000, 1250, 450, 125],
+                backgroundColor: ['#f0d7cf', '#eddcb9', '#c8d9ef', '#cae4d0'],
+                hoverBackgroundColor: ['#e3c2b8', '#ddcb9f', '#b7c8e3', '#b8d6c0'],
+                borderWidth: 0
+              }
+            ]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            layout: {
+              padding: 4
+            },
+            plugins: {
+              legend: {
+                position: 'bottom',
+                labels: {
+                  boxWidth: 14,
+                  color: '#26394f',
+                  font: {
+                    family: 'Public Sans, Segoe UI, sans-serif',
+                    size: 13
+                  }
+                }
+              }
+            }
+          }
+        });
+      }
     })();
+
   </script>
 </body>
 </html>
