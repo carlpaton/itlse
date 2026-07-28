@@ -90,6 +90,53 @@
       letter-spacing: 0.2px;
     }
 
+    .top-right {
+      display: flex;
+      align-items: center;
+      gap: var(--space-4);
+    }
+
+    .company-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 6px 10px 6px 6px;
+      border-radius: 999px;
+      border: 1px solid rgba(247, 251, 255, 0.35);
+      background: rgba(255, 255, 255, 0.08);
+      color: var(--color-text-on-dark);
+      line-height: 1;
+      min-height: 36px;
+    }
+
+    .company-logo {
+      width: 24px;
+      height: 24px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, #e6eef8, #b7cee6);
+      color: #14314f;
+      display: inline-grid;
+      place-items: center;
+      font-weight: 800;
+      font-size: 0.64rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      flex-shrink: 0;
+    }
+
+    .company-name {
+      font-size: 0.79rem;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      white-space: nowrap;
+    }
+
+    .utility-icons {
+      display: flex;
+      align-items: center;
+      gap: var(--space-2);
+    }
+
     .icon-btn {
       border: 0;
       background: transparent;
@@ -457,6 +504,18 @@
       font-size: 0.92rem;
     }
 
+    .photo-chart-wrap {
+      width: min(220px, 100%);
+      margin: 0 auto;
+      aspect-ratio: 1;
+    }
+
+    .photo-chart-wrap canvas {
+      width: 100% !important;
+      height: 100% !important;
+      display: block;
+    }
+
     .cost-list {
       display: grid;
       gap: var(--space-2);
@@ -505,6 +564,34 @@
       flex-wrap: wrap;
     }
 
+    .dev-notes {
+      margin-top: calc(var(--space-8) + var(--space-2));
+      padding: var(--space-5);
+      border: 1px solid #cfd9e4;
+      border-radius: var(--radius-md);
+      background: #ffffff;
+      box-shadow: 0 14px 32px rgba(16, 35, 58, 0.08);
+    }
+
+    .dev-notes-title {
+      margin: 0 0 var(--space-3);
+      color: var(--color-text-strong);
+      font-family: var(--font-display);
+      font-size: 1rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+    }
+
+    .dev-notes-list {
+      margin: 0;
+      padding-left: 1.25rem;
+      color: var(--color-text-body);
+    }
+
+    .dev-notes-list li + li {
+      margin-top: var(--space-2);
+    }
+
     @keyframes page-enter {
       from { opacity: 0; transform: translateY(10px); }
       to { opacity: 1; transform: translateY(0); }
@@ -523,6 +610,10 @@
 
       .detail-grid {
         grid-template-columns: 1fr;
+      }
+
+      .company-name {
+        display: none;
       }
 
       .job-meta-row,
@@ -548,7 +639,12 @@
         <button class="icon-btn" aria-label="Open menu">&#9776;</button>
         <a class="brand" href="dashboard.html"> Asset Oversight </a>
       </div>
-      <div class="utility-icons" aria-label="Utility actions">
+      <div class="top-right">
+        <div class="company-chip" aria-label="Company identity for logged in user">
+          <span class="company-logo" id="company-logo" aria-hidden="true">COM</span>
+          <span class="company-name" id="company-name">Compass</span>
+        </div>
+        <div class="utility-icons" aria-label="Utility actions">
         <button class="icon-btn" aria-label="Search">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.35-4.35"></path>
@@ -566,10 +662,12 @@
             <circle cx="12" cy="7" r="4"></circle>
           </svg>
         </a>
+        </div>
       </div>
     </div>
 
     <nav class="main-nav" aria-label="Primary">
+      <a href="dashboard.html" class="nav-link">Dashboard</a>
 
       <a href="reports01.html" class="nav-link">Reports</a>
       <a href="contractor01.html" class="nav-link">Contractor</a>
@@ -669,8 +767,9 @@
 
         <aside class="side-stack" aria-label="Job side panels">
           <section class="photo-card" aria-label="Captured asset photo">
-            <h2 class="panel-title">Asset Photo</h2>
-            <div class="photo-placeholder">Captured asset image or QR-linked asset preview</div>
+            <div class="photo-chart-wrap">
+              <canvas id="asset-photo-pie-chart" aria-label="Asset cost distribution pie chart" role="img"></canvas>
+            </div>
           </section>
 
           <section class="cost-card" aria-label="Job cost summary">
@@ -703,8 +802,16 @@
         <a class="btn-primary" href="calendar01.html">Schedule</a>
       </div>
     </form>
+
+    <section class="dev-notes" aria-label="Development notes">
+      <h2 class="dev-notes-title">DEV NOTES</h2>
+      <ul class="dev-notes-list">
+        <li>Job # - the user can accept the auto incremeting default or change to be something else, the number will always increment for the next job</li>
+      </ul>
+    </section>
   </main>
 
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
   <script>
     (function () {
       const companyRoot = document.querySelector('[data-company-autocomplete]');
@@ -801,6 +908,45 @@
       });
 
       hideDropdown();
+    })();
+
+    (function () {
+      const chartCanvas = document.getElementById('asset-photo-pie-chart');
+      if (!chartCanvas || typeof Chart === 'undefined') {
+        return;
+      }
+
+      new Chart(chartCanvas, {
+        type: 'pie',
+        data: {
+          labels: ['Repair', 'Maintenance', 'Inspection', 'Installation'],
+          datasets: [
+            {
+              data: [450, 125, 225, 175],
+              backgroundColor: ['#6f8fb4', '#8fc59d', '#f0cb73', '#e09a8d'],
+              borderColor: '#ffffff',
+              borderWidth: 2
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              position: 'bottom',
+              labels: {
+                boxWidth: 12,
+                color: '#26394f',
+                font: {
+                  family: 'Public Sans, Segoe UI, sans-serif',
+                  size: 12
+                }
+              }
+            }
+          }
+        }
+      });
     })();
   </script>
 </body>

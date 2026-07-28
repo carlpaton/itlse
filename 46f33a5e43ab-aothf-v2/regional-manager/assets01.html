@@ -88,6 +88,53 @@
       letter-spacing: 0.2px;
     }
 
+    .top-right {
+      display: flex;
+      align-items: center;
+      gap: var(--space-4);
+    }
+
+    .company-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 6px 10px 6px 6px;
+      border-radius: 999px;
+      border: 1px solid rgba(247, 251, 255, 0.35);
+      background: rgba(255, 255, 255, 0.08);
+      color: var(--color-text-on-dark);
+      line-height: 1;
+      min-height: 36px;
+    }
+
+    .company-logo {
+      width: 24px;
+      height: 24px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, #e6eef8, #b7cee6);
+      color: #14314f;
+      display: inline-grid;
+      place-items: center;
+      font-weight: 800;
+      font-size: 0.64rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      flex-shrink: 0;
+    }
+
+    .company-name {
+      font-size: 0.79rem;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      white-space: nowrap;
+    }
+
+    .utility-icons {
+      display: flex;
+      align-items: center;
+      gap: var(--space-2);
+    }
+
     .icon-btn {
       border: 0;
       background: transparent;
@@ -485,6 +532,10 @@
         padding: 0 var(--space-4);
       }
 
+      .company-name {
+        display: none;
+      }
+
       .page-content {
         padding: var(--space-6) var(--space-4);
       }
@@ -516,7 +567,12 @@
         <button class="icon-btn" aria-label="Open menu">&#9776;</button>
         <a class="brand" href="dashboard.html"> Asset Oversight </a>
       </div>
-      <div class="utility-icons" aria-label="Utility actions">
+      <div class="top-right">
+        <div class="company-chip" aria-label="Company identity for logged in user">
+          <span class="company-logo" id="company-logo" aria-hidden="true">COM</span>
+          <span class="company-name" id="company-name">Compass</span>
+        </div>
+        <div class="utility-icons" aria-label="Utility actions">
         <button class="icon-btn" aria-label="Search">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <circle cx="11" cy="11" r="8"></circle>
@@ -535,10 +591,12 @@
             <circle cx="12" cy="7" r="4"></circle>
           </svg>
         </a>
+        </div>
       </div>
     </div>
 
     <nav class="main-nav" aria-label="Primary">
+      <a href="dashboard.html" class="nav-link">Dashboard</a>
 
       <a href="reports01.html" class="nav-link">Reports</a>
       <a href="contractor01.html" class="nav-link">Contractor</a>

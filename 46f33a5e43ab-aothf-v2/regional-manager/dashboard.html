@@ -301,6 +301,12 @@
       border-radius: var(--radius-md);
       padding: var(--space-4);
       box-shadow: var(--shadow-soft);
+      cursor: pointer;
+      transition: background 160ms ease, border-color 160ms ease;
+    }
+
+    .stat-card:hover {
+      background: #e9eef5;
     }
 
     .stat-label {
@@ -587,7 +593,7 @@
     }
   </style>
 </head>
-<body data-user="regional_manager" data-company-name="Coastal Grid Services" data-company-logo="CGS">
+<body data-user="regional_manager" data-company-name="Compass" data-company-logo="COM">
   <header class="app-header" role="banner">
     <div class="top-bar">
       <div class="brand-group">
@@ -596,8 +602,8 @@
       </div>
       <div class="top-right">
         <div class="company-chip" aria-label="Company identity for logged in user">
-          <span class="company-logo" id="company-logo" aria-hidden="true">CGS</span>
-          <span class="company-name" id="company-name">Coastal Grid Services</span>
+          <span class="company-logo" id="company-logo" aria-hidden="true">COM</span>
+          <span class="company-name" id="company-name">Compass</span>
         </div>
         <div class="utility-icons" aria-label="Utility actions">
           <button class="icon-btn" aria-label="Search">
@@ -623,6 +629,7 @@
     </div>
 
     <nav class="main-nav" aria-label="Primary">
+      <a href="dashboard.html" class="nav-link is-active" aria-current="page">Dashboard</a>
 
       <a href="reports01.html" class="nav-link">Reports</a>
       <a href="contractor01.html" class="nav-link">Contractor</a>
@@ -647,10 +654,7 @@
       <input class="search-input" type="search" placeholder="Search Jobs" aria-label="Search Jobs" />
       <span class="search-actions">
         <a class="btn-primary" href="job01.html">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <path d="M12 5v14M5 12h14"></path>
-          </svg>
-          Create Job
+          Create
         </a>
       </span>
     </section>
@@ -675,9 +679,6 @@
     </section>
 
     <section class="filter-tabs" role="tablist" aria-label="Job filters">
-      <button class="filter-tab active" role="tab" aria-selected="true" type="button" title="Display all jobs">All jobs</button>
-      <button class="filter-tab" role="tab" aria-selected="false" type="button" title="Filter to show all jobs in progress">In progress</button>
-      <button class="filter-tab" role="tab" aria-selected="false" type="button" title="Filter complete jobs only">Completed</button>
       <button class="filter-tab" role="tab" aria-selected="false" type="button" title="Filter to show jobs with the status public or staff">Public queues</button>
       <button class="filter-tab" role="tab" aria-selected="false" type="button" title="Filter to show jobs for regional sites only">Regional sites</button>
     </section>
@@ -772,6 +773,12 @@
       <ul class="dev-notes-list">
         <li>QR Code Search -  opens the camera and reads the QR details, then filters the page on any found jobs</li>
         <li>Search jobs - searches on model, serial, company name and address, then filters the page on any found jobs</li>
+        <li>Total jobs - clicking filters the list of jobs to show all jobs that are not complete</li>
+        <li>In progress - clicking filters the list of jobs to show all jobs that are in progress</li>
+        <li>Complete - clicking shows complete jobs</li>
+        <li>High Priority - shows jobs with high priority status</li>
+        <li>Public queues - these are jobs with the status public or staff</li>
+        <li>Regional sites - To be confirmed</li>
       </ul>
     </section>
   </main>
