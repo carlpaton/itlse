@@ -1,0 +1,2027 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+  <title>AoTech - Job Details</title>
+  <style>
+    @import url("https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700&family=Sora:wght@600;700&display=swap");
+
+    :root {
+      --font-display: "Sora", "Segoe UI", sans-serif;
+      --font-body: "Public Sans", "Segoe UI", sans-serif;
+
+      --color-nav-top: #2a3f56;
+      --color-nav-main: #334d69;
+      --color-nav-active: #3f5f80;
+      --color-nav-hover: #3a5878;
+
+      --color-page-bg: #f3f5f8;
+      --color-surface: #ffffff;
+      --color-surface-muted: #eef3f8;
+      --color-border: #d7e0ea;
+
+      --color-text-strong: #10233a;
+      --color-text-body: #26394f;
+      --color-text-muted: #5f7185;
+      --color-text-on-dark: #f7fbff;
+
+      --color-focus: #5b8cc2;
+      --color-accent-soft: #f4f8fc;
+      --color-cost-asset: #fce6de;
+      --color-cost-spend: #fae9c8;
+      --color-cost-repair: #d7e7fb;
+      --color-cost-maintenance: #d9f3df;
+      --shadow-soft: 0 1px 2px rgba(10, 24, 40, 0.08), 0 6px 16px rgba(17, 36, 56, 0.04);
+
+      --space-1: 4px;
+      --space-2: 8px;
+      --space-3: 12px;
+      --space-4: 16px;
+      --space-5: 20px;
+      --space-6: 24px;
+      --space-8: 32px;
+      --radius-sm: 6px;
+      --radius-md: 10px;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: var(--font-body);
+      color: var(--color-text-body);
+      background: var(--color-page-bg);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .app-header {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      box-shadow: 0 1px 0 rgba(7, 18, 32, 0.15);
+    }
+
+    .top-bar {
+      height: 56px;
+      background: var(--color-nav-top);
+      color: var(--color-text-on-dark);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 var(--space-6);
+    }
+
+    .brand-group {
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+    }
+
+    .brand {
+      color: var(--color-text-on-dark);
+      text-decoration: none;
+      font-family: var(--font-display);
+      font-size: 1.55rem;
+      font-weight: 700;
+      letter-spacing: 0.2px;
+    }
+
+    .top-right {
+      display: flex;
+      align-items: center;
+      gap: var(--space-4);
+    }
+
+    .company-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 6px 10px 6px 6px;
+      border-radius: 999px;
+      border: 1px solid rgba(247, 251, 255, 0.35);
+      background: rgba(255, 255, 255, 0.08);
+      color: var(--color-text-on-dark);
+      line-height: 1;
+      min-height: 36px;
+    }
+
+    .company-logo {
+      width: 24px;
+      height: 24px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, #e6eef8, #b7cee6);
+      color: #14314f;
+      display: inline-grid;
+      place-items: center;
+      font-weight: 800;
+      font-size: 0.64rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      flex-shrink: 0;
+    }
+
+    .company-name {
+      font-size: 0.79rem;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      white-space: nowrap;
+    }
+
+    .utility-icons {
+      display: flex;
+      align-items: center;
+      gap: var(--space-2);
+    }
+
+    .icon-btn {
+      border: 0;
+      background: transparent;
+      color: inherit;
+      width: 36px;
+      height: 36px;
+      border-radius: 999px;
+      display: inline-grid;
+      place-items: center;
+      cursor: pointer;
+      position: relative;
+      font-size: 1rem;
+      line-height: 1;
+    }
+
+    .icon-btn:hover { background: rgba(255, 255, 255, 0.12); }
+
+    .icon-btn:focus-visible,
+    .nav-link:focus-visible,
+    .form-input:focus-visible,
+    .form-select:focus-visible,
+    .form-textarea:focus-visible,
+    .btn-add-contact:focus-visible,
+    .btn-primary:focus-visible,
+    .btn-secondary:focus-visible,
+    .btn-danger:focus-visible,
+    .btn-ghost:focus-visible {
+      outline: 2px solid var(--color-focus);
+      outline-offset: 2px;
+    }
+
+    .has-dot::after {
+      content: "";
+      position: absolute;
+      top: 7px;
+      right: 7px;
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #ff4d4d;
+    }
+
+    .main-nav {
+      min-height: 44px;
+      background: var(--color-nav-main);
+      display: flex;
+      align-items: center;
+      gap: var(--space-2);
+      padding: 0 var(--space-5);
+      overflow-x: auto;
+    }
+
+    .nav-link {
+      color: rgba(247, 251, 255, 0.95);
+      text-decoration: none;
+      padding: 10px 12px;
+      border-radius: var(--radius-sm);
+      font-weight: 600;
+      white-space: nowrap;
+      transition: background 160ms ease;
+    }
+
+    .nav-link:hover { background: var(--color-nav-hover); }
+
+    .page-content {
+      flex: 1;
+      max-width: 1220px;
+      width: 100%;
+      margin: 0 auto;
+      padding: var(--space-8) var(--space-6);
+      animation: page-enter 320ms ease-out;
+    }
+
+    .page-toolbar {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: var(--space-4);
+      margin-bottom: var(--space-6);
+      flex-wrap: wrap;
+    }
+
+    .page-title {
+      margin: 0;
+      color: var(--color-text-strong);
+      font-family: var(--font-display);
+      font-size: clamp(1.7rem, 3vw, 2.15rem);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+
+    .page-subtitle {
+      margin: var(--space-2) 0 0;
+      color: var(--color-text-muted);
+      font-size: 1rem;
+    }
+
+    .btn-primary,
+    .btn-secondary,
+    .btn-danger,
+    .btn-ghost {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 44px;
+      padding: 0 var(--space-5);
+      border-radius: var(--radius-sm);
+      font-family: var(--font-body);
+      font-size: 0.95rem;
+      font-weight: 700;
+      text-decoration: none;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: transform 140ms ease, box-shadow 140ms ease, filter 140ms ease, background 140ms ease, border-color 140ms ease;
+    }
+
+    .btn-primary {
+      border: 1px solid transparent;
+      background: linear-gradient(135deg, #324e6b, #3a5a7b);
+      color: #ffffff;
+      box-shadow: 0 6px 12px rgba(42, 63, 86, 0.18);
+    }
+
+    .btn-primary:hover {
+      filter: brightness(0.95);
+      transform: translateY(-1px);
+      box-shadow: 0 10px 16px rgba(42, 63, 86, 0.2);
+    }
+
+    .job-start-btn {
+      margin-top: var(--space-3);
+    }
+
+    .btn-secondary,
+    .btn-ghost {
+      border: 1px solid #b9c7d7;
+      background: #ffffff;
+      color: var(--color-text-body);
+    }
+
+    .btn-secondary:hover,
+    .btn-ghost:hover {
+      background: #f2f6fb;
+      border-color: #9fb1c6;
+    }
+
+    .btn-danger {
+      border: 1px solid #e1b4af;
+      background: #fff5f4;
+      color: #a63b30;
+    }
+
+    .btn-danger:hover {
+      background: #fce8e6;
+      border-color: #d69a94;
+    }
+
+    .job-form-card {
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      background: var(--color-surface);
+      box-shadow: var(--shadow-soft);
+      padding: var(--space-6);
+    }
+
+    .job-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr);
+      gap: var(--space-6);
+      align-items: start;
+    }
+
+    .job-meta-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      align-items: end;
+      gap: var(--space-4);
+      margin-bottom: var(--space-5);
+    }
+
+    .job-meta-row .form-field {
+      min-width: 0;
+    }
+
+    .btn-ghost {
+      min-width: 128px;
+    }
+
+    .scan-qr-link {
+      margin-bottom: var(--space-4);
+    }
+
+    .detail-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-4);
+    }
+
+    .form-field {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-1);
+    }
+
+    .company-autocomplete {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-2);
+    }
+
+    .company-dropdown {
+      position: absolute;
+      top: calc(100% + var(--space-1));
+      left: 0;
+      right: 0;
+      z-index: 25;
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-sm);
+      background: #ffffff;
+      box-shadow: var(--shadow-soft);
+      padding: var(--space-2);
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-2);
+    }
+
+    .company-option-list {
+      max-height: 156px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-1);
+    }
+
+    .company-option {
+      width: 100%;
+      border: 0;
+      border-radius: var(--radius-sm);
+      background: transparent;
+      color: var(--color-text-body);
+      text-align: left;
+      font-family: var(--font-body);
+      font-size: 0.92rem;
+      padding: 10px 12px;
+      cursor: pointer;
+    }
+
+    .company-option:hover,
+    .company-option:focus-visible {
+      background: var(--color-accent-soft);
+      outline: none;
+    }
+
+    .company-empty {
+      margin: 0;
+      padding: 10px 12px;
+      color: var(--color-text-muted);
+      font-size: 0.9rem;
+    }
+
+    .company-add-btn {
+      width: 100%;
+      min-height: 40px;
+      font-weight: 600;
+    }
+
+    .company-dropdown[hidden],
+    .company-add-btn[hidden] {
+      display: none !important;
+    }
+
+    .form-field--full {
+      grid-column: 1 / -1;
+    }
+
+    .form-field label {
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: var(--color-text-muted);
+    }
+
+    .field-label {
+      margin: 0 0 var(--space-2);
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: var(--color-text-muted);
+    }
+
+    .form-static-value {
+      margin: 0;
+      min-height: 44px;
+      display: flex;
+      align-items: center;
+      color: var(--color-text-strong);
+      font-size: 0.95rem;
+      font-weight: 700;
+    }
+
+    .form-static-box {
+      width: 100%;
+      min-height: 0;
+      border: 0;
+      border-radius: 0;
+      background: transparent;
+      padding: 0;
+      display: block;
+      color: var(--color-text-strong);
+      font-size: 1rem;
+      line-height: 1.5;
+    }
+
+    .form-static-box.is-multiline {
+      white-space: normal;
+    }
+
+    .company-display {
+      font-weight: 700;
+    }
+
+    .form-input,
+    .form-select,
+    .form-textarea {
+      width: 100%;
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-sm);
+      background: #ffffff;
+      color: var(--color-text-body);
+      font-family: var(--font-body);
+      font-size: 0.95rem;
+      transition: border-color 160ms ease, box-shadow 160ms ease;
+    }
+
+    .form-input,
+    .form-select {
+      height: 44px;
+      padding: 0 var(--space-4);
+    }
+
+    .form-textarea {
+      min-height: 92px;
+      padding: var(--space-3) var(--space-4);
+      resize: vertical;
+    }
+
+    .form-input::placeholder,
+    .form-textarea::placeholder {
+      color: var(--color-text-muted);
+    }
+
+    .form-input:focus,
+    .form-select:focus,
+    .form-textarea:focus {
+      border-color: var(--color-focus);
+      box-shadow: 0 0 0 3px rgba(91, 140, 194, 0.18);
+      outline: none;
+    }
+
+    .form-select {
+      appearance: none;
+      -webkit-appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%235f7185' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right var(--space-4) center;
+      padding-right: 40px;
+      cursor: pointer;
+    }
+
+    .photo-controls {
+      display: flex;
+      align-items: center;
+      gap: var(--space-2);
+      margin-top: var(--space-4);
+      flex-wrap: wrap;
+    }
+
+    .captured-photo {
+      min-height: 120px;
+      border: 1px solid #bcc9d8;
+      border-radius: var(--radius-sm);
+      background: #f6f9fd;
+      padding: var(--space-3);
+      display: grid;
+      gap: var(--space-2);
+      align-content: center;
+    }
+
+    .captured-photo-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--space-3);
+      flex-wrap: wrap;
+    }
+
+    .captured-photo-svg {
+      width: 100%;
+      height: 160px;
+      border-radius: 4px;
+      border: 1px solid #c8d4e2;
+      background: #ffffff;
+    }
+
+    .btn-add-contact {
+      width: 40px;
+      height: 40px;
+      border: 1px solid #b9c7d7;
+      border-radius: var(--radius-sm);
+      background: #ffffff;
+      color: var(--color-text-body);
+      font-size: 1.4rem;
+      line-height: 1;
+      font-weight: 600;
+      cursor: pointer;
+      flex-shrink: 0;
+      transition: background 140ms ease, border-color 140ms ease;
+    }
+
+    .btn-add-contact:hover {
+      background: #f2f6fb;
+      border-color: #9fb1c6;
+    }
+
+
+    .form-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: var(--space-3);
+      margin-top: var(--space-6);
+      flex-wrap: wrap;
+    }
+
+    .asset-identifiers {
+      margin-top: var(--space-6);
+      padding: var(--space-5);
+      border: 1px solid #cfd9e4;
+      border-radius: var(--radius-md);
+      background: #ffffff;
+      box-shadow: 0 14px 32px rgba(16, 35, 58, 0.08);
+      position: relative;
+      transition: border-color 160ms ease, box-shadow 160ms ease, transform 160ms ease;
+      cursor: pointer;
+    }
+
+    .asset-header-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--space-3);
+      margin-bottom: var(--space-3);
+    }
+
+    .asset-identifiers:hover {
+      border-color: #8ea8c4;
+      box-shadow: 0 18px 34px rgba(16, 35, 58, 0.12);
+      transform: translateY(-1px);
+    }
+
+    .asset-identifiers.is-selected {
+      border-color: #5b8cc2;
+      box-shadow: 0 0 0 3px rgba(91, 140, 194, 0.18), 0 18px 34px rgba(16, 35, 58, 0.12);
+    }
+
+    .asset-delete-btn {
+      min-height: 40px;
+      padding: 0 var(--space-5);
+      border: 1px solid #cf4c4c;
+      border-radius: var(--radius-sm);
+      background: #d64545;
+      color: #ffffff;
+      font-family: var(--font-body);
+      font-size: 0.95rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .asset-delete-btn:hover {
+      background: #be3939;
+      border-color: #b53535;
+    }
+
+    .asset-collapse-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 36px;
+      height: 36px;
+      padding: 0;
+      border: 1px solid #b9c7d7;
+      border-radius: 999px;
+      background: #ffffff;
+      color: var(--color-text-body);
+      font-family: var(--font-body);
+      font-size: 1.15rem;
+      font-weight: 800;
+      cursor: pointer;
+      transition: background 140ms ease, border-color 140ms ease;
+      position: relative;
+      z-index: 1;
+    }
+
+    .asset-collapse-btn:hover {
+      background: #f2f6fb;
+      border-color: #9fb1c6;
+    }
+
+    .asset-identifiers.is-selected .asset-delete-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .asset-identifiers-title {
+      margin: 0 0 var(--space-3);
+      color: var(--color-text-strong);
+      font-family: var(--font-display);
+      font-size: 1rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+    }
+
+    .asset-identifiers > .detail-grid {
+      display: none;
+    }
+
+    .asset-identifiers.is-selected > .detail-grid {
+      display: grid;
+    }
+
+    .maintenance-grid {
+      display: grid;
+      gap: var(--space-3);
+      margin-top: var(--space-2);
+      padding: var(--space-4);
+      border: 1px solid #d5dee9;
+      border-radius: var(--radius-sm);
+      background: var(--color-accent-soft);
+    }
+
+    .maintenance-options {
+      display: none;
+    }
+
+    .asset-identifiers.is-selected .maintenance-options {
+      display: block;
+    }
+
+    .repair-comments {
+      display: none;
+    }
+
+    .job-history {
+      display: none;
+      margin-top: var(--space-4);
+      padding-top: var(--space-4);
+      border-top: 1px solid #d5dee9;
+    }
+
+    .asset-identifiers.is-repair-job .job-history {
+      display: block;
+    }
+
+    .job-history-title {
+      margin: 0 0 var(--space-2);
+      color: var(--color-text-strong);
+      font-family: var(--font-display);
+      font-size: 0.95rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+    }
+
+    .job-history-list {
+      margin: 0;
+      padding-left: 1.25rem;
+      color: var(--color-text-body);
+    }
+
+    .job-history-list li + li {
+      margin-top: var(--space-2);
+    }
+
+    .job-history-job {
+      color: #1d5fa7;
+      text-decoration: underline;
+      text-underline-offset: 2px;
+      font-weight: 700;
+      cursor: default;
+    }
+
+    .asset-identifiers.is-repair-job .maintenance-options,
+    .asset-identifiers.is-repair-job .job-notes {
+      display: none;
+    }
+
+    .asset-identifiers.is-repair-job .repair-comments {
+      display: block;
+    }
+
+    .maintenance-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--space-3);
+      flex-wrap: wrap;
+    }
+
+    .maintenance-input {
+      width: min(300px, 100%);
+      height: 40px;
+      padding: 0 var(--space-3);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-sm);
+      background: #ffffff;
+      color: var(--color-text-body);
+      font-family: var(--font-body);
+      font-size: 0.92rem;
+      transition: border-color 160ms ease, box-shadow 160ms ease;
+    }
+
+    .maintenance-input:focus {
+      border-color: var(--color-focus);
+      box-shadow: 0 0 0 3px rgba(91, 140, 194, 0.18);
+      outline: none;
+    }
+
+    .maintenance-option-controls {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-2);
+      width: min(352px, 100%);
+    }
+
+    .btn-delete-maintenance-row {
+      width: 40px;
+      height: 40px;
+      border: 1px solid #cf4c4c;
+      border-radius: var(--radius-sm);
+      background: #d64545;
+      color: #ffffff;
+      font-size: 1.1rem;
+      line-height: 1;
+      font-weight: 700;
+      cursor: pointer;
+      flex-shrink: 0;
+      transition: background 140ms ease, border-color 140ms ease;
+    }
+
+    .btn-delete-maintenance-row:hover {
+      background: #be3939;
+      border-color: #b53535;
+    }
+
+    .maintenance-label {
+      color: var(--color-text-strong);
+      font-weight: 600;
+    }
+
+    .maintenance-radio-group {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-3);
+      flex-wrap: wrap;
+    }
+
+    .maintenance-radio-group label {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-1);
+      color: var(--color-text-body);
+      font-size: 0.92rem;
+      font-weight: 500;
+      cursor: pointer;
+    }
+
+    .maintenance-radio-group input[type="radio"] {
+      margin: 0;
+      accent-color: #2f5f95;
+    }
+
+    .maintenance-add-row {
+      display: flex;
+      justify-content: flex-start;
+    }
+
+    .btn-add-maintenance-row {
+      width: 40px;
+      height: 40px;
+      border: 1px solid #b9c7d7;
+      border-radius: var(--radius-sm);
+      background: #ffffff;
+      color: var(--color-text-body);
+      font-size: 1.4rem;
+      line-height: 1;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 140ms ease, border-color 140ms ease;
+    }
+
+    .btn-add-maintenance-row:hover {
+      background: #f2f6fb;
+      border-color: #9fb1c6;
+    }
+
+    .asset-save-row {
+      display: none;
+      justify-content: flex-end;
+      align-items: center;
+      gap: var(--space-3);
+      margin-top: var(--space-4);
+    }
+
+    .asset-identifiers.is-selected .asset-save-row {
+      display: flex;
+    }
+
+    .asset-save-btn {
+      min-height: 40px;
+      padding: 0 var(--space-5);
+      border: 1px solid #2f5f95;
+      border-radius: var(--radius-sm);
+      background: #3a73b3;
+      color: #ffffff;
+      font-family: var(--font-body);
+      font-size: 0.92rem;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .asset-save-btn:hover {
+      background: #315f93;
+      border-color: #2a527f;
+    }
+
+    .asset-scan-row {
+      margin-top: var(--space-4);
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+      flex-wrap: wrap;
+    }
+
+    .asset-search-input {
+      width: 100%;
+      min-width: 0;
+    }
+
+    .asset-scan-row .company-autocomplete {
+      flex: 1;
+      min-width: 220px;
+      max-width: 360px;
+    }
+
+    .expenses-card {
+      margin-top: var(--space-6);
+    }
+
+    .expenses-header {
+      margin: 0 0 var(--space-4);
+      color: var(--color-text-strong);
+      font-family: var(--font-display);
+      font-size: 1.08rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+    }
+
+    .expenses-meta-row {
+      margin-bottom: var(--space-5);
+    }
+
+    .expenses-table {
+      border: 1px solid #d5dee9;
+      border-radius: var(--radius-sm);
+      background: #ffffff;
+      overflow: hidden;
+    }
+
+    .expense-row {
+      display: grid;
+      grid-template-columns: minmax(180px, 2fr) repeat(4, minmax(95px, 1fr)) 44px;
+      gap: var(--space-3);
+      align-items: start;
+      padding: var(--space-3);
+      border-bottom: 1px solid #e5ecf3;
+    }
+
+    .expense-row:last-child {
+      border-bottom: 0;
+    }
+
+    .expense-cell {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-1);
+      min-width: 0;
+    }
+
+    .expense-cell-label {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--color-text-muted);
+      letter-spacing: 0.02em;
+    }
+
+    .expense-help-text {
+      margin: 0;
+      font-size: 0.76rem;
+      color: var(--color-text-muted);
+    }
+
+    .expense-gst-options {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-3);
+      min-height: 44px;
+      flex-wrap: wrap;
+    }
+
+    .expense-gst-options label {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-1);
+      font-size: 0.92rem;
+      color: var(--color-text-body);
+      cursor: pointer;
+    }
+
+    .expense-gst-options input[type="radio"] {
+      margin: 0;
+      accent-color: #2f5f95;
+    }
+
+    .expense-total-input {
+      background: #f4f8fc;
+      font-weight: 700;
+    }
+
+    .btn-delete-expense-row {
+      width: 40px;
+      height: 40px;
+      border: 1px solid #cf4c4c;
+      border-radius: var(--radius-sm);
+      background: #d64545;
+      color: #ffffff;
+      font-size: 1rem;
+      line-height: 1;
+      font-weight: 700;
+      cursor: pointer;
+      margin-top: 20px;
+      transition: background 140ms ease, border-color 140ms ease;
+    }
+
+    .btn-delete-expense-row:hover {
+      background: #be3939;
+      border-color: #b53535;
+    }
+
+    .expense-row-actions {
+      margin-top: var(--space-3);
+      display: flex;
+      justify-content: flex-start;
+    }
+
+    .btn-add-expense-row {
+      width: 40px;
+      height: 40px;
+      border: 1px solid #b9c7d7;
+      border-radius: var(--radius-sm);
+      background: #ffffff;
+      color: var(--color-text-body);
+      font-size: 1.4rem;
+      line-height: 1;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 140ms ease, border-color 140ms ease;
+    }
+
+    .btn-add-expense-row:hover {
+      background: #f2f6fb;
+      border-color: #9fb1c6;
+    }
+
+    .expenses-totals {
+      margin-top: var(--space-5);
+      border: 1px solid #d5dee9;
+      border-radius: var(--radius-sm);
+      background: var(--color-accent-soft);
+      padding: var(--space-4);
+      display: grid;
+      gap: var(--space-2);
+    }
+
+    .expenses-total-line {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--space-3);
+      font-size: 0.95rem;
+      color: var(--color-text-body);
+    }
+
+    .expenses-total-line strong {
+      color: var(--color-text-strong);
+      font-size: 1rem;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .dev-notes {
+      margin-top: calc(var(--space-8) + var(--space-2));
+      padding: var(--space-5);
+      border: 1px solid #cfd9e4;
+      border-radius: var(--radius-md);
+      background: #ffffff;
+      box-shadow: 0 14px 32px rgba(16, 35, 58, 0.08);
+    }
+
+    .dev-notes-title {
+      margin: 0 0 var(--space-3);
+      color: var(--color-text-strong);
+      font-family: var(--font-display);
+      font-size: 1rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+    }
+
+    .dev-notes-list {
+      margin: 0;
+      padding-left: 1.25rem;
+      color: var(--color-text-body);
+    }
+
+    .dev-notes-list li + li {
+      margin-top: var(--space-2);
+    }
+
+    @keyframes page-enter {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 980px) {
+      .job-layout {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .top-bar { padding: 0 var(--space-4); }
+      .page-content { padding: var(--space-6) var(--space-4); }
+      .job-form-card { padding: var(--space-4); }
+
+      .detail-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .company-name {
+        display: none;
+      }
+
+      .form-actions {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .job-meta-row {
+        grid-template-columns: 1fr;
+      }
+
+      .maintenance-row {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .expense-row {
+        grid-template-columns: 1fr;
+      }
+
+      .btn-delete-expense-row {
+        margin-top: 0;
+      }
+
+      .job-meta-row .form-field,
+      .btn-primary,
+      .btn-secondary,
+      .btn-danger,
+      .btn-ghost {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="app-header" role="banner">
+    <div class="top-bar">
+      <div class="brand-group">
+        <button class="icon-btn" aria-label="Open menu">&#9776;</button>
+        <a class="brand" href="dashboard.html"> Asset Oversight </a>
+      </div>
+      <div class="top-right">
+        <div class="company-chip" aria-label="Company identity for logged in user">
+          <span class="company-logo" id="company-logo" aria-hidden="true">COM</span>
+          <span class="company-name" id="company-name">Compass Group</span>
+        </div>
+        <div class="utility-icons" aria-label="Utility actions">
+        <button class="icon-btn" aria-label="Search">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.35-4.35"></path>
+          </svg>
+        </button>
+        <button class="icon-btn has-dot" aria-label="Notifications">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+            <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+          </svg>
+        </button>
+        <a class="icon-btn" href="./../index.html" aria-label="Profile">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+            <circle cx="12" cy="7" r="4"></circle>
+          </svg>
+        </a>
+        </div>
+      </div>
+    </div>
+
+    <nav class="main-nav" aria-label="Primary">
+      <a href="dashboard.html" class="nav-link">Dashboard</a>
+
+      <a href="reports01.html" class="nav-link">Reports</a>
+      <a href="contractor01.html" class="nav-link">Contractor</a>
+      <a href="calendar01.html" class="nav-link">Calendar</a>
+      <a href="assets01.html" class="nav-link">Assets</a>
+      <a href="sites01.html" class="nav-link">Sites</a>
+    
+      <a href="users01.html" class="nav-link">Users</a>
+      <a href="on-boarding01.html" class="nav-link">Onboarding</a>
+    </nav>
+  </header>
+
+  <main class="page-content" id="page-content">
+    <section class="page-toolbar" aria-label="Job details page heading">
+      <div>
+        <h1 class="page-title">Job Details</h1>
+        <p class="page-subtitle">Job Details.</p>
+        <button class="btn-primary job-start-btn" type="button">Start</button>
+      </div>
+      <a class="btn-secondary" href="dashboard.html">Main Dashboard</a>
+    </section>
+
+    <section class="job-form-card" aria-label="Selected job details">
+      <div class="job-layout">
+        <section>
+          <div class="job-meta-row">
+            <div class="form-field">
+              <label for="job-reference">Job #</label>
+              <div class="form-static-box" id="job-reference" data-field="job_reference">JOB-0041</div>
+            </div>
+            <div class="form-field">
+              <label for="company">Company</label>
+              <div class="form-static-box company-display" id="company" data-field="company">Site A Facilities</div>
+            </div>
+          </div>
+
+          <div class="detail-grid">
+
+            <div class="form-field">
+              <label for="job-date">Date</label>
+              <div class="form-static-box" id="job-date" data-field="job_date">28 July 2026</div>
+            </div>
+
+            <div class="form-field">
+              <label for="job-type">Job Type</label>
+              <div class="form-static-box" id="job-type" data-field="job_type">Maintenance</div>
+            </div>
+
+            <div class="form-field">
+              <label for="assigned-company">Assigned Company</label>
+              <div class="form-static-box" id="assigned-company" data-field="assigned_company">North Ridge Mechanical</div>
+            </div>
+
+            <div class="form-field form-field--full">
+              <label for="fault-description">Work Description</label>
+              <div class="form-static-box is-multiline" id="fault-description" data-field="fault_description">Generator reported unstable output during load testing. Inspect the voltage regulator, confirm fuel delivery, and verify the unit can carry sustained demand before returning to service.</div>
+            </div>
+
+          </div>
+        </section>
+
+      </div>
+    </section>
+
+    <section class="asset-identifiers" id="generator-asset-card" aria-label="Asset identifiers" role="button" tabindex="0" aria-pressed="false">
+      <div class="asset-header-row">
+        <h2 class="asset-identifiers-title">Generator GX-4800</h2>
+        <button class="asset-collapse-btn" id="asset-collapse-button" type="button" aria-expanded="false" aria-controls="generator-asset-card" aria-label="Expand Generator GX-4800 details"><span aria-hidden="true">⌄</span></button>
+      </div>
+      <div class="detail-grid">
+        <div class="form-field">
+          <label for="model-number">Model #</label>
+          <div class="form-static-box" id="model-number" data-field="model_number">Generator GX-4800</div>
+        </div>
+
+        <div class="form-field">
+          <label for="serial-number">Serial #</label>
+          <div class="form-static-box" id="serial-number" data-field="serial_number">SN-8842-AX19</div>
+        </div>
+
+        <div class="form-field form-field--full">
+          <div class="detail-grid">
+            <div class="form-field">
+              <label for="fault">Fault</label>
+              <input class="form-input" id="fault" name="fault" type="text" placeholder="Enter fault details" />
+            </div>
+
+            <div class="form-field">
+              <label for="test-tag">Test &amp; Tag</label>
+              <input class="form-input" id="test-tag" name="test_tag" type="text" placeholder="Enter test and tag details" />
+            </div>
+          </div>
+        </div>
+
+        <div class="form-field form-field--full maintenance-options" aria-label="Maintenance options">
+          <p class="field-label">Freezer Maintenance Options</p>
+          <div class="maintenance-grid" id="freezer-maintenance-grid">
+            <div class="maintenance-row">
+              <span class="maintenance-label">Door Seal</span>
+              <div class="maintenance-radio-group" role="radiogroup" aria-label="Door Deal status">
+                <label><input type="radio" name="door-deal-status" value="Replace" /> Replace</label>
+                <label><input type="radio" name="door-deal-status" value="OK" /> OK</label>
+                <label><input type="radio" name="door-deal-status" value="NA" /> NA</label>
+              </div>
+            </div>
+
+            <div class="maintenance-row">
+              <span class="maintenance-label">Fan</span>
+              <div class="maintenance-radio-group" role="radiogroup" aria-label="Fan status">
+                <label><input type="radio" name="fan-status" value="Replace" /> Replace</label>
+                <label><input type="radio" name="fan-status" value="OK" /> OK</label>
+                <label><input type="radio" name="fan-status" value="NA" /> NA</label>
+              </div>
+            </div>
+
+            <div class="maintenance-add-row">
+              <button class="btn-add-maintenance-row" id="add-maintenance-row" type="button" aria-label="Add maintenance option">+</button>
+            </div>
+          </div>
+          <div class="form-field job-notes" style="margin-top: var(--space-3);">
+            <label for="freezer-maintenance-notes">Notes</label>
+            <textarea
+              class="form-textarea"
+              id="freezer-maintenance-notes"
+              name="freezer_maintenance_notes"
+              placeholder="Add maintenance notes"
+            ></textarea>
+          </div>
+        </div>
+
+        <div class="form-field repair-comments form-field--full" style="margin-top: var(--space-3);">
+          <label for="repair-comments">Repair Comments</label>
+          <textarea
+            class="form-textarea"
+            id="repair-comments"
+            name="repair_comments"
+            placeholder="Add repair comments"
+          ></textarea>
+        </div>
+
+        <div class="form-field form-field--full">
+          <p class="field-label">Photo</p>
+          <div class="captured-photo" aria-label="Captured asset photo">
+            <svg class="captured-photo-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" role="img" aria-labelledby="asset-photo-title asset-photo-desc">
+              <title id="asset-photo-title">Asset Photo QR-2023-032</title>
+              <desc id="asset-photo-desc">Generated photo-style image for Lenovo ThinkPad X1 Gen 9 asset in warehouse.</desc>
+              <defs>
+                <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+                  <stop offset="0" stop-color="#2a3f56"/>
+                  <stop offset="1" stop-color="#4f6f92"/>
+                </linearGradient>
+                <linearGradient id="floor" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0" stop-color="#d2dbe5"/>
+                  <stop offset="1" stop-color="#b9c5d4"/>
+                </linearGradient>
+                <filter id="softShadow" x="-20%" y="-20%" width="140%" height="160%">
+                  <feDropShadow dx="0" dy="8" stdDeviation="12" flood-color="#12263f" flood-opacity="0.25"/>
+                </filter>
+              </defs>
+
+              <rect width="1200" height="800" fill="url(#bg)"/>
+              <rect y="520" width="1200" height="280" fill="url(#floor)"/>
+
+              <rect x="80" y="80" width="310" height="130" rx="12" fill="#0f2137" opacity="0.9"/>
+              <text x="105" y="128" fill="#e8f0f8" font-family="Public Sans, Segoe UI, sans-serif" font-size="36" font-weight="700">WAREHOUSE</text>
+              <text x="105" y="170" fill="#b9cadc" font-family="Public Sans, Segoe UI, sans-serif" font-size="24">Aisle 4 / Bay 2</text>
+
+              <g transform="translate(300 220)" filter="url(#softShadow)">
+                <rect x="0" y="0" width="600" height="340" rx="18" fill="#1a1f26"/>
+                <rect x="22" y="18" width="556" height="300" rx="10" fill="#101922"/>
+                <rect x="42" y="38" width="516" height="260" rx="6" fill="#17304c"/>
+
+                <rect x="440" y="52" width="102" height="102" rx="4" fill="#f9fcff"/>
+                <rect x="450" y="62" width="12" height="12" fill="#0b1725"/>
+                <rect x="464" y="62" width="12" height="12" fill="#0b1725"/>
+                <rect x="478" y="62" width="12" height="12" fill="#0b1725"/>
+                <rect x="492" y="62" width="12" height="12" fill="#0b1725"/>
+                <rect x="506" y="62" width="12" height="12" fill="#0b1725"/>
+                <rect x="520" y="62" width="12" height="12" fill="#0b1725"/>
+                <rect x="450" y="76" width="12" height="12" fill="#0b1725"/>
+                <rect x="478" y="76" width="12" height="12" fill="#0b1725"/>
+                <rect x="506" y="76" width="12" height="12" fill="#0b1725"/>
+                <rect x="520" y="76" width="12" height="12" fill="#0b1725"/>
+                <rect x="450" y="90" width="12" height="12" fill="#0b1725"/>
+                <rect x="464" y="90" width="12" height="12" fill="#0b1725"/>
+                <rect x="492" y="90" width="12" height="12" fill="#0b1725"/>
+                <rect x="520" y="90" width="12" height="12" fill="#0b1725"/>
+                <rect x="450" y="104" width="12" height="12" fill="#0b1725"/>
+                <rect x="478" y="104" width="12" height="12" fill="#0b1725"/>
+                <rect x="492" y="104" width="12" height="12" fill="#0b1725"/>
+                <rect x="506" y="104" width="12" height="12" fill="#0b1725"/>
+                <rect x="520" y="104" width="12" height="12" fill="#0b1725"/>
+                <rect x="450" y="118" width="12" height="12" fill="#0b1725"/>
+                <rect x="464" y="118" width="12" height="12" fill="#0b1725"/>
+                <rect x="478" y="118" width="12" height="12" fill="#0b1725"/>
+                <rect x="506" y="118" width="12" height="12" fill="#0b1725"/>
+                <rect x="520" y="118" width="12" height="12" fill="#0b1725"/>
+
+                <text x="50" y="102" fill="#f2f8ff" font-family="Public Sans, Segoe UI, sans-serif" font-size="28" font-weight="700">TP-X1-G9</text>
+                <text x="50" y="140" fill="#b8cae1" font-family="Public Sans, Segoe UI, sans-serif" font-size="22">SN5648392</text>
+
+                <rect x="50" y="182" width="320" height="86" rx="8" fill="#f7fbff"/>
+                <text x="68" y="246" fill="#496583" font-family="Public Sans, Segoe UI, sans-serif" font-size="18">Purchased: 2023-08-14</text>
+
+                <rect x="-30" y="320" width="660" height="24" rx="12" fill="#626d7a" opacity="0.45"/>
+              </g>
+            </svg>
+          </div>
+          <button class="btn-add-contact" id="add-photo" type="button" aria-label="Add more photos">+</button>
+
+          <div class="job-history" aria-label="Job history">
+            <h3 class="job-history-title">Job History</h3>
+            <ul class="job-history-list">
+              <li><span class="job-history-job">JOB-0039</span> 8 July 2026 Compressor vibration found during load test</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="asset-save-row">
+        <button class="asset-delete-btn" id="asset-delete-button" type="button">Delete</button>
+        <button class="asset-save-btn" id="asset-save-button" type="button">Save</button>
+      </div>
+    </section>
+
+    <div class="asset-scan-row" aria-label="Asset scan and search">
+      <a class="btn-secondary" id="scan-qr-button" href="camera-job02.html">Scan QR Code</a>
+      <div class="company-autocomplete">
+        <input
+          class="form-input asset-search-input"
+          id="asset-search-input"
+          name="asset_search"
+          type="text"
+          placeholder="Search Asset"
+          aria-label="Search Asset"
+          autocomplete="off"
+          aria-autocomplete="list"
+          aria-expanded="false"
+          aria-controls="asset-search-dropdown-options"
+        />
+        <div class="company-dropdown" id="asset-search-dropdown-options" role="listbox" hidden>
+          <div class="company-option-list" data-asset-search-options></div>
+          <button class="btn-secondary company-add-btn" type="button" data-asset-search-add hidden>Add New</button>
+        </div>
+      </div>
+    </div>
+
+    <section class="job-form-card expenses-card" aria-label="Job expenses">
+      <h2 class="expenses-header">Expenses</h2>
+      <div class="job-meta-row expenses-meta-row">
+        <div class="form-field">
+          <label for="expense-job-reference">Job #</label>
+          <div class="form-static-box" id="expense-job-reference">JOB-0041</div>
+        </div>
+        <div class="form-field">
+          <label for="expense-company">Company</label>
+          <div class="form-static-box company-display" id="expense-company">Site A Facilities</div>
+        </div>
+      </div>
+
+      <div class="expenses-table" id="expenses-table" aria-live="polite"></div>
+      <div class="expense-row-actions">
+        <button class="btn-add-expense-row" id="add-expense-row" type="button" aria-label="Add expense row">+</button>
+      </div>
+
+      <div class="expenses-totals" aria-label="Expense totals">
+        <div class="expenses-total-line">
+          <span>Subtotal</span>
+          <strong id="expense-subtotal">$0.00</strong>
+        </div>
+        <div class="expenses-total-line">
+          <span>GST</span>
+          <strong id="expense-gst">$0.00</strong>
+        </div>
+        <div class="expenses-total-line">
+          <span>Total</span>
+          <strong id="expense-grand-total">$0.00</strong>
+        </div>
+      </div>
+    </section>
+
+    <div class="form-actions" aria-label="Job actions">
+      <a class="btn-secondary" href="dashboard.html">Cancel</a>
+      <a class="btn-primary" href="dashboard.html">Save</a>
+    </div>
+
+    <section class="dev-notes" aria-label="Development notes">
+      <h2 class="dev-notes-title">DEV NOTES</h2>
+      <ul class="dev-notes-list">
+        <li>What does Start do?</li>
+        <li>Repair job hostory would link to that job</li>
+      </ul>
+    </section>
+  </main>
+
+  <script>
+    (function () {
+      var jobTypeNode = document.getElementById("job-type");
+      var jobTypeValue = new URLSearchParams(window.location.search).get("job_type");
+      var assetCard = document.getElementById("generator-asset-card");
+      var assetSearchRow = document.querySelector(".asset-scan-row");
+      var assetSearchInput = document.getElementById("asset-search-input");
+      var assetSearchDropdown = document.getElementById("asset-search-dropdown-options");
+      var assetSearchOptionsList = assetSearchDropdown ? assetSearchDropdown.querySelector("[data-asset-search-options]") : null;
+      var assetSearchAddButton = assetSearchDropdown ? assetSearchDropdown.querySelector("[data-asset-search-add]") : null;
+      var expensesTable = document.getElementById("expenses-table");
+      var addExpenseRowButton = document.getElementById("add-expense-row");
+      var expenseSubtotalNode = document.getElementById("expense-subtotal");
+      var expenseGstNode = document.getElementById("expense-gst");
+      var expenseGrandTotalNode = document.getElementById("expense-grand-total");
+      var isRepairJob = false;
+      var assetOptions = [
+        "Generator GX-1000",
+        "Generator GX-4800",
+        "Freezer FR-200",
+        "Fridge FG-320",
+        "Microwave MW-90"
+      ];
+      var cardCount = 1;
+
+      if (jobTypeNode && jobTypeValue) {
+        jobTypeValue = jobTypeValue.trim().toLowerCase();
+
+        if (jobTypeValue === "maintenance" || jobTypeValue === "repair") {
+          isRepairJob = jobTypeValue === "repair";
+          jobTypeNode.textContent = jobTypeValue.charAt(0).toUpperCase() + jobTypeValue.slice(1);
+        }
+      }
+
+      if (!assetCard || !assetSearchRow) {
+        return;
+      }
+
+      function setCardExpanded(card, isExpanded) {
+        if (!card) {
+          return;
+        }
+
+        var cardTitle = card.querySelector(".asset-identifiers-title");
+        var collapseButton = card.querySelector(".asset-collapse-btn");
+        var titleText = cardTitle ? cardTitle.textContent.trim() : "asset";
+
+        card.classList.toggle("is-selected", isExpanded);
+        card.setAttribute("aria-pressed", String(isExpanded));
+
+        if (collapseButton) {
+          collapseButton.setAttribute("aria-controls", card.id);
+          collapseButton.setAttribute("aria-expanded", String(isExpanded));
+          collapseButton.setAttribute("aria-label", (isExpanded ? "Collapse " : "Expand ") + titleText + " details");
+          collapseButton.innerHTML = isExpanded ? '<span aria-hidden="true">⌃</span>' : '<span aria-hidden="true">⌄</span>';
+        }
+      }
+
+      function toggleCard(card) {
+        if (!card) {
+          return;
+        }
+
+        setCardExpanded(card, !card.classList.contains("is-selected"));
+      }
+
+      function applyJobModeToCard(card) {
+        if (!card) {
+          return;
+        }
+
+        card.classList.toggle("is-repair-job", isRepairJob);
+      }
+
+      function createMaintenanceRow(optionNumber, cardKey) {
+        var row = document.createElement("div");
+        row.className = "maintenance-row";
+
+        var optionControls = document.createElement("div");
+        optionControls.className = "maintenance-option-controls";
+
+        var input = document.createElement("input");
+        input.className = "maintenance-input";
+        input.type = "text";
+        input.name = "maintenance_option_" + cardKey + "_" + optionNumber;
+        input.setAttribute("aria-label", "Maintenance option " + optionNumber);
+        input.placeholder = "Maintenance option";
+
+        var deleteButton = document.createElement("button");
+        deleteButton.className = "btn-delete-maintenance-row";
+        deleteButton.type = "button";
+        deleteButton.setAttribute("aria-label", "Delete maintenance option " + optionNumber);
+        deleteButton.textContent = "x";
+        deleteButton.addEventListener("click", function (event) {
+          event.stopPropagation();
+          row.remove();
+        });
+
+        var radioGroup = document.createElement("div");
+        radioGroup.className = "maintenance-radio-group";
+        radioGroup.setAttribute("role", "radiogroup");
+        radioGroup.setAttribute("aria-label", "Maintenance option " + optionNumber + " status");
+
+        ["Replace", "OK", "NA"].forEach(function (status) {
+          var label = document.createElement("label");
+          var radio = document.createElement("input");
+          radio.type = "radio";
+          radio.name = "maintenance_option_status_" + cardKey + "_" + optionNumber;
+          radio.value = status;
+
+          label.appendChild(radio);
+          label.appendChild(document.createTextNode(" " + status));
+          radioGroup.appendChild(label);
+        });
+
+        optionControls.appendChild(input);
+        optionControls.appendChild(deleteButton);
+        row.appendChild(optionControls);
+        row.appendChild(radioGroup);
+
+        return row;
+      }
+
+      function assignUniqueFields(card, cardKey) {
+        card.querySelectorAll("[id]").forEach(function (node) {
+          var oldId = node.id;
+          var newId = oldId + "-" + cardKey;
+          node.id = newId;
+          card.querySelectorAll('label[for="' + oldId + '"]').forEach(function (label) {
+            label.setAttribute("for", newId);
+          });
+        });
+
+        card.querySelectorAll("[name]").forEach(function (node) {
+          node.name = node.name + "_" + cardKey;
+        });
+      }
+
+      function removeLoadedPhoto(card) {
+        var capturedPhoto = card.querySelector(".captured-photo");
+
+        if (!capturedPhoto) {
+          return;
+        }
+
+        capturedPhoto.innerHTML = "";
+        var noPhotoText = document.createElement("p");
+        noPhotoText.className = "company-empty";
+        noPhotoText.textContent = "No photo loaded.";
+        capturedPhoto.appendChild(noPhotoText);
+      }
+
+      function createAssetCard(assetName) {
+        var newCard = assetCard.cloneNode(true);
+        var cardKey;
+        var title;
+        var modelValue;
+        var maintenanceGrid;
+
+        cardCount += 1;
+        cardKey = "card-" + cardCount;
+
+        newCard.classList.remove("is-selected");
+        newCard.setAttribute("aria-pressed", "false");
+        newCard.id = "generator-asset-card-" + cardCount;
+
+        title = newCard.querySelector(".asset-identifiers-title");
+        modelValue = newCard.querySelector('[data-field="model_number"]');
+        if (title) {
+          title.textContent = assetName;
+        }
+        if (modelValue) {
+          modelValue.textContent = assetName;
+        }
+
+        assignUniqueFields(newCard, cardKey);
+        removeLoadedPhoto(newCard);
+        applyJobModeToCard(newCard);
+        setCardExpanded(newCard, false);
+
+        maintenanceGrid = newCard.querySelector(".maintenance-grid");
+        if (maintenanceGrid) {
+          maintenanceGrid.dataset.optionCount = "2";
+        }
+
+        assetSearchRow.parentNode.insertBefore(newCard, assetSearchRow);
+        return newCard;
+      }
+
+      function addAssetFromSelection(assetName) {
+        var trimmedName = assetName.trim();
+        if (!trimmedName) {
+          return;
+        }
+
+        createAssetCard(trimmedName);
+        assetSearchInput.value = "";
+        hideAssetSearchDropdown();
+      }
+
+      function normalizeAssetSearch(value) {
+        return value.trim().toLowerCase();
+      }
+
+      function setAssetSearchExpanded(isExpanded) {
+        if (assetSearchInput) {
+          assetSearchInput.setAttribute("aria-expanded", String(isExpanded));
+        }
+      }
+
+      function hideAssetSearchDropdown() {
+        if (!assetSearchDropdown || !assetSearchAddButton) {
+          return;
+        }
+
+        assetSearchDropdown.hidden = true;
+        assetSearchAddButton.hidden = true;
+        setAssetSearchExpanded(false);
+      }
+
+      function showAssetSearchDropdown() {
+        if (!assetSearchDropdown) {
+          return;
+        }
+
+        assetSearchDropdown.hidden = false;
+        setAssetSearchExpanded(true);
+      }
+
+      function renderAssetSearchOptions() {
+        var query;
+        var matches;
+
+        if (!assetSearchInput || !assetSearchOptionsList || !assetSearchAddButton) {
+          return;
+        }
+
+        query = normalizeAssetSearch(assetSearchInput.value);
+        matches = assetOptions.filter(function (name) {
+          return normalizeAssetSearch(name).includes(query);
+        });
+
+        assetSearchOptionsList.innerHTML = "";
+
+        if (matches.length === 0) {
+          var emptyState = document.createElement("p");
+          emptyState.className = "company-empty";
+          emptyState.textContent = "No matching assets found.";
+          assetSearchOptionsList.appendChild(emptyState);
+          assetSearchAddButton.hidden = false;
+        } else {
+          assetSearchAddButton.hidden = true;
+          matches.forEach(function (name) {
+            var option = document.createElement("button");
+            option.type = "button";
+            option.className = "company-option";
+            option.textContent = name;
+            option.setAttribute("role", "option");
+            option.addEventListener("click", function () {
+              addAssetFromSelection(name);
+            });
+            assetSearchOptionsList.appendChild(option);
+          });
+        }
+
+        assetSearchAddButton.textContent = query ? "Add New: " + assetSearchInput.value.trim() : "Add New";
+        assetSearchAddButton.disabled = query.length === 0 || matches.length > 0;
+      }
+
+      function parseMoneyInput(value) {
+        var cleaned = String(value || "").replace(/[^0-9.-]/g, "");
+        var parsed = Number(cleaned);
+        return Number.isFinite(parsed) ? parsed : 0;
+      }
+
+      function formatCurrency(value) {
+        return "$" + value.toFixed(2);
+      }
+
+      function updateExpenseTotals() {
+        var subtotal = 0;
+        var gstTotal = 0;
+
+        if (!expensesTable) {
+          return;
+        }
+
+        expensesTable.querySelectorAll(".expense-row").forEach(function (row) {
+          var quantityInput = row.querySelector('[data-expense-field="quantity"]');
+          var costInput = row.querySelector('[data-expense-field="cost"]');
+          var gstChoice = row.querySelector('input[data-expense-field="gst"]:checked');
+          var totalInput = row.querySelector('[data-expense-field="total"]');
+          var quantity = parseMoneyInput(quantityInput ? quantityInput.value : 0);
+          var cost = parseMoneyInput(costInput ? costInput.value : 0);
+          var lineSubtotal = quantity * cost;
+          var gst = gstChoice && gstChoice.value === "yes" ? lineSubtotal * 0.15 : 0;
+          var lineTotal = lineSubtotal + gst;
+
+          subtotal += lineSubtotal;
+          gstTotal += gst;
+
+          if (totalInput) {
+            totalInput.value = formatCurrency(lineTotal);
+          }
+        });
+
+        if (expenseSubtotalNode) {
+          expenseSubtotalNode.textContent = formatCurrency(subtotal);
+        }
+        if (expenseGstNode) {
+          expenseGstNode.textContent = formatCurrency(gstTotal);
+        }
+        if (expenseGrandTotalNode) {
+          expenseGrandTotalNode.textContent = formatCurrency(subtotal + gstTotal);
+        }
+      }
+
+      function createExpenseField(label, fieldName, inputType, helpText, isReadOnly) {
+        var cell = document.createElement("div");
+        var title = document.createElement("label");
+        var input = document.createElement("input");
+        var help = document.createElement("p");
+
+        cell.className = "expense-cell";
+
+        title.className = "expense-cell-label";
+        title.textContent = label;
+
+        input.className = "form-input" + (isReadOnly ? " expense-total-input" : "");
+        input.type = inputType;
+        input.placeholder = label;
+        input.setAttribute("data-expense-field", fieldName);
+        input.setAttribute("aria-label", label);
+        if (inputType === "number") {
+          input.step = "0.01";
+          input.min = "0";
+        }
+        if (isReadOnly) {
+          input.readOnly = true;
+          input.value = "$0.00";
+        }
+
+        help.className = "expense-help-text";
+        help.textContent = helpText;
+
+        cell.appendChild(title);
+        cell.appendChild(input);
+        cell.appendChild(help);
+
+        return cell;
+      }
+
+      function createExpenseGstField(rowIndex) {
+        var cell = document.createElement("div");
+        var title = document.createElement("label");
+        var options = document.createElement("div");
+        var help = document.createElement("p");
+        var radioName = "expense_gst_choice_" + rowIndex;
+
+        function createOption(text, value, isChecked) {
+          var optionLabel = document.createElement("label");
+          var radio = document.createElement("input");
+
+          radio.type = "radio";
+          radio.name = radioName;
+          radio.value = value;
+          radio.setAttribute("data-expense-field", "gst");
+          if (isChecked) {
+            radio.checked = true;
+          }
+
+          optionLabel.appendChild(radio);
+          optionLabel.appendChild(document.createTextNode(" " + text));
+          return optionLabel;
+        }
+
+        cell.className = "expense-cell";
+
+        title.className = "expense-cell-label";
+        title.textContent = "GST";
+
+        options.className = "expense-gst-options";
+        options.setAttribute("role", "radiogroup");
+        options.setAttribute("aria-label", "GST applies");
+        options.appendChild(createOption("Yes", "yes", true));
+        options.appendChild(createOption("No", "no", false));
+
+        help.className = "expense-help-text";
+        help.textContent = "Yes applies 15% GST";
+
+        cell.appendChild(title);
+        cell.appendChild(options);
+        cell.appendChild(help);
+
+        return cell;
+      }
+
+      function createExpenseRow() {
+        var row = document.createElement("div");
+        var deleteButton = document.createElement("button");
+        var rowIndex = Date.now() + Math.floor(Math.random() * 1000);
+
+        row.className = "expense-row";
+
+        row.appendChild(createExpenseField("Description", "description", "text", "What was purchased or used?", false));
+        row.appendChild(createExpenseField("Quantity", "quantity", "number", "Units", false));
+        row.appendChild(createExpenseField("Cost", "cost", "number", "Cost per unit", false));
+        row.appendChild(createExpenseGstField(rowIndex));
+        row.appendChild(createExpenseField("Total", "total", "text", "Auto-calculated", true));
+
+        deleteButton.className = "btn-delete-expense-row";
+        deleteButton.type = "button";
+        deleteButton.setAttribute("aria-label", "Delete expense row");
+        deleteButton.textContent = "x";
+        row.appendChild(deleteButton);
+
+        return row;
+      }
+
+      function ensureDefaultExpenseRow() {
+        if (!expensesTable) {
+          return;
+        }
+
+        if (expensesTable.querySelectorAll(".expense-row").length === 0) {
+          expensesTable.appendChild(createExpenseRow());
+        }
+
+        updateExpenseTotals();
+      }
+
+      if (assetSearchInput && assetSearchDropdown && assetSearchOptionsList && assetSearchAddButton) {
+        assetSearchInput.addEventListener("focus", function () {
+          renderAssetSearchOptions();
+          showAssetSearchDropdown();
+        });
+
+        assetSearchInput.addEventListener("input", function () {
+          renderAssetSearchOptions();
+          showAssetSearchDropdown();
+        });
+
+        assetSearchAddButton.addEventListener("click", function () {
+          var value = assetSearchInput.value.trim();
+          if (!value) {
+            return;
+          }
+
+          if (!assetOptions.some(function (name) { return normalizeAssetSearch(name) === normalizeAssetSearch(value); })) {
+            assetOptions.push(value);
+          }
+
+          addAssetFromSelection(value);
+        });
+
+        document.addEventListener("click", function (event) {
+          if (!assetSearchDropdown.contains(event.target) && event.target !== assetSearchInput) {
+            hideAssetSearchDropdown();
+          }
+        });
+      }
+
+      document.addEventListener("click", function (event) {
+        var deleteButton = event.target.closest(".asset-delete-btn");
+        if (deleteButton) {
+          event.stopPropagation();
+          var cardToDelete = deleteButton.closest(".asset-identifiers");
+          if (cardToDelete) {
+            cardToDelete.remove();
+          }
+          return;
+        }
+
+        var addRowButton = event.target.closest(".btn-add-maintenance-row");
+        if (addRowButton) {
+          event.stopPropagation();
+          var currentCard = addRowButton.closest(".asset-identifiers");
+          var currentGrid = addRowButton.closest(".maintenance-grid");
+          var currentKey = currentCard ? currentCard.id : "card";
+          var optionCount;
+          var row;
+
+          if (!currentGrid) {
+            return;
+          }
+
+          optionCount = Number(currentGrid.dataset.optionCount || "2") + 1;
+          currentGrid.dataset.optionCount = String(optionCount);
+          row = createMaintenanceRow(optionCount, currentKey);
+          currentGrid.insertBefore(row, addRowButton.parentElement);
+          row.querySelector("input")?.focus();
+          return;
+        }
+
+        var collapseButton = event.target.closest(".asset-collapse-btn");
+        if (collapseButton) {
+          event.stopPropagation();
+          var cardToCollapse = collapseButton.closest(".asset-identifiers");
+          toggleCard(cardToCollapse);
+          return;
+        }
+
+        var deleteExpenseButton = event.target.closest(".btn-delete-expense-row");
+        if (deleteExpenseButton) {
+          var expenseRowToDelete = deleteExpenseButton.closest(".expense-row");
+          if (expenseRowToDelete) {
+            expenseRowToDelete.remove();
+          }
+          ensureDefaultExpenseRow();
+          return;
+        }
+
+        var clickedCard = event.target.closest(".asset-identifiers");
+        if (clickedCard) {
+          toggleCard(clickedCard);
+          return;
+        }
+      });
+
+      document.addEventListener("keydown", function (event) {
+        var focusCard = event.target.closest(".asset-identifiers");
+        if (!focusCard) {
+          return;
+        }
+
+        if (event.key === "Enter" || event.key === " ") {
+          event.preventDefault();
+          toggleCard(focusCard);
+        }
+      });
+
+      var baseGrid = assetCard.querySelector(".maintenance-grid");
+      if (baseGrid) {
+        baseGrid.dataset.optionCount = "2";
+      }
+
+      applyJobModeToCard(assetCard);
+      setCardExpanded(assetCard, false);
+
+      if (expensesTable && addExpenseRowButton) {
+        addExpenseRowButton.addEventListener("click", function () {
+          var newRow = createExpenseRow();
+          expensesTable.appendChild(newRow);
+          var descriptionField = newRow.querySelector('[data-expense-field="description"]');
+          if (descriptionField) {
+            descriptionField.focus();
+          }
+          updateExpenseTotals();
+        });
+
+        expensesTable.addEventListener("input", function (event) {
+          if (!event.target.closest(".expense-row")) {
+            return;
+          }
+
+          updateExpenseTotals();
+        });
+
+        ensureDefaultExpenseRow();
+      }
+    })();
+  </script>
+</body>
+</html>

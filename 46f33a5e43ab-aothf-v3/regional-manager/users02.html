@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+  <title>AoTech - Create User</title>
+  <style>
+    @import url("https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700&family=Sora:wght@600;700&display=swap");
+
+    :root {
+      --font-display: "Sora", "Segoe UI", sans-serif;
+      --font-body: "Public Sans", "Segoe UI", sans-serif;
+
+      --color-nav-top: #2a3f56;
+      --color-nav-main: #334d69;
+      --color-nav-active: #3f5f80;
+      --color-nav-hover: #3a5878;
+
+      --color-page-bg: #f3f5f8;
+      --color-surface: #ffffff;
+      --color-surface-muted: #eef3f8;
+      --color-border: #d7e0ea;
+
+      --color-text-strong: #10233a;
+      --color-text-body: #26394f;
+      --color-text-muted: #5f7185;
+      --color-text-on-dark: #f7fbff;
+
+      --color-focus: #5b8cc2;
+      --shadow-soft: 0 1px 2px rgba(10, 24, 40, 0.08), 0 6px 16px rgba(17, 36, 56, 0.04);
+
+      --space-1: 4px;
+      --space-2: 8px;
+      --space-3: 12px;
+      --space-4: 16px;
+      --space-5: 20px;
+      --space-6: 24px;
+      --space-8: 32px;
+      --radius-sm: 6px;
+      --radius-md: 10px;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: var(--font-body);
+      color: var(--color-text-body);
+      background: var(--color-page-bg);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .app-header {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      box-shadow: 0 1px 0 rgba(7, 18, 32, 0.15);
+    }
+
+    .top-bar {
+      height: 56px;
+      background: var(--color-nav-top);
+      color: var(--color-text-on-dark);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 var(--space-6);
+    }
+
+    .brand-group {
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+    }
+
+    .brand {
+      color: var(--color-text-on-dark);
+      text-decoration: none;
+      font-family: var(--font-display);
+      font-size: 1.55rem;
+      font-weight: 700;
+      letter-spacing: 0.2px;
+    }
+
+    .top-right {
+      display: flex;
+      align-items: center;
+      gap: var(--space-4);
+    }
+
+    .company-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 6px 10px 6px 6px;
+      border-radius: 999px;
+      border: 1px solid rgba(247, 251, 255, 0.35);
+      background: rgba(255, 255, 255, 0.08);
+      color: var(--color-text-on-dark);
+      line-height: 1;
+      min-height: 36px;
+    }
+
+    .company-logo {
+      width: 24px;
+      height: 24px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, #e6eef8, #b7cee6);
+      color: #14314f;
+      display: inline-grid;
+      place-items: center;
+      font-weight: 800;
+      font-size: 0.64rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      flex-shrink: 0;
+    }
+
+    .company-name {
+      font-size: 0.79rem;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      white-space: nowrap;
+    }
+
+    .utility-icons {
+      display: flex;
+      align-items: center;
+      gap: var(--space-2);
+    }
+
+    .icon-btn {
+      border: 0;
+      background: transparent;
+      color: inherit;
+      width: 36px;
+      height: 36px;
+      border-radius: 999px;
+      display: inline-grid;
+      place-items: center;
+      cursor: pointer;
+      position: relative;
+      font-size: 1rem;
+      line-height: 1;
+    }
+
+    .icon-btn:hover { background: rgba(255, 255, 255, 0.12); }
+
+    .icon-btn:focus-visible,
+    .nav-link:focus-visible,
+    .form-input:focus-visible,
+    .form-select:focus-visible,
+    .btn-primary:focus-visible,
+    .btn-secondary:focus-visible {
+      outline: 2px solid var(--color-focus);
+      outline-offset: 2px;
+    }
+
+    .has-dot::after {
+      content: "";
+      position: absolute;
+      top: 7px;
+      right: 7px;
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #ff4d4d;
+    }
+
+    .main-nav {
+      min-height: 44px;
+      background: var(--color-nav-main);
+      display: flex;
+      align-items: center;
+      gap: var(--space-2);
+      padding: 0 var(--space-5);
+      overflow-x: auto;
+    }
+
+    .nav-link {
+      color: rgba(247, 251, 255, 0.95);
+      text-decoration: none;
+      padding: 10px 12px;
+      border-radius: var(--radius-sm);
+      font-weight: 600;
+      white-space: nowrap;
+      transition: background 160ms ease;
+    }
+
+    .nav-link:hover { background: var(--color-nav-hover); }
+    .nav-link.is-active { background: var(--color-nav-active); }
+
+    .page-content {
+      flex: 1;
+      max-width: 1220px;
+      width: 100%;
+      margin: 0 auto;
+      padding: var(--space-8) var(--space-6);
+      animation: page-enter 320ms ease-out;
+    }
+
+    .page-toolbar {
+      margin-bottom: var(--space-6);
+    }
+
+    .page-title {
+      margin: 0;
+      color: var(--color-text-strong);
+      font-family: var(--font-display);
+      font-size: clamp(1.7rem, 3vw, 2.15rem);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+
+    .page-subtitle {
+      margin: var(--space-2) 0 0;
+      color: var(--color-text-muted);
+      font-size: 1rem;
+    }
+
+    .form-card {
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      background: var(--color-surface);
+      box-shadow: var(--shadow-soft);
+      padding: var(--space-6);
+    }
+
+    .form-heading {
+      margin: 0 0 var(--space-5);
+      color: var(--color-text-strong);
+      font-family: var(--font-display);
+      font-size: 1.2rem;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+    }
+
+    .user-form {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: var(--space-4);
+    }
+
+    .form-field {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-1);
+    }
+
+    .form-field--full {
+      grid-column: 1 / -1;
+    }
+
+    .access-fields {
+      grid-column: 1 / -1;
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: var(--space-4);
+    }
+
+    .access-fields[hidden] {
+      display: none;
+    }
+
+    .access-heading {
+      grid-column: 1 / -1;
+      margin: 0;
+      color: var(--color-text-strong);
+      font-size: 0.95rem;
+      font-weight: 700;
+    }
+
+    .form-field label {
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: var(--color-text-muted);
+    }
+
+    .form-input,
+    .form-select {
+      height: 44px;
+      padding: 0 var(--space-4);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-sm);
+      background: var(--color-surface);
+      font-family: var(--font-body);
+      font-size: 0.95rem;
+      color: var(--color-text-body);
+      transition: border-color 160ms ease, box-shadow 160ms ease;
+      width: 100%;
+    }
+
+    .form-input::placeholder { color: var(--color-text-muted); }
+
+    .form-input:focus,
+    .form-select:focus {
+      border-color: var(--color-focus);
+      box-shadow: 0 0 0 3px rgba(91, 140, 194, 0.18);
+      outline: none;
+    }
+
+    .form-select {
+      appearance: none;
+      -webkit-appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%235f7185' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right var(--space-4) center;
+      padding-right: 40px;
+      cursor: pointer;
+    }
+
+    .form-select:disabled {
+      border-color: #d4dbe3;
+      background-color: #eef1f4;
+      color: #7a8795;
+      cursor: not-allowed;
+      opacity: 1;
+    }
+
+    .form-actions {
+      grid-column: 1 / -1;
+      display: flex;
+      justify-content: flex-end;
+      gap: var(--space-3);
+      padding-top: var(--space-2);
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid transparent;
+      border-radius: var(--radius-sm);
+      background: linear-gradient(135deg, #324e6b, #3a5a7b);
+      color: #ffffff;
+      min-height: 44px;
+      padding: 0 var(--space-5);
+      font-size: 0.95rem;
+      font-weight: 700;
+      font-family: var(--font-body);
+      text-decoration: none;
+      cursor: pointer;
+      box-shadow: 0 6px 12px rgba(42, 63, 86, 0.18);
+      transition: transform 140ms ease, box-shadow 140ms ease, filter 140ms ease;
+      white-space: nowrap;
+    }
+
+    .btn-primary:hover {
+      filter: brightness(0.95);
+      transform: translateY(-1px);
+      box-shadow: 0 10px 16px rgba(42, 63, 86, 0.2);
+    }
+
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid #b9c7d7;
+      border-radius: var(--radius-sm);
+      background: #ffffff;
+      color: var(--color-text-body);
+      min-height: 44px;
+      padding: 0 var(--space-5);
+      font-size: 0.95rem;
+      font-weight: 600;
+      font-family: var(--font-body);
+      text-decoration: none;
+      cursor: pointer;
+      transition: background 140ms ease, border-color 140ms ease;
+      white-space: nowrap;
+    }
+
+    .btn-secondary:hover {
+      background: #f2f6fb;
+      border-color: #9fb1c6;
+    }
+
+    @keyframes page-enter {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 768px) {
+      .top-bar { padding: 0 var(--space-4); }
+      .page-content { padding: var(--space-6) var(--space-4); }
+
+      .user-form {
+        grid-template-columns: 1fr;
+      }
+
+      .access-fields {
+        grid-template-columns: 1fr;
+      }
+
+      .company-name {
+        display: none;
+      }
+
+      .form-actions {
+        flex-direction: column-reverse;
+      }
+
+      .btn-primary,
+      .btn-secondary {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="app-header" role="banner">
+    <div class="top-bar">
+      <div class="brand-group">
+        <button class="icon-btn" aria-label="Open menu">&#9776;</button>
+        <a class="brand" href="dashboard.html"> Asset Oversight </a>
+      </div>
+      <div class="top-right">
+        <div class="company-chip" aria-label="Company identity for logged in user">
+          <span class="company-logo" id="company-logo" aria-hidden="true">COM</span>
+          <span class="company-name" id="company-name">Compass Group</span>
+        </div>
+        <div class="utility-icons" aria-label="Utility actions">
+        <button class="icon-btn" aria-label="Search">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.35-4.35"></path>
+          </svg>
+        </button>
+        <button class="icon-btn has-dot" aria-label="Notifications">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+            <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+          </svg>
+        </button>
+        <a class="icon-btn" href="./../index.html" aria-label="Profile">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+            <circle cx="12" cy="7" r="4"></circle>
+          </svg>
+        </a>
+        </div>
+      </div>
+    </div>
+
+    <nav class="main-nav" aria-label="Primary">
+      <a href="dashboard.html" class="nav-link">Dashboard</a>
+
+      <a href="reports01.html" class="nav-link">Reports</a>
+      <a href="contractor01.html" class="nav-link">Contractor</a>
+      <a href="calendar01.html" class="nav-link">Calendar</a>
+      <a href="assets01.html" class="nav-link">Assets</a>
+      <a href="sites01.html" class="nav-link">Sites</a>
+    
+      <a href="users01.html" class="nav-link is-active" aria-current="page">Users</a>
+      <a href="on-boarding01.html" class="nav-link">Onboarding</a>
+    </nav>
+  </header>
+
+  <main class="page-content" id="page-content">
+    <section class="page-toolbar" aria-label="Create user page heading">
+      <h1 class="page-title">Edit User</h1>
+      <p class="page-subtitle">Edit an existing user account with role access, company assignment, and linked site details.</p>
+    </section>
+
+    <section class="form-card" aria-label="Create user form">
+      <h2 class="form-heading">User Details</h2>
+      <form class="user-form" method="post" novalidate>
+        <div class="form-field">
+          <label for="email">Email Address</label>
+          <input class="form-input" id="email" name="email" type="email" placeholder="Email Address" autocomplete="email" required value="sam.walters@aotech.com" />
+        </div>
+
+        <div class="form-field">
+          <label for="jobs-per-day">Jobs per day</label>
+          <input class="form-input" id="jobs-per-day" name="jobs_per_day" type="number" min="1" step="1" value="10" placeholder="10" required />
+        </div>
+
+        <div class="form-field">
+          <label for="position">Position</label>
+          <select class="form-select" id="position" name="position" required>
+            <option value="" disabled>Please select</option>
+            <option value="ceo">CEO</option>
+            <option value="regional-manager" selected>Regional manager / Portfolio Manager</option>
+            <option value="2ic-ops-site-manager">2 IC / Ops Managers / Site Manager</option>
+          </select>
+        </div>
+
+        <section class="access-fields" id="access-fields" aria-labelledby="access-heading" hidden>
+          <h3 class="access-heading" id="access-heading">Access</h3>
+
+          <div class="form-field">
+            <label for="access-company">Company</label>
+            <select class="form-select" id="access-company" name="access_company" required></select>
+          </div>
+
+          <div class="form-field" id="access-division-field" hidden>
+            <label for="access-division">Division</label>
+            <select class="form-select" id="access-division" name="access_division"></select>
+          </div>
+
+          <div class="form-field" id="access-contract-field" hidden>
+            <label for="access-contract">Contract</label>
+            <select class="form-select" id="access-contract" name="access_contract"></select>
+          </div>
+        </section>
+
+        <div class="form-field form-field--full">
+          <label for="notes">Notes</label>
+          <input class="form-input" id="notes" name="notes" type="text" placeholder="Optional onboarding notes" />
+        </div>
+
+        <div class="form-actions">
+          <a class="btn-secondary" href="users01.html">Cancel</a>
+          <a class="btn-primary" href="users01.html">Save</a>
+        </div>
+      </form>
+    </section>
+  </main>
+  <script>
+    const onboardingStorageKey = "aotech-onboarding-wizard-data";
+    const position = document.getElementById("position");
+    const accessFields = document.getElementById("access-fields");
+    const companySelect = document.getElementById("access-company");
+    const divisionField = document.getElementById("access-division-field");
+    const divisionSelect = document.getElementById("access-division");
+    const contractField = document.getElementById("access-contract-field");
+    const contractSelect = document.getElementById("access-contract");
+
+    function getOnboardingData() {
+      try {
+        const storedData = JSON.parse(localStorage.getItem(onboardingStorageKey));
+        if (storedData && Array.isArray(storedData.companies) && storedData.companies.length) {
+          return storedData;
+        }
+      } catch (error) {
+        // Use the default onboarding preview data when storage is unavailable.
+      }
+
+      return {
+        companies: [{
+          name: "Compass Group",
+          divisions: [
+            {
+              name: "Defence & Government Division",
+              contracts: [
+                { name: "NZDF Contract (Devonport)" },
+                { name: "NZDF Contract (Whenuapai)" }
+              ]
+            },
+            { name: "Public Sector Division", contracts: [{ name: "NZ Police Contract" }] },
+            { name: "Education Division", contracts: [{ name: "Massey University Contract" }] }
+          ]
+        }]
+      };
+    }
+
+    function setOptions(select, items, placeholder) {
+      select.replaceChildren(new Option(placeholder, ""));
+      items.forEach((item) => select.add(new Option(item.name, item.id || item.name)));
+      select.value = "";
+    }
+
+    function selectedCompany() {
+      return getOnboardingData().companies.find((company) =>
+        (company.id || company.name) === companySelect.value
+      );
+    }
+
+    function selectedDivision() {
+      const company = selectedCompany();
+      return company?.divisions?.find((division) =>
+        (division.id || division.name) === divisionSelect.value
+      );
+    }
+
+    function updateContracts() {
+      const division = selectedDivision();
+      setOptions(contractSelect, division?.contracts || [], "Please select a contract");
+    }
+
+    function updateDivisions() {
+      const company = selectedCompany();
+      setOptions(divisionSelect, company?.divisions || [], "Please select a division");
+      updateContracts();
+    }
+
+    function updateAccessFields() {
+      const selectedPosition = position.value;
+      const needsDivision = selectedPosition === "regional-manager" || selectedPosition === "2ic-ops-site-manager";
+      const needsContract = selectedPosition === "2ic-ops-site-manager";
+
+      accessFields.hidden = !selectedPosition;
+      divisionField.hidden = false;
+      contractField.hidden = false;
+      divisionSelect.disabled = !needsDivision;
+      contractSelect.disabled = !needsContract;
+      divisionSelect.required = needsDivision;
+      contractSelect.required = needsContract;
+
+      if (selectedPosition) {
+        const companies = getOnboardingData().companies;
+        setOptions(companySelect, companies, "Please select a company");
+        const selectedCompanyOption = companies.find((company) => company.name === "Compass Group") || companies[0];
+        if (selectedCompanyOption) {
+          companySelect.value = selectedCompanyOption.id || selectedCompanyOption.name;
+          updateDivisions();
+        }
+        companySelect.disabled = true;
+      }
+    }
+
+    position.addEventListener("change", updateAccessFields);
+    companySelect.addEventListener("change", updateDivisions);
+    divisionSelect.addEventListener("change", updateContracts);
+  </script>
+</body>
+</html>

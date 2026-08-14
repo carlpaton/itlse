@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+  <title>AoTech - Users</title>
+  <style>
+    @import url("https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700&family=Sora:wght@600;700&display=swap");
+
+    :root {
+      --font-display: "Sora", "Segoe UI", sans-serif;
+      --font-body: "Public Sans", "Segoe UI", sans-serif;
+
+      --color-nav-top: #2a3f56;
+      --color-nav-main: #334d69;
+      --color-nav-active: #3f5f80;
+      --color-nav-hover: #3a5878;
+
+      --color-page-bg: #f3f5f8;
+      --color-surface: #ffffff;
+      --color-border: #d7e0ea;
+
+      --color-text-strong: #10233a;
+      --color-text-body: #26394f;
+      --color-text-muted: #5f7185;
+      --color-text-on-dark: #f7fbff;
+
+      --color-focus: #5b8cc2;
+      --shadow-soft: 0 1px 2px rgba(10, 24, 40, 0.08), 0 6px 16px rgba(17, 36, 56, 0.04);
+
+      --space-1: 4px;
+      --space-2: 8px;
+      --space-3: 12px;
+      --space-4: 16px;
+      --space-5: 20px;
+      --space-6: 24px;
+      --space-8: 32px;
+      --radius-sm: 6px;
+      --radius-md: 10px;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: var(--font-body);
+      color: var(--color-text-body);
+      background: var(--color-page-bg);
+    }
+
+    .app-header {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      box-shadow: 0 1px 0 rgba(7, 18, 32, 0.15);
+    }
+
+    .top-bar {
+      height: 56px;
+      background: var(--color-nav-top);
+      color: var(--color-text-on-dark);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 var(--space-6);
+    }
+
+    .brand-group {
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+    }
+
+    .brand {
+      color: var(--color-text-on-dark);
+      text-decoration: none;
+      font-family: var(--font-display);
+      font-size: 1.55rem;
+      font-weight: 700;
+      letter-spacing: 0.2px;
+    }
+
+    .top-right {
+      display: flex;
+      align-items: center;
+      gap: var(--space-4);
+    }
+
+    .company-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 6px 10px 6px 6px;
+      border-radius: 999px;
+      border: 1px solid rgba(247, 251, 255, 0.35);
+      background: rgba(255, 255, 255, 0.08);
+      color: var(--color-text-on-dark);
+      line-height: 1;
+      min-height: 36px;
+    }
+
+    .company-logo {
+      width: 24px;
+      height: 24px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, #e6eef8, #b7cee6);
+      color: #14314f;
+      display: inline-grid;
+      place-items: center;
+      font-weight: 800;
+      font-size: 0.64rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      flex-shrink: 0;
+    }
+
+    .company-name {
+      font-size: 0.79rem;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      white-space: nowrap;
+    }
+
+    .utility-icons {
+      display: flex;
+      align-items: center;
+      gap: var(--space-2);
+    }
+
+    .icon-btn {
+      border: 0;
+      background: transparent;
+      color: inherit;
+      width: 36px;
+      height: 36px;
+      border-radius: 999px;
+      display: inline-grid;
+      place-items: center;
+      cursor: pointer;
+      position: relative;
+      font-size: 1rem;
+      line-height: 1;
+    }
+
+    .icon-btn:hover { background: rgba(255, 255, 255, 0.12); }
+
+    .icon-btn:focus-visible,
+    .nav-link:focus-visible,
+    .btn-primary:focus-visible,
+    .btn-secondary:focus-visible,
+    .filter-tab:focus-visible,
+    .filter-input:focus-visible,
+    .filter-select:focus-visible,
+    .pager-btn:focus-visible,
+    .btn-row:focus-visible {
+      outline: 2px solid var(--color-focus);
+      outline-offset: 2px;
+    }
+
+    .has-dot::after {
+      content: "";
+      position: absolute;
+      top: 7px;
+      right: 7px;
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #ff4d4d;
+    }
+
+    .main-nav {
+      min-height: 44px;
+      background: var(--color-nav-main);
+      display: flex;
+      align-items: center;
+      gap: var(--space-2);
+      padding: 0 var(--space-5);
+      overflow-x: auto;
+    }
+
+    .nav-link {
+      color: rgba(247, 251, 255, 0.95);
+      text-decoration: none;
+      padding: 10px 12px;
+      border-radius: var(--radius-sm);
+      font-weight: 600;
+      white-space: nowrap;
+      transition: background 160ms ease;
+    }
+
+    .nav-link:hover { background: var(--color-nav-hover); }
+    .nav-link.is-active { background: var(--color-nav-active); }
+
+    .page-content {
+      max-width: 1220px;
+      margin: 0 auto;
+      padding: var(--space-8) var(--space-6);
+      animation: page-enter 320ms ease-out;
+    }
+
+    .page-toolbar {
+      display: flex;
+      align-items: flex-start;
+      justify-content: flex-start;
+      gap: var(--space-4);
+      margin-bottom: var(--space-6);
+      flex-wrap: wrap;
+    }
+
+    .page-title {
+      margin: 0;
+      color: var(--color-text-strong);
+      font-family: var(--font-display);
+      font-size: clamp(1.7rem, 3vw, 2.15rem);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+
+    .page-subtitle {
+      margin: var(--space-2) 0 0;
+      color: var(--color-text-muted);
+      font-size: 1.02rem;
+    }
+
+    .toolbar-actions {
+      display: flex;
+      gap: var(--space-3);
+      align-items: center;
+      flex-wrap: wrap;
+      width: 100%;
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid transparent;
+      border-radius: var(--radius-sm);
+      background: linear-gradient(135deg, #324e6b, #3a5a7b);
+      color: #ffffff;
+      min-height: 44px;
+      padding: 0 var(--space-5);
+      font-size: 0.96rem;
+      font-weight: 700;
+      font-family: var(--font-body);
+      text-decoration: none;
+      cursor: pointer;
+      box-shadow: 0 6px 12px rgba(42, 63, 86, 0.18);
+      transition: transform 140ms ease, box-shadow 140ms ease, filter 140ms ease;
+      white-space: nowrap;
+    }
+
+    .btn-primary:hover {
+      filter: brightness(0.95);
+      transform: translateY(-1px);
+      box-shadow: 0 10px 16px rgba(42, 63, 86, 0.2);
+    }
+
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid #b9c7d7;
+      border-radius: var(--radius-sm);
+      background: #ffffff;
+      color: var(--color-text-body);
+      min-height: 44px;
+      padding: 0 var(--space-5);
+      font-size: 0.95rem;
+      font-weight: 600;
+      font-family: var(--font-body);
+      cursor: pointer;
+      transition: background 140ms ease, border-color 140ms ease;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+
+    .btn-secondary:hover {
+      background: #f2f6fb;
+      border-color: #9fb1c6;
+    }
+
+    .filter-tabs {
+      display: flex;
+      align-items: center;
+      gap: var(--space-2);
+      flex-wrap: wrap;
+      margin-bottom: var(--space-4);
+      border-bottom: 1px solid var(--color-border);
+      padding-bottom: var(--space-3);
+    }
+
+    .filter-tab {
+      padding: 6px 14px;
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-sm);
+      background: var(--color-surface);
+      font-family: var(--font-body);
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: var(--color-text-body);
+      cursor: pointer;
+      transition: background 160ms ease, border-color 160ms ease;
+    }
+
+    .filter-tab:hover { background: #e9eef5; }
+
+    .filter-tab.active {
+      background: var(--color-nav-main);
+      color: var(--color-text-on-dark);
+      border-color: var(--color-nav-main);
+    }
+
+    .filter-row {
+      display: flex;
+      gap: var(--space-3);
+      align-items: center;
+      flex-wrap: wrap;
+      margin-bottom: var(--space-5);
+    }
+
+    .filter-row .btn-primary {
+      margin-left: auto;
+    }
+
+    .filter-input,
+    .filter-select {
+      height: 40px;
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-sm);
+      background: #ffffff;
+      color: var(--color-text-body);
+      font-family: var(--font-body);
+      font-size: 0.95rem;
+      padding: 0 var(--space-3);
+      min-width: 190px;
+    }
+
+    .filter-select {
+      cursor: pointer;
+      min-width: 200px;
+    }
+
+    .table-card {
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      background: #ffffff;
+      box-shadow: var(--shadow-soft);
+      overflow: hidden;
+    }
+
+    .table-scroll {
+      width: 100%;
+      overflow-x: auto;
+    }
+
+    .users-table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 1100px;
+      background: #ffffff;
+    }
+
+    .users-table thead th {
+      padding: var(--space-3) var(--space-4);
+      text-align: left;
+      font-weight: 700;
+      font-size: 0.82rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: var(--color-text-muted);
+      border-bottom: 1px solid var(--color-border);
+      background: linear-gradient(180deg, #f8fbff 0%, #f0f5fb 100%);
+      white-space: nowrap;
+    }
+
+    .users-table tbody tr {
+      border-bottom: 1px solid #e3ebf5;
+      transition: background 120ms ease;
+      cursor: pointer;
+    }
+
+    .users-table tbody tr:last-child { border-bottom: none; }
+    .users-table tbody tr:hover { background: #f8fbff; }
+
+    .users-table td {
+      padding: var(--space-3) var(--space-4);
+      color: var(--color-text-body);
+      vertical-align: middle;
+      font-size: 0.95rem;
+      white-space: nowrap;
+    }
+
+    .btn-row {
+      border: 1px solid #b9c7d7;
+      background: #ffffff;
+      border-radius: var(--radius-sm);
+      color: var(--color-text-body);
+      min-height: 34px;
+      padding: 0 12px;
+      font-family: var(--font-body);
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 140ms ease, border-color 140ms ease;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .btn-row:hover {
+      background: #f2f6fb;
+      border-color: #9fb1c6;
+    }
+
+    .table-footer {
+      border-top: 1px solid var(--color-border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--space-4);
+      padding: var(--space-4);
+      background: #ffffff;
+      flex-wrap: wrap;
+    }
+
+    .dev-notes {
+      margin-top: calc(var(--space-8) + var(--space-2));
+      padding: var(--space-5);
+      border: 1px solid #cfd9e4;
+      border-radius: var(--radius-md);
+      background: #ffffff;
+      box-shadow: 0 14px 32px rgba(16, 35, 58, 0.08);
+    }
+
+    .dev-notes-title {
+      margin: 0 0 var(--space-3);
+      color: var(--color-text-strong);
+      font-family: var(--font-display);
+      font-size: 1rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+    }
+
+    .dev-notes-list {
+      margin: 0;
+      padding-left: 1.25rem;
+      color: var(--color-text-body);
+    }
+
+    .dev-notes-list li + li {
+      margin-top: var(--space-2);
+    }
+
+    .results-note {
+      margin: 0;
+      color: var(--color-text-muted);
+      font-size: 0.93rem;
+    }
+
+    .pager {
+      display: flex;
+      gap: var(--space-2);
+      align-items: center;
+    }
+
+    .pager-btn {
+      border: 1px solid var(--color-border);
+      background: #ffffff;
+      border-radius: var(--radius-sm);
+      color: var(--color-text-body);
+      min-height: 36px;
+      min-width: 36px;
+      padding: 0 var(--space-3);
+      font-family: var(--font-body);
+      font-size: 0.92rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 140ms ease, color 140ms ease, border-color 140ms ease;
+    }
+
+    .pager-btn:hover {
+      background: #f2f6fb;
+      border-color: #c6d5e5;
+    }
+
+    .pager-btn.is-current {
+      background: var(--color-nav-main);
+      color: #ffffff;
+      border-color: var(--color-nav-main);
+    }
+
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      border: 0;
+    }
+
+    @keyframes page-enter {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 768px) {
+      .top-bar { padding: 0 var(--space-4); }
+      .page-content { padding: var(--space-6) var(--space-4); }
+
+      .page-toolbar {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .company-name {
+        display: none;
+      }
+
+      .toolbar-actions,
+      .filter-row {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .filter-input,
+      .filter-select,
+      .btn-primary,
+      .btn-secondary {
+        width: 100%;
+      }
+
+      .table-footer {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="app-header" role="banner">
+    <div class="top-bar">
+      <div class="brand-group">
+        <button class="icon-btn" aria-label="Open menu">&#9776;</button>
+        <a class="brand" href="dashboard.html"> Asset Oversight </a>
+      </div>
+      <div class="top-right">
+        <div class="company-chip" aria-label="Company identity for logged in user">
+          <span class="company-logo" id="company-logo" aria-hidden="true">COM</span>
+          <span class="company-name" id="company-name">Compass Group</span>
+        </div>
+        <div class="utility-icons" aria-label="Utility actions">
+        <button class="icon-btn" aria-label="Search">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.35-4.35"></path>
+          </svg>
+        </button>
+        <button class="icon-btn has-dot" aria-label="Notifications">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+            <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+          </svg>
+        </button>
+        <a class="icon-btn" href="./../index.html" aria-label="Profile">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+            <circle cx="12" cy="7" r="4"></circle>
+          </svg>
+        </a>
+        </div>
+      </div>
+    </div>
+
+    <nav class="main-nav" aria-label="Primary">
+      <a href="dashboard.html" class="nav-link">Dashboard</a>
+
+      <a href="reports01.html" class="nav-link">Reports</a>
+      <a href="contractor01.html" class="nav-link">Contractor</a>
+      <a href="calendar01.html" class="nav-link">Calendar</a>
+      <a href="assets01.html" class="nav-link">Assets</a>
+      <a href="sites01.html" class="nav-link">Sites</a>
+    
+      <a href="users01.html" class="nav-link is-active" aria-current="page">Users</a>
+      <a href="on-boarding01.html" class="nav-link">Onboarding</a>
+    </nav>
+  </header>
+
+  <main class="page-content" id="page-content">
+    <section class="page-toolbar" aria-label="Users page heading">
+      <div>
+        <h1 class="page-title">Users</h1>
+        <p class="page-subtitle">Manage user identity, role access, company assignment, and linked sites</p>
+      </div>
+    </section>
+
+    <section class="filter-row" aria-label="Search and filter controls">
+      <label class="sr-only" for="user-search">User search</label>
+      <input id="user-search" class="filter-input" type="search" placeholder="Search ..." />
+
+      <label class="sr-only" for="role-filter">Role filter</label>
+      <select id="role-filter" class="filter-select">
+        <option>All roles</option>
+        <option>CEO</option>
+        <option>Regional manager / Portfolio Manager</option>
+        <option>2 IC</option>
+        <option>Ops Manager / Site Manager</option>
+      </select>
+
+      <a class="btn-primary" href="users03.html">Create</a>
+    </section>
+
+    <section class="table-card" aria-label="Users register table">
+      <div class="table-scroll">
+        <table class="users-table">
+          <thead>
+            <tr>
+              <th scope="col">OID</th>
+              <th scope="col">Email Address</th>
+              <th scope="col">Roles</th>
+              <th scope="col">Company</th>
+              <th scope="col">Linked Sites</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>f2e68408-7f26-47ba-8c8a-1b8e9cf11ad3</td>
+              <td>sam.walters@aotech.com</td>
+              <td>Regional Manager</td>
+              <td>Northline Operations Ltd</td>
+              <td>Northwind Transfer Hub, Harborfield Storage</td>
+            </tr>
+            <tr>
+              <td>7a6b923b-45f3-4f2a-8d39-2f6dc0cc8f71</td>
+              <td>mia.owen@aotech.com</td>
+              <td>Site Manager</td>
+              <td>Beacon Services Group</td>
+              <td>Beacon Retail Point, Parkview Delivery Yard</td>
+            </tr>
+            <tr>
+              <td>1c44f018-89eb-4d9b-8e91-f6b9ce4d17bd</td>
+              <td>oliver.hayes@aotech.com</td>
+              <td>2IC</td>
+              <td>Crescent Infrastructure Pty</td>
+              <td>Crescent Metro Unit</td>
+            </tr>
+            <tr>
+              <td>c39df8fd-1fb3-4ec6-8f2b-25a8f97f502a</td>
+              <td>evie.russell@aotech.com</td>
+              <td>Contractor</td>
+              <td>Broadway Field Services</td>
+              <td>Broadway Service Site, Westlake Operations</td>
+            </tr>
+            <tr>
+              <td>b57a36d4-fd61-4fca-9de6-8bc427ec0db8</td>
+              <td>noah.clark@aotech.com</td>
+              <td>Technicial</td>
+              <td>Delta Street Maintenance</td>
+              <td>Delta Street Facility</td>
+            </tr>
+            <tr>
+              <td>e4ed9fca-78e2-4d20-9bd6-fbe1384bcc0d</td>
+              <td>lily.morgan@aotech.com</td>
+              <td>Super Admin</td>
+              <td>AoTech Group</td>
+              <td>All sites</td>
+            </tr>
+            <tr>
+              <td>5a95ca70-9775-4d32-a654-9b1af4e6f2ce</td>
+              <td>isaac.turner@aotech.com</td>
+              <td>Regional Manager</td>
+              <td>Westfield Contracting</td>
+              <td>Westlake Operations, Delta Street Facility</td>
+            </tr>
+            <tr>
+              <td>d6c2ab42-3313-4c0f-a5b4-19cf3a41f90e</td>
+              <td>amelia.cooper@aotech.com</td>
+              <td>Site Manager</td>
+              <td>Harborline Support Services</td>
+              <td>Harborfield Storage</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <footer class="table-footer" aria-label="Users table pagination">
+        <p class="results-note">Showing 1 to 8 of 36 users</p>
+        <div class="pager">
+          <button class="pager-btn" type="button" aria-label="Previous page">&lt;</button>
+          <button class="pager-btn is-current" type="button" aria-current="page">1</button>
+          <button class="pager-btn" type="button">2</button>
+          <button class="pager-btn" type="button">3</button>
+          <button class="pager-btn" type="button" aria-label="Next page">&gt;</button>
+        </div>
+      </footer>
+    </section>
+
+    <section class="dev-notes" aria-label="Development notes">
+      <h2 class="dev-notes-title">DEV NOTES</h2>
+      <ul class="dev-notes-list">
+        <li>OID is the EntraObjectId; this is how we link the user to Entra.</li>
+        <li>Security in terms of password is all Entra. When the user logs in for the first time we look up the user's email to link it to a user row added by the super user. From there on we always know the user on the OID.</li>
+        <li>Per user there needs to be a set limit of jobs per day, starting with 10.</li>
+      </ul>
+    </section>
+  </main>
+
+  <script>
+    document.querySelectorAll(".users-table tbody tr").forEach((row) => {
+      row.addEventListener("click", () => {
+        window.location.href = "users02.html";
+      });
+    });
+  </script>
+</body>
+</html>

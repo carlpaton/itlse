@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+  <title>AoTech - QR Query Job Detail</title>
+  <style>
+    @import url("https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700&family=Sora:wght@600;700&display=swap");
+
+    :root {
+      --font-display: "Sora", "Segoe UI", sans-serif;
+      --font-body: "Public Sans", "Segoe UI", sans-serif;
+      --color-page-bg: #f3f5f8;
+      --color-surface: #ffffff;
+      --color-border: #d7e0ea;
+      --color-text-strong: #10233a;
+      --color-text-body: #26394f;
+      --color-text-muted: #5f7185;
+      --color-focus: #5b8cc2;
+      --shadow-soft: 0 1px 2px rgba(10, 24, 40, 0.08), 0 6px 16px rgba(17, 36, 56, 0.04);
+      --space-2: 8px;
+      --space-3: 12px;
+      --space-4: 16px;
+      --space-5: 20px;
+      --space-6: 24px;
+      --radius-sm: 6px;
+      --radius-md: 10px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: var(--font-body);
+      color: var(--color-text-body);
+      background: radial-gradient(1200px 500px at -10% -20%, #e7edf5 0%, transparent 60%),
+        radial-gradient(800px 400px at 110% 120%, #e9eef6 0%, transparent 60%),
+        var(--color-page-bg);
+    }
+
+    .page-shell {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: clamp(var(--space-5), 3vw, 30px);
+    }
+
+    .screen {
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      background: var(--color-surface);
+      box-shadow: var(--shadow-soft);
+      padding: clamp(var(--space-5), 3vw, 28px);
+    }
+
+    .top-actions {
+      display: flex;
+      justify-content: space-between;
+      gap: var(--space-4);
+      align-items: flex-start;
+      flex-wrap: wrap;
+    }
+
+    .btn-primary,
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 40px;
+      border-radius: var(--radius-sm);
+      border: 1px solid transparent;
+      font-family: var(--font-body);
+      font-size: 0.9rem;
+      font-weight: 700;
+      text-decoration: none;
+      padding: 0 var(--space-4);
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #324e6b, #3a5a7b);
+      color: #fff;
+      box-shadow: 0 6px 12px rgba(42, 63, 86, 0.18);
+    }
+
+    .btn-secondary {
+      border-color: #b9c7d7;
+      background: #fff;
+      color: var(--color-text-body);
+    }
+
+    .btn-primary:focus-visible,
+    .btn-secondary:focus-visible,
+    .field:focus-visible,
+    .select-field:focus-visible,
+    textarea:focus-visible {
+      outline: 2px solid var(--color-focus);
+      outline-offset: 2px;
+    }
+
+    .hero-grid {
+      margin-top: var(--space-5);
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: var(--space-5);
+    }
+
+    .fields {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-2);
+    }
+
+    .field,
+    .select-field,
+    textarea {
+      min-height: 40px;
+      border: 1px solid #c5d1df;
+      border-radius: var(--radius-sm);
+      background: #fff;
+      color: var(--color-text-body);
+      padding: 10px var(--space-3);
+      font-family: var(--font-body);
+      font-size: 0.9rem;
+      width: 100%;
+    }
+
+    .comments-box {
+      margin-top: var(--space-4);
+      min-height: 118px;
+      font-family: var(--font-display);
+      font-size: clamp(1.5rem, 4vw, 3rem);
+      color: #4a5766;
+      display: grid;
+      place-items: center;
+      border: 1px solid #c5d1df;
+      border-radius: var(--radius-sm);
+      background: #fbfdff;
+      text-align: center;
+      padding: var(--space-3);
+    }
+
+    .job-side {
+      display: grid;
+      gap: var(--space-3);
+      align-content: start;
+    }
+
+    .circle {
+      width: 190px;
+      aspect-ratio: 1;
+      border-radius: 999px;
+      border: 2px solid #364f69;
+      margin: 0 auto;
+      background: #f4f8fd;
+    }
+
+    .cost-grid {
+      display: grid;
+      gap: 6px;
+    }
+
+    .cost-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      border: 1px solid #c5d1df;
+      border-radius: var(--radius-sm);
+      overflow: hidden;
+      font-size: 0.85rem;
+      font-weight: 700;
+    }
+
+    .cost-row span {
+      padding: 9px 10px;
+      background: #fff;
+    }
+
+    .cost-row span:first-child { color: #ffffff; }
+    .cost-row.asset span:first-child { background: #e7aab0; }
+    .cost-row.spend span:first-child { background: #f3b768; }
+    .cost-row.repair span:first-child { background: #69a9eb; }
+    .cost-row.maintenance span:first-child { background: #40bf66; }
+
+    .media-row,
+    .expense-head,
+    .expense-row,
+    .totals {
+      margin-top: var(--space-5);
+    }
+
+    .media-row {
+      display: grid;
+      grid-template-columns: auto repeat(5, 1fr);
+      gap: var(--space-2);
+      align-items: center;
+    }
+
+    .expense-head {
+      display: flex;
+      gap: var(--space-2);
+      flex-wrap: wrap;
+    }
+
+    .expense-layout {
+      margin-top: var(--space-3);
+      display: grid;
+      grid-template-columns: 170px 1fr;
+      gap: var(--space-3);
+    }
+
+    .history-list,
+    .expenses-board {
+      border: 1px solid #c5d1df;
+      border-radius: var(--radius-sm);
+      background: #fff;
+      padding: var(--space-3);
+    }
+
+    .history-list {
+      display: grid;
+      gap: 6px;
+      align-content: start;
+    }
+
+    .expenses-board {
+      min-height: 320px;
+      display: grid;
+      gap: var(--space-2);
+      align-content: start;
+    }
+
+    .expense-row {
+      display: grid;
+      grid-template-columns: 1fr 1.6fr 1fr 1fr 1fr 1fr;
+      gap: var(--space-2);
+    }
+
+    .totals {
+      width: min(320px, 100%);
+      margin-left: auto;
+      display: grid;
+      gap: 6px;
+    }
+
+    .total-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      border: 1px solid #c5d1df;
+      border-radius: var(--radius-sm);
+      overflow: hidden;
+    }
+
+    .total-row span {
+      padding: 9px 10px;
+      background: #fff;
+      font-size: 0.9rem;
+    }
+
+    @media (max-width: 980px) {
+      .hero-grid,
+      .expense-layout,
+      .expense-row,
+      .media-row {
+        grid-template-columns: 1fr;
+      }
+
+      .fields {
+        grid-template-columns: 1fr;
+      }
+
+      .circle {
+        width: 160px;
+      }
+
+      .totals {
+        margin-left: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page-shell">
+    <main class="screen" aria-labelledby="job-detail-title">
+      <div class="top-actions">
+        <a class="btn-primary" href="qr-query02.html">Main Dashboard</a>
+        <input class="field" type="text" value="JOB#" aria-label="Job number" />
+        <a class="btn-primary" href="#">start job</a>
+      </div>
+
+      <div class="hero-grid">
+        <section>
+          <h1 id="job-detail-title" style="margin:0 0 10px; font-family: var(--font-display); color: var(--color-text-strong);">Job Query Details</h1>
+          <div class="fields">
+            <input class="field" type="text" placeholder="Date" />
+            <input class="field" type="text" placeholder="Date" />
+            <input class="field" type="text" placeholder="Company" />
+            <input class="field" type="text" placeholder="Company" />
+            <input class="field" type="text" placeholder="Model#" />
+            <input class="field" type="text" placeholder="Model#" />
+            <input class="field" type="text" placeholder="Serial#" />
+            <input class="field" type="text" placeholder="Serial#" />
+            <input class="field" type="text" placeholder="fault" />
+            <input class="field" type="text" placeholder="Fault description" />
+            <input class="field" type="text" placeholder="Test & Tag" />
+            <input class="field" type="text" placeholder="DD/MM/YYYY" />
+          </div>
+
+          <div class="comments-box">repair comments</div>
+        </section>
+
+        <aside class="job-side">
+          <div class="circle" aria-hidden="true"></div>
+          <div class="cost-grid">
+            <div class="cost-row asset"><span>ASSET COST</span><span>$15000-00</span></div>
+            <div class="cost-row spend"><span>SPEND LIMIT</span><span>$ 12500-00</span></div>
+            <div class="cost-row repair"><span>REPAIR COST</span><span>$ 4500-00</span></div>
+            <div class="cost-row maintenance"><span>maintenance cost</span><span>$ 1250-00</span></div>
+          </div>
+        </aside>
+      </div>
+
+      <div class="media-row" aria-label="Photos row">
+        <a class="btn-primary" href="#">Photos</a>
+        <input class="field" type="text" placeholder="Photo" />
+        <input class="field" type="text" placeholder="Photo" />
+        <input class="field" type="text" placeholder="Photo" />
+        <input class="field" type="text" placeholder="Photo" />
+        <input class="field" type="text" placeholder="Photo" />
+      </div>
+
+      <div class="expense-head">
+        <a class="btn-primary" href="#">View History</a>
+        <a class="btn-primary" href="#">ADD Expenses</a>
+      </div>
+
+      <div class="expense-layout">
+        <section class="history-list" aria-label="History list">
+          <input class="field" type="text" placeholder="Job#" />
+          <input class="field" type="text" placeholder="Job#" />
+          <input class="field" type="text" placeholder="Job#" />
+          <input class="field" type="text" placeholder="Job#" />
+          <input class="field" type="text" placeholder="Job#" />
+          <input class="field" type="text" placeholder="Job#" />
+          <input class="field" type="text" placeholder="Job#" />
+          <input class="field" type="text" placeholder="Job#" />
+        </section>
+
+        <section class="expenses-board" aria-label="Expenses board">
+          <div class="expense-row">
+            <select class="select-field" aria-label="Expense type">
+              <option>Expense</option>
+            </select>
+            <input class="field" type="text" placeholder="Description" />
+            <input class="field" type="text" placeholder="Quantity" />
+            <input class="field" type="text" placeholder="Cost" />
+            <input class="field" type="text" placeholder="GST" />
+            <input class="field" type="text" placeholder="Total" />
+          </div>
+          <div class="expense-row">
+            <select class="select-field" aria-label="Expense type 2">
+              <option>Expense</option>
+            </select>
+            <input class="field" type="text" placeholder="Description" />
+            <input class="field" type="text" placeholder="Quantity" />
+            <input class="field" type="text" placeholder="Cost" />
+            <input class="field" type="text" placeholder="GST" />
+            <input class="field" type="text" placeholder="Total" />
+          </div>
+          <div class="expense-row">
+            <select class="select-field" aria-label="Expense type 3">
+              <option>Expense</option>
+            </select>
+            <input class="field" type="text" placeholder="Description" />
+            <input class="field" type="text" placeholder="Quantity" />
+            <input class="field" type="text" placeholder="Cost" />
+            <input class="field" type="text" placeholder="GST" />
+            <input class="field" type="text" placeholder="Total" />
+          </div>
+        </section>
+      </div>
+
+      <div class="totals" aria-label="Totals">
+        <div class="total-row"><span>Subtotal</span><span>$$$$</span></div>
+        <div class="total-row"><span>GST 15%</span><span>$$$$</span></div>
+        <div class="total-row"><span>Total</span><span>$$$$</span></div>
+      </div>
+    </main>
+  </div>
+</body>
+</html>
