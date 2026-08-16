@@ -259,11 +259,6 @@
       align-items: center;
       gap: var(--space-3);
       flex-wrap: wrap;
-      background: var(--color-surface);
-      border: 1px solid var(--color-border);
-      border-radius: var(--radius-md);
-      padding: var(--space-4) var(--space-5);
-      box-shadow: var(--shadow-soft);
       margin-bottom: var(--space-5);
     }
 
@@ -276,7 +271,7 @@
       height: 40px;
       border: 1px solid var(--color-border);
       border-radius: var(--radius-sm);
-      background: var(--color-surface);
+      background: var(--color-page-bg);
       color: var(--color-text-body);
       font-family: var(--font-body);
       font-size: 0.95rem;
@@ -286,6 +281,7 @@
 
     .filter-select {
       padding-right: var(--space-5);
+      background: var(--color-surface);
       cursor: pointer;
     }
 
@@ -298,6 +294,49 @@
     .filter-bar .btn-primary {
       margin-left: auto;
     }
+
+    .jobs-table {
+      min-width: 900px;
+    }
+
+    .job-num {
+      font-family: var(--font-display);
+      font-weight: 600;
+      color: var(--color-text-strong);
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: var(--radius-sm);
+      font-size: 0.82rem;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .badge-in-progress { background: #dbeafe; color: #1d4ed8; }
+    .badge-assigned { background: #fde8c8; color: #b45309; }
+    .badge-scheduled { background: #e0f2fe; color: #0369a1; }
+    .badge-completed { background: #dcfce7; color: #15803d; }
+
+    .priority-dot {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.88rem;
+    }
+
+    .priority-dot::before {
+      content: "";
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .priority-high::before { background: #ef4444; }
+    .priority-medium::before { background: #f59e0b; }
+    .priority-low::before { background: #22c55e; }
 
     /* Table card */
     .table-card {
@@ -352,6 +391,10 @@
       background: #f8fbff;
     }
 
+    .report-row {
+      cursor: pointer;
+    }
+
     tbody tr:last-child td {
       border-bottom: none;
     }
@@ -403,6 +446,30 @@
       background: var(--color-nav-main);
       color: #ffffff;
       border-color: var(--color-nav-main);
+    }
+
+    .dev-notes {
+      margin-top: calc(var(--space-8) + var(--space-2));
+      padding: var(--space-5);
+      border: 1px solid #cfd9e4;
+      border-radius: var(--radius-md);
+      background: #ffffff;
+      box-shadow: 0 14px 32px rgba(16, 35, 58, 0.08);
+    }
+
+    .dev-notes-title {
+      margin: 0 0 var(--space-3);
+      color: var(--color-text-strong);
+      font-family: var(--font-display);
+      font-size: 1rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+    }
+
+    .dev-notes-list {
+      margin: 0;
+      padding-left: 1.25rem;
+      color: var(--color-text-body);
     }
 
     @keyframes page-enter {
@@ -513,103 +580,194 @@
     <section class="page-toolbar" aria-label="Reports heading">
       <div>
         <h1 class="page-title">Reports</h1>
-        <p class="page-subtitle">View and generate asset reports</p>
       </div>
     </section>
 
-    <section aria-label="Report filters">
-      <div class="filter-bar">
-        <label for="filter-customer">Customer</label>
-        <select id="filter-customer" class="filter-select">
-          <option value="">Customer</option>
-          <option value="customer-a">Customer A</option>
-          <option value="customer-b">Customer B</option>
-          <option value="customer-c">Customer C</option>
-        </select>
+    <section class="filter-bar" aria-label="Job filters">
+      <label for="company-filter">Company</label>
+      <select class="filter-select" id="company-filter" aria-label="Company">
+        <option value="compass">Compass Group</option>
+      </select>
 
-        <label for="filter-date-from">Date from</label>
-        <input id="filter-date-from" class="filter-input" type="date" placeholder="Date from" />
+      <label for="division-filter">Division</label>
+      <select class="filter-select" id="division-filter" aria-label="Division"></select>
 
-        <label for="filter-date-to">Date to</label>
-        <input id="filter-date-to" class="filter-input" type="date" placeholder="Date to" />
+      <label for="contract-filter">Contract</label>
+      <select class="filter-select" id="contract-filter" aria-label="Contract"></select>
 
-        <label for="filter-report-type">Type of report</label>
-        <select id="filter-report-type" class="filter-select">
-          <option value="">Type of report</option>
-          <option value="repair">Repair</option>
-          <option value="maintenance">Maintenance</option>
-          <option value="inspection">Inspection</option>
-        </select>
+      <label for="site-filter">Site</label>
+      <select class="filter-select" id="site-filter" aria-label="Site"></select>
 
-        <a class="btn-primary" href="reports02.html">Create report</a>
-      </div>
+      <label for="priority-filter">Priority</label>
+      <select class="filter-select" id="priority-filter" aria-label="Priority">
+        <option value="">All priorities</option>
+        <option value="High">High</option>
+        <option value="Medium">Medium</option>
+        <option value="Low">Low</option>
+      </select>
+
+      <label for="status-filter">Job status</label>
+      <select class="filter-select" id="status-filter" aria-label="Job status">
+        <option value="">All job statuses</option>
+        <option value="In progress">In progress</option>
+        <option value="Assigned">Assigned</option>
+        <option value="Scheduled">Scheduled</option>
+        <option value="Completed">Completed</option>
+      </select>
+
+      <label for="type-filter">Job type</label>
+      <select class="filter-select" id="type-filter" aria-label="Job type">
+        <option value="">All job types</option>
+        <option value="maintenance">Maintenance</option>
+        <option value="repair">Repair</option>
+      </select>
     </section>
 
-    <section class="table-card" aria-label="Report list">
+    <section class="table-card" aria-label="Jobs list">
       <div class="table-scroll">
-        <table>
+        <table class="jobs-table">
           <thead>
             <tr>
-              <th>Report #</th>
-              <th>Report Date</th>
-              <th>Report Type</th>
+              <th scope="col">Job #</th>
+              <th scope="col">Priority</th>
+              <th scope="col">Date Assigned</th>
+              <th scope="col">Date Completed</th>
+              <th scope="col">Job Status</th>
+              <th scope="col">Job Type</th>
+              <th scope="col">Asset Details</th>
             </tr>
           </thead>
-          <tbody>
-            <tr>
-              <td><a class="row-link" href="reports02.html">RPT-2024-001</a></td>
-              <td><a class="row-link" href="reports02.html">2024-01-15</a></td>
-              <td><a class="row-link" href="reports02.html">Repair</a></td>
-            </tr>
-            <tr>
-              <td><a class="row-link" href="reports02.html">RPT-2024-002</a></td>
-              <td><a class="row-link" href="reports02.html">2024-02-10</a></td>
-              <td><a class="row-link" href="reports02.html">Maintenance</a></td>
-            </tr>
-            <tr>
-              <td><a class="row-link" href="reports02.html">RPT-2024-003</a></td>
-              <td><a class="row-link" href="reports02.html">2024-03-05</a></td>
-              <td><a class="row-link" href="reports02.html">Inspection</a></td>
-            </tr>
-            <tr>
-              <td><a class="row-link" href="reports02.html">RPT-2024-004</a></td>
-              <td><a class="row-link" href="reports02.html">2024-03-22</a></td>
-              <td><a class="row-link" href="reports02.html">Repair</a></td>
-            </tr>
-            <tr>
-              <td><a class="row-link" href="reports02.html">RPT-2024-005</a></td>
-              <td><a class="row-link" href="reports02.html">2024-04-01</a></td>
-              <td><a class="row-link" href="reports02.html">Maintenance</a></td>
-            </tr>
-            <tr>
-              <td><a class="row-link" href="reports02.html">RPT-2024-006</a></td>
-              <td><a class="row-link" href="reports02.html">2024-04-18</a></td>
-              <td><a class="row-link" href="reports02.html">Inspection</a></td>
-            </tr>
-            <tr>
-              <td><a class="row-link" href="reports02.html">RPT-2024-007</a></td>
-              <td><a class="row-link" href="reports02.html">2024-05-02</a></td>
-              <td><a class="row-link" href="reports02.html">Repair</a></td>
-            </tr>
-            <tr>
-              <td><a class="row-link" href="reports02.html">RPT-2024-008</a></td>
-              <td><a class="row-link" href="reports02.html">2024-05-20</a></td>
-              <td><a class="row-link" href="reports02.html">Maintenance</a></td>
-            </tr>
-          </tbody>
+          <tbody id="jobs-tbody"></tbody>
         </table>
       </div>
 
       <div class="table-footer">
-        <p class="results-note">Showing 1 to 8 of 8 results</p>
-        <nav class="pager" aria-label="Pagination">
-          <button class="pager-btn" type="button">Previous</button>
-          <button class="pager-btn is-current" type="button" aria-current="page">1</button>
-          <button class="pager-btn" type="button">2</button>
-          <button class="pager-btn" type="button">Next</button>
-        </nav>
+        <button class="btn-primary" type="button">Download</button>
       </div>
     </section>
+
+    <section class="dev-notes" aria-label="Development notes">
+      <h2 class="dev-notes-title">DEV NOTES</h2>
+      <ul class="dev-notes-list">
+        <li>Download button will download the results to PDF.</li>
+        <li>Report data access would check the user's access level as defined in <a href="users02.html">users02</a>.</li>
+      </ul>
+    </section>
   </main>
+
+  <script>
+    (function () {
+      var divisions = [
+        {
+          name: "Defence & Government Division",
+          contracts: [
+            { name: "NZDF Contract (Devonport)", sites: ["Devonport Naval Base"] },
+            { name: "NZDF Contract (Whenuapai)", sites: ["Whenuapai Airforce Base"] }
+          ]
+        },
+        {
+          name: "Public Sector Division",
+          contracts: [
+            { name: "NZ Police Contract", sites: ["College Hill"] }
+          ]
+        },
+        {
+          name: "Education Division",
+          contracts: [
+            { name: "Massey University Contract", sites: ["Massey University Albany"] }
+          ]
+        }
+      ];
+
+      var jobs = [
+        { number: "JOB-0041", priority: "High", assigned: "08 May 2026", completed: "-", status: "In progress", type: "maintenance", asset: "Generator - Devonport Naval Base", division: "Defence & Government Division", contract: "NZDF Contract (Devonport)", site: "Devonport Naval Base" },
+        { number: "JOB-0040", priority: "Medium", assigned: "06 May 2026", completed: "-", status: "Assigned", type: "repair", asset: "HVAC Unit 3 - Whenuapai Airforce Base", division: "Defence & Government Division", contract: "NZDF Contract (Whenuapai)", site: "Whenuapai Airforce Base" },
+        { number: "JOB-0039", priority: "Low", assigned: "04 May 2026", completed: "-", status: "Scheduled", type: "maintenance", asset: "Fire Panel - College Hill", division: "Public Sector Division", contract: "NZ Police Contract", site: "College Hill" },
+        { number: "JOB-0038", priority: "Medium", assigned: "01 May 2026", completed: "09 May 2026", status: "Completed", type: "repair", asset: "Pump Station 2 - Devonport Naval Base", division: "Defence & Government Division", contract: "NZDF Contract (Devonport)", site: "Devonport Naval Base" },
+        { number: "JOB-0037", priority: "High", assigned: "28 Apr 2026", completed: "05 May 2026", status: "Completed", type: "maintenance", asset: "Electrical Board - Massey University Albany", division: "Education Division", contract: "Massey University Contract", site: "Massey University Albany" },
+        { number: "JOB-0036", priority: "Low", assigned: "25 Apr 2026", completed: "-", status: "Assigned", type: "repair", asset: "Water Tank - College Hill", division: "Public Sector Division", contract: "NZ Police Contract", site: "College Hill" },
+        { number: "JOB-0035", priority: "Medium", assigned: "22 Apr 2026", completed: "-", status: "In progress", type: "maintenance", asset: "Cooling Tower - Whenuapai Airforce Base", division: "Defence & Government Division", contract: "NZDF Contract (Whenuapai)", site: "Whenuapai Airforce Base" }
+      ];
+
+      var divisionFilter = document.getElementById("division-filter");
+      var contractFilter = document.getElementById("contract-filter");
+      var siteFilter = document.getElementById("site-filter");
+      var priorityFilter = document.getElementById("priority-filter");
+      var statusFilter = document.getElementById("status-filter");
+      var typeFilter = document.getElementById("type-filter");
+      var jobsTbody = document.getElementById("jobs-tbody");
+
+      function fillOptions(select, label, values) {
+        select.innerHTML = '<option value="">All ' + label + '</option>' + values.map(function (value) {
+          return '<option value="' + value + '">' + value + '</option>';
+        }).join("");
+      }
+
+      function updateContracts() {
+        var selectedDivision = divisions.find(function (division) { return division.name === divisionFilter.value; });
+        var contracts = selectedDivision ? selectedDivision.contracts : divisions.flatMap(function (division) { return division.contracts; });
+        fillOptions(contractFilter, "contracts", contracts.map(function (contract) { return contract.name; }));
+        updateSites();
+      }
+
+      function updateSites() {
+        var selectedDivision = divisions.find(function (division) { return division.name === divisionFilter.value; });
+        var contracts = selectedDivision ? selectedDivision.contracts : divisions.flatMap(function (division) { return division.contracts; });
+        if (contractFilter.value) {
+          contracts = contracts.filter(function (contract) { return contract.name === contractFilter.value; });
+        }
+        fillOptions(siteFilter, "sites", contracts.flatMap(function (contract) { return contract.sites; }));
+        renderJobs();
+      }
+
+      function statusClass(status) {
+        return "badge-" + status.toLowerCase().replace(/\s+/g, "-");
+      }
+
+      function renderJobs() {
+        var filteredJobs = jobs.filter(function (job) {
+          return (!divisionFilter.value || job.division === divisionFilter.value) &&
+            (!contractFilter.value || job.contract === contractFilter.value) &&
+            (!siteFilter.value || job.site === siteFilter.value) &&
+            (!priorityFilter.value || job.priority === priorityFilter.value) &&
+            (!statusFilter.value || job.status === statusFilter.value) &&
+            (!typeFilter.value || job.type === typeFilter.value);
+        });
+
+        jobsTbody.innerHTML = filteredJobs.map(function (job) {
+          return '<tr class="report-row" tabindex="0" role="link" aria-label="View report for ' + job.number + '">' +
+            '<td class="job-num">' + job.number + '</td>' +
+            '<td><span class="priority-dot priority-' + job.priority.toLowerCase() + '">' + job.priority + '</span></td>' +
+            '<td>' + job.assigned + '</td>' +
+            '<td>' + job.completed + '</td>' +
+            '<td><span class="badge ' + statusClass(job.status) + '">' + job.status + '</span></td>' +
+            '<td>' + job.type + '</td>' +
+            '<td>' + job.asset + '</td>' +
+            '</tr>';
+        }).join("") || '<tr><td colspan="7">No jobs match the selected filters.</td></tr>';
+
+        jobsTbody.querySelectorAll(".report-row").forEach(function (row) {
+          row.addEventListener("click", function () {
+            window.location.href = "reports02.html";
+          });
+          row.addEventListener("keydown", function (event) {
+            if (event.key === "Enter" || event.key === " ") {
+              event.preventDefault();
+              window.location.href = "reports02.html";
+            }
+          });
+        });
+      }
+
+      fillOptions(divisionFilter, "divisions", divisions.map(function (division) { return division.name; }));
+      updateContracts();
+      divisionFilter.addEventListener("change", updateContracts);
+      contractFilter.addEventListener("change", updateSites);
+      siteFilter.addEventListener("change", renderJobs);
+      priorityFilter.addEventListener("change", renderJobs);
+      statusFilter.addEventListener("change", renderJobs);
+      typeFilter.addEventListener("change", renderJobs);
+    })();
+  </script>
 </body>
 </html>
