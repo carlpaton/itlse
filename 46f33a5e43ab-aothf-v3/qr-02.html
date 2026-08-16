@@ -77,58 +77,42 @@
       letter-spacing: -0.02em;
     }
 
-    .form-row {
-      margin: clamp(var(--space-6), 6vw, 58px) auto 0;
-      width: min(360px, 100%);
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: var(--space-3);
-    }
-
-    .input-field {
-      min-height: 42px;
-      width: 100%;
-      border: 1px solid #bcc9d8;
-      border-radius: var(--radius-sm);
-      padding: 0 var(--space-3);
-      font-family: var(--font-body);
-      color: var(--color-text-body);
-      background: #fff;
-    }
-
-    .input-field::placeholder {
-      color: #96a5b8;
-    }
-
-    .input-field:focus-visible,
-    .btn-primary:focus-visible {
+    .select-field:focus-visible,
+    .btn-primary:focus-visible,
+    .btn-secondary:focus-visible {
       outline: 2px solid var(--color-focus);
       outline-offset: 2px;
     }
 
     .actions {
-      margin-top: clamp(var(--space-6), 5vw, 46px);
+      margin-top: clamp(var(--space-6), 6vw, 56px);
       display: flex;
       justify-content: center;
+      gap: var(--space-4);
+      flex-wrap: wrap;
     }
 
-    .btn-primary {
+    .btn-primary,
+    .btn-secondary {
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      min-height: 44px;
-      min-width: 132px;
+      min-height: 64px;
+      width: min(220px, 100%);
       border-radius: var(--radius-sm);
+      font-size: 1.05rem;
+      font-weight: 700;
+      font-family: var(--font-body);
+      text-decoration: none;
+      cursor: pointer;
+      transition: transform 140ms ease, box-shadow 140ms ease, filter 140ms ease, background 140ms ease, border-color 140ms ease;
+    }
+
+    .btn-primary {
       border: 1px solid transparent;
       background: linear-gradient(135deg, #324e6b, #3a5a7b);
       color: #ffffff;
-      text-decoration: none;
-      font-size: 0.95rem;
-      font-weight: 700;
-      font-family: var(--font-body);
-      cursor: pointer;
       box-shadow: 0 6px 12px rgba(42, 63, 86, 0.18);
-      transition: transform 140ms ease, box-shadow 140ms ease, filter 140ms ease;
     }
 
     .btn-primary:hover {
@@ -137,32 +121,38 @@
       box-shadow: 0 10px 16px rgba(42, 63, 86, 0.2);
     }
 
+    .btn-secondary {
+      border: 1px solid #b9c7d7;
+      background: #ffffff;
+      color: var(--color-text-body);
+    }
+
+    .btn-secondary:hover {
+      background: #f2f6fb;
+      border-color: #9fb1c6;
+    }
+
     @media (max-width: 560px) {
       .screen {
         padding: var(--space-6);
       }
 
-      .form-row {
-        grid-template-columns: 1fr;
+      .btn-primary,
+      .btn-secondary {
+        width: 100%;
       }
     }
   </style>
 </head>
 <body>
   <div class="page-shell">
-    <main class="screen" aria-labelledby="fault-security-title">
-      <h1 class="screen-title" id="fault-security-title">Enter Security Code</h1>
+    <main class="screen" aria-labelledby="who-are-you-title">
+      <h1 class="screen-title" id="who-are-you-title">Who are you?</h1>
 
-      <form action="qr-fault02.html" method="get">
-        <div class="form-row">
-          <input class="input-field" type="text" name="security-label" placeholder="Security Code #" aria-label="Security Code label" />
-          <input class="input-field" type="text" name="security-code" placeholder="XXXXXXXXXXXX" aria-label="Security Code" required />
-        </div>
-
-        <div class="actions">
-          <button class="btn-primary" type="submit">Submit</button>
-        </div>
-      </form>
+      <div class="actions">
+        <a class="btn-primary" href="qr-03.html">Staff</a>
+        <a class="btn-secondary" href="qr-04.html">Public</a>
+      </div>
     </main>
   </div>
 </body>

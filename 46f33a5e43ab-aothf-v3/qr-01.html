@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex" />
+  <title>AoTech - QR Fault Security Check</title>
+  <style>
+    @import url("https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700&family=Sora:wght@600;700&display=swap");
+
+    :root {
+      --font-display: "Sora", "Segoe UI", sans-serif;
+      --font-body: "Public Sans", "Segoe UI", sans-serif;
+
+      --color-page-bg: #f3f5f8;
+      --color-surface: #ffffff;
+      --color-border: #d7e0ea;
+
+      --color-text-strong: #10233a;
+      --color-text-body: #26394f;
+      --color-text-muted: #5f7185;
+
+      --color-focus: #5b8cc2;
+      --shadow-soft: 0 1px 2px rgba(10, 24, 40, 0.08), 0 6px 16px rgba(17, 36, 56, 0.04);
+
+      --space-2: 8px;
+      --space-3: 12px;
+      --space-4: 16px;
+      --space-5: 20px;
+      --space-6: 24px;
+      --space-8: 32px;
+      --radius-sm: 6px;
+      --radius-md: 10px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      height: 100%;
+    }
+
+    body {
+      margin: 0;
+      font-family: var(--font-body);
+      background: radial-gradient(1200px 500px at -10% -20%, #e7edf5 0%, transparent 60%),
+        radial-gradient(800px 400px at 110% 120%, #e9eef6 0%, transparent 60%),
+        var(--color-page-bg);
+      color: var(--color-text-body);
+    }
+
+    .page-shell {
+      min-height: 100vh;
+      min-height: 100dvh;
+      display: grid;
+      place-items: center;
+      padding: var(--space-6);
+    }
+
+    .screen {
+      width: min(760px, 100%);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      background: var(--color-surface);
+      box-shadow: var(--shadow-soft);
+      padding: clamp(var(--space-6), 5vw, 56px);
+      text-align: center;
+    }
+
+    .screen-title {
+      margin: 0;
+      font-family: var(--font-display);
+      color: var(--color-text-strong);
+      font-size: clamp(1.8rem, 4vw, 2.35rem);
+      letter-spacing: -0.02em;
+    }
+
+    .screen-subtitle {
+      margin: var(--space-2) 0 0;
+      color: var(--color-text-muted);
+      font-size: 1.02rem;
+    }
+
+    .select-field:focus-visible,
+    .btn-primary:focus-visible,
+    .btn-secondary:focus-visible {
+      outline: 2px solid var(--color-focus);
+      outline-offset: 2px;
+    }
+
+    .actions {
+      margin-top: clamp(var(--space-6), 5vw, 46px);
+      display: flex;
+      justify-content: center;
+    }
+
+    .btn-primary,
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 44px;
+      min-width: 132px;
+      width: min(360px, 100%);
+      border-radius: var(--radius-sm);
+      font-size: 0.95rem;
+      font-weight: 700;
+      font-family: var(--font-body);
+      text-decoration: none;
+      cursor: pointer;
+      transition: transform 140ms ease, box-shadow 140ms ease, filter 140ms ease, background 140ms ease, border-color 140ms ease;
+    }
+
+    .btn-primary {
+      border: 1px solid transparent;
+      background: linear-gradient(135deg, #324e6b, #3a5a7b);
+      color: #ffffff;
+      box-shadow: 0 6px 12px rgba(42, 63, 86, 0.18);
+    }
+
+    .btn-primary:hover {
+      filter: brightness(0.95);
+      transform: translateY(-1px);
+      box-shadow: 0 10px 16px rgba(42, 63, 86, 0.2);
+    }
+
+    .btn-secondary {
+      border: 1px solid #b9c7d7;
+      background: #ffffff;
+      color: var(--color-text-body);
+    }
+
+    .btn-secondary:hover {
+      background: #f2f6fb;
+      border-color: #9fb1c6;
+    }
+
+    .action-caption {
+      margin: var(--space-3) 0 0;
+      color: var(--color-text-muted);
+      font-size: 0.85rem;
+    }
+
+    .action-caption strong {
+      color: var(--color-text-body);
+    }
+
+    .divider {
+      display: flex;
+      align-items: center;
+      gap: var(--space-4);
+      margin: clamp(var(--space-5), 5vw, 40px) auto;
+      width: min(360px, 100%);
+      color: var(--color-text-muted);
+      font-size: 0.85rem;
+      font-weight: 600;
+    }
+
+    .divider::before,
+    .divider::after {
+      content: "";
+      flex: 1;
+      height: 1px;
+      background: var(--color-border);
+    }
+
+    @media (max-width: 560px) {
+      .screen {
+        padding: var(--space-6);
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page-shell">
+    <main class="screen" aria-labelledby="fault-security-title">
+      <h1 class="screen-title" id="fault-security-title">Need help with this asset?</h1>
+      <p class="screen-subtitle">Choose an option below to continue.</p>
+
+      <div class="actions">
+        <a class="btn-primary" href="qr-02.html">Report an issue / Request help</a>
+      </div>
+      <p class="action-caption">For store owners, staff, or anyone needing help</p>
+
+      <div class="divider" role="separator" aria-label="or">OR</div>
+
+      <div class="actions">
+        <a class="btn-secondary" href="index.html">Asset Oversight Login</a>
+      </div>
+      <p class="action-caption">For authorised Asset Oversight users only</p>
+    </main>
+  </div>
+</body>
+</html>
