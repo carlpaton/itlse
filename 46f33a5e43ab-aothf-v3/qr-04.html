@@ -187,52 +187,6 @@
       border-color: #9fb1c6;
     }
 
-    .or-flow {
-      margin-top: clamp(var(--space-6), 6vw, 56px);
-    }
-
-    .or-divider {
-      display: flex;
-      align-items: center;
-      gap: var(--space-3);
-      margin: 0 0 var(--space-4);
-      color: var(--color-text-muted);
-      font-family: var(--font-display);
-      font-size: 0.85rem;
-      font-weight: 700;
-      letter-spacing: 0.08em;
-    }
-
-    .or-divider::before,
-    .or-divider::after {
-      content: "";
-      flex: 1;
-      height: 1px;
-      background: var(--color-border);
-    }
-
-    .or-flow-card {
-      max-width: 420px;
-      padding: var(--space-5);
-      border: 1px solid var(--color-border);
-      border-radius: var(--radius-md);
-      background: #f9fbfd;
-    }
-
-    .or-flow-title {
-      margin: 0 0 var(--space-2);
-      font-family: var(--font-display);
-      color: var(--color-text-strong);
-      font-size: 1.1rem;
-      letter-spacing: -0.01em;
-    }
-
-    .or-flow-copy {
-      margin: 0 0 var(--space-4);
-      color: var(--color-text-muted);
-      font-size: 0.92rem;
-    }
-
     .dev-notes {
       margin-top: calc(var(--space-8) + var(--space-2));
       padding: var(--space-5);
@@ -318,15 +272,6 @@
           <button class="btn-primary" type="submit">Submit</button>
         </div>
       </form>
-
-      <section class="or-flow" id="security-or-flow" hidden aria-label="Alternative access flow">
-        <p class="or-divider">OR</p>
-        <div class="or-flow-card">
-          <h2 class="or-flow-title">View Asset Jobs</h2>
-          <p class="or-flow-copy">Since you verified this asset with a security code, you can view its logged jobs without submitting a new fault.</p>
-          <a class="btn-primary" href="regional-manager/dashboard.html">View Asset Jobs</a>
-        </div>
-      </section>
     </main>
   </div>
 
@@ -351,12 +296,5 @@
     }
   </style>
 
-  <script>
-    // Reveal the security-code OR flow only when arriving via qr-03's security check.
-    var params = new URLSearchParams(window.location.search);
-    if (params.has("security-label") && params.has("security-code")) {
-      document.getElementById("security-or-flow").hidden = false;
-    }
-  </script>
 </body>
 </html>

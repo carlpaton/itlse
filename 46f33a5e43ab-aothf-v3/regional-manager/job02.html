@@ -436,6 +436,18 @@
       font-weight: 700;
     }
 
+    .badge {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: var(--radius-sm);
+      font-size: 0.82rem;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .badge-in-progress { background: #dbeafe; color: #1d4ed8; }
+    .badge-completed { background: #d9f3df; color: #1e6b34; }
+
     .form-static-box {
       width: 100%;
       min-height: 0;
@@ -642,6 +654,10 @@
       z-index: 1;
     }
 
+    .asset-identifiers.is-repair-job .asset-collapse-btn {
+      display: none;
+    }
+
     .asset-collapse-btn:hover {
       background: #f2f6fb;
       border-color: #9fb1c6;
@@ -671,8 +687,10 @@
     }
 
     .maintenance-grid {
-      display: grid;
-      gap: var(--space-3);
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: var(--space-3) var(--space-5);
       margin-top: var(--space-2);
       padding: var(--space-4);
       border: 1px solid #d5dee9;
@@ -686,10 +704,6 @@
 
     .asset-identifiers.is-selected .maintenance-options {
       display: block;
-    }
-
-    .repair-comments {
-      display: none;
     }
 
     .job-history {
@@ -730,19 +744,16 @@
       cursor: default;
     }
 
+    .asset-identifiers.is-repair-job .fault-fields,
     .asset-identifiers.is-repair-job .maintenance-options,
     .asset-identifiers.is-repair-job .job-notes {
       display: none;
     }
 
-    .asset-identifiers.is-repair-job .repair-comments {
-      display: block;
-    }
-
     .maintenance-row {
       display: flex;
       align-items: center;
-      justify-content: space-between;
+      justify-content: flex-start;
       gap: var(--space-3);
       flex-wrap: wrap;
     }
@@ -822,6 +833,7 @@
 
     .maintenance-add-row {
       display: flex;
+      flex-basis: 100%;
       justify-content: flex-start;
     }
 
@@ -893,7 +905,8 @@
       max-width: 360px;
     }
 
-    .expenses-card {
+    .expenses-card,
+    .repair-comments {
       margin-top: var(--space-6);
     }
 
@@ -1047,6 +1060,57 @@
       font-variant-numeric: tabular-nums;
     }
 
+    .page-content.is-locked > :not(.page-toolbar):not(.job-activity):not(.dev-notes):not([aria-label="Selected job details"]) {
+      opacity: 0.55;
+      pointer-events: none;
+      user-select: none;
+    }
+
+    .job-start-btn:disabled {
+      opacity: 0.6;
+      cursor: default;
+      transform: none;
+      box-shadow: none;
+    }
+
+    .job-activity {
+      margin-top: calc(var(--space-8) + var(--space-2));
+      padding: var(--space-5);
+      border: 1px solid #cfd9e4;
+      border-radius: var(--radius-md);
+      background: #ffffff;
+      box-shadow: 0 14px 32px rgba(16, 35, 58, 0.08);
+    }
+
+    .job-activity + .dev-notes {
+      margin-top: var(--space-5);
+    }
+
+    .job-activity-title {
+      margin: 0 0 var(--space-3);
+      color: var(--color-text-strong);
+      font-family: var(--font-display);
+      font-size: 1rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+    }
+
+    .job-activity-list {
+      margin: 0;
+      padding-left: 1.25rem;
+      color: var(--color-text-body);
+    }
+
+    .job-activity-list li + li {
+      margin-top: var(--space-2);
+    }
+
+    .job-activity-empty {
+      list-style: none;
+      margin-left: -1.25rem;
+      color: var(--color-text-muted, #5f7189);
+    }
+
     .dev-notes {
       margin-top: calc(var(--space-8) + var(--space-2));
       padding: var(--space-5);
@@ -1179,12 +1243,12 @@
     </nav>
   </header>
 
-  <main class="page-content" id="page-content">
+  <main class="page-content is-locked" id="page-content">
     <section class="page-toolbar" aria-label="Job details page heading">
       <div>
         <h1 class="page-title">Job Details</h1>
         <p class="page-subtitle">Job Details.</p>
-        <button class="btn-primary job-start-btn" type="button">Start</button>
+        <button class="btn-primary job-start-btn" id="job-start-button" type="button">Start</button>
       </div>
       <a class="btn-secondary" href="dashboard.html">Main Dashboard</a>
     </section>
@@ -1213,6 +1277,11 @@
             <div class="form-field">
               <label for="job-type">Job Type</label>
               <div class="form-static-box" id="job-type" data-field="job_type">Maintenance</div>
+            </div>
+
+            <div class="form-field">
+              <label for="job-status">Job Status</label>
+              <div class="form-static-box" id="job-status" data-field="job_status"><span class="badge badge-in-progress">In progress</span></div>
             </div>
 
             <div class="form-field">
@@ -1247,7 +1316,7 @@
           <div class="form-static-box" id="serial-number" data-field="serial_number">SN-8842-AX19</div>
         </div>
 
-        <div class="form-field form-field--full">
+        <div class="form-field form-field--full fault-fields">
           <div class="detail-grid">
             <div class="form-field">
               <label for="fault">Fault</label>
@@ -1295,16 +1364,6 @@
               placeholder="Add maintenance notes"
             ></textarea>
           </div>
-        </div>
-
-        <div class="form-field repair-comments form-field--full" style="margin-top: var(--space-3);">
-          <label for="repair-comments">Repair Comments</label>
-          <textarea
-            class="form-textarea"
-            id="repair-comments"
-            name="repair_comments"
-            placeholder="Add repair comments"
-          ></textarea>
         </div>
 
         <div class="form-field form-field--full">
@@ -1413,6 +1472,18 @@
       </div>
     </div>
 
+    <section class="job-form-card repair-comments" id="repair-comments-card" aria-label="Repair comments" hidden>
+      <div class="form-field">
+        <label for="repair-comments">Repair Comments</label>
+        <textarea
+          class="form-textarea"
+          id="repair-comments"
+          name="repair_comments"
+          placeholder="Add repair comments"
+        ></textarea>
+      </div>
+    </section>
+
     <section class="job-form-card expenses-card" aria-label="Job expenses">
       <h2 class="expenses-header">Expenses</h2>
       <div class="job-meta-row expenses-meta-row">
@@ -1449,13 +1520,25 @@
 
     <div class="form-actions" aria-label="Job actions">
       <a class="btn-secondary" href="dashboard.html">Cancel</a>
-      <a class="btn-primary" href="dashboard.html">Save</a>
+      <button class="btn-secondary" id="job-complete-button" type="button">Maintenance completed</button>
+      <button class="btn-primary" id="job-save-button" type="button">Save</button>
     </div>
+
+    <section class="job-activity" aria-label="Job history">
+      <h2 class="job-activity-title">HISTORY</h2>
+      <ul class="job-activity-list" id="job-activity-list" aria-live="polite">
+        <li class="job-activity-empty">Not started</li>
+      </ul>
+    </section>
 
     <section class="dev-notes" aria-label="Development notes">
       <h2 class="dev-notes-title">DEV NOTES</h2>
       <ul class="dev-notes-list">
-        <li>What does Start do?</li>
+        <li>Start: unlocks the page for editing and writes "Started - dd/MM/yyyy hh:mm" to History. Nothing can be filled in until it is clicked.</li>
+        <li>Save: saves progress only (job stays In progress) and writes "Saved - dd/MM/yyyy" to History.</li>
+        <li>Repair completed / Maintenance completed (label follows job type): changes Job Status to Completed and writes "Repair completed - dd/MM/yyyy hh:mm" (or "Maintenance completed") to History.</li>
+        <li>History is shown at the bottom of the page, newest first, like Xero. Prototype only: it is not persisted yet.</li>
+        <li>Repair jobs: no collapse arrow, no Fault / Test &amp; Tag, and one Repair Comments box for the whole job below the assets.</li>
         <li>Repair job hostory would link to that job</li>
       </ul>
     </section>
@@ -1491,9 +1574,72 @@
 
         if (jobTypeValue === "maintenance" || jobTypeValue === "repair") {
           isRepairJob = jobTypeValue === "repair";
+          document.getElementById("repair-comments-card").hidden = !isRepairJob;
           jobTypeNode.textContent = jobTypeValue.charAt(0).toUpperCase() + jobTypeValue.slice(1);
         }
       }
+
+      var pageContent = document.getElementById("page-content");
+      var startButton = document.getElementById("job-start-button");
+      var activityList = document.getElementById("job-activity-list");
+
+      function pad2(n) {
+        return String(n).padStart(2, "0");
+      }
+
+      function formatDate(date) {
+        return pad2(date.getDate()) + "/" + pad2(date.getMonth() + 1) + "/" + date.getFullYear();
+      }
+
+      function formatDateTime(date) {
+        return formatDate(date) + " " + pad2(date.getHours()) + ":" + pad2(date.getMinutes());
+      }
+
+      function addHistoryLine(text) {
+        var empty = activityList.querySelector(".job-activity-empty");
+        var item = document.createElement("li");
+        item.textContent = text;
+        if (empty) {
+          empty.remove();
+        }
+        activityList.insertBefore(item, activityList.firstChild);
+      }
+
+      function setPageLocked(isLocked) {
+        pageContent.classList.toggle("is-locked", isLocked);
+        Array.prototype.forEach.call(pageContent.children, function (child) {
+          if (child.matches(".page-toolbar, .job-activity, .dev-notes, [aria-label='Selected job details']")) {
+            return;
+          }
+          child.inert = isLocked;
+        });
+      }
+
+      setPageLocked(true);
+
+      startButton.addEventListener("click", function () {
+        addHistoryLine("Started - " + formatDateTime(new Date()));
+        startButton.disabled = true;
+        startButton.textContent = "Started";
+        setPageLocked(false);
+      });
+
+      var jobStatusNode = document.getElementById("job-status");
+      var saveButton = document.getElementById("job-save-button");
+      var completeButton = document.getElementById("job-complete-button");
+      var completedLabel = (isRepairJob ? "Repair" : "Maintenance") + " completed";
+
+      completeButton.textContent = completedLabel;
+
+      saveButton.addEventListener("click", function () {
+        addHistoryLine("Saved - " + formatDate(new Date()));
+      });
+
+      completeButton.addEventListener("click", function () {
+        addHistoryLine(completedLabel + " - " + formatDateTime(new Date()));
+        jobStatusNode.innerHTML = '<span class="badge badge-completed">Completed</span>';
+        completeButton.disabled = true;
+      });
 
       if (!assetCard || !assetSearchRow) {
         return;
@@ -1502,6 +1648,10 @@
       function setCardExpanded(card, isExpanded) {
         if (!card) {
           return;
+        }
+
+        if (isRepairJob) {
+          isExpanded = true;
         }
 
         var cardTitle = card.querySelector(".asset-identifiers-title");
@@ -1974,7 +2124,7 @@
         }
 
         var clickedCard = event.target.closest(".asset-identifiers");
-        if (clickedCard) {
+        if (clickedCard && !event.target.closest("input, textarea, select, button, label, a")) {
           toggleCard(clickedCard);
           return;
         }
@@ -1982,7 +2132,7 @@
 
       document.addEventListener("keydown", function (event) {
         var focusCard = event.target.closest(".asset-identifiers");
-        if (!focusCard) {
+        if (!focusCard || event.target !== focusCard) {
           return;
         }
 
