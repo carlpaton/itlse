@@ -478,6 +478,30 @@
       color: var(--color-text-muted);
     }
 
+    .pin-row {
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+      flex-wrap: wrap;
+    }
+
+    .pin-display {
+      max-width: 220px;
+      font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+      letter-spacing: 0.18em;
+    }
+
+    .pin-actions {
+      display: flex;
+      gap: var(--space-2);
+      flex-wrap: wrap;
+    }
+
+    .pin-action-btn {
+      min-height: 44px;
+      padding: 0 var(--space-4);
+    }
+
     @keyframes page-enter {
       from { opacity: 0; transform: translateY(10px); }
       to { opacity: 1; transform: translateY(0); }
@@ -559,25 +583,27 @@
 
     <section class="page-toolbar" aria-label="Onboarding sites page heading">
       <h1 class="page-title">Site</h1>
-      <p class="page-subtitle">Assign a site from the Sites register to this contract.</p>
+      <p class="page-subtitle">Sites linked to this contract.</p>
     </section>
 
     <hr class="page-divider" />
 
-    <form class="form-card" id="add-form" novalidate>
-      <div class="form-field">
-        <label for="entity-site">Site Name</label>
-        <select class="form-input" id="entity-site" name="entity-site">
-          <option value="" disabled selected>Select a site&hellip;</option>
-        </select>
-        <p class="form-hint" id="entity-site-empty" hidden>Every site from Sites has already been onboarded to a contract.</p>
-      </div>
+    <h2 class="section-title">Site Access</h2>
 
-      <div class="form-actions">
-        <button class="btn-primary" type="submit" id="add-form-save">Save</button>
-        <a class="btn-secondary" href="on-boarding01.html">Onboard another company</a>
+    <section class="form-card" aria-label="Contract site access PIN">
+      <div class="form-field">
+        <label for="contract-pin-display">Contract PIN</label>
+        <div class="pin-row">
+          <input class="form-input pin-display" id="contract-pin-display" type="text" value="&bull;&bull;&bull;&bull;" readonly aria-describedby="pin-status" />
+          <div class="pin-actions">
+            <button class="btn-secondary pin-action-btn" id="view-pin" type="button">View</button>
+            <button class="btn-primary pin-action-btn" id="reset-pin" type="button">Reset</button>
+          </div>
+        </div>
+        <p class="form-hint" id="pin-scope"></p>
+        <p class="form-hint" id="pin-status">The current PIN is hidden for security.</p>
       </div>
-    </form>
+    </section>
 
     <hr class="page-divider" />
 
@@ -590,7 +616,6 @@
             <tr>
               <th scope="col">Site Name</th>
               <th scope="col">GUID</th>
-              <th scope="col"></th>
             </tr>
           </thead>
           <tbody id="sites-tbody"></tbody>
@@ -605,10 +630,10 @@
     <section class="dev-notes" aria-label="Development notes">
       <h2 class="dev-notes-title">DEV NOTES</h2>
       <ul class="dev-notes-list">
-        <li>The Site dropdown is sourced from the Site Name column in <a href="sites01.html">sites01.html</a>. Once a site is assigned to a contract it drops off the list for every other contract.</li>
-        <li>"Remove" takes a site off this contract and puts it back in the dropdown for any contract to pick up.</li>
+        <li>This page is read-only: it lists the sites linked to the contract selected on the previous screen. If none are linked, an empty message is shown.</li>
+        <li>Linking a site to a contract is done through the Site Contract field on the site record (<a href="sites02.html">sites02.html</a> / <a href="sites03.html">sites03.html</a>).</li>
         <li>Use the breadcrumb above to jump back and pick a different company, division, or contract.</li>
-        <li>This is the last step in the wizard; use "Onboard another company" to start a fresh Company → Division → Contract → Site chain.</li>
+        <li>This is the last step in the wizard; use the breadcrumb to go back to the start of the Company → Division → Contract chain.</li>
       </ul>
     </section>
   </main>
@@ -616,18 +641,6 @@
   <script>
     const STORAGE_KEY = "aotech-onboarding-wizard-data";
     const SELECTION_KEY = "aotech-onboarding-wizard-selection";
-
-    // Master site list mirrors the Site Name column in sites01.html
-    const SITE_MASTER_LIST = [
-      "Northwind Transfer Hub",
-      "Beacon Retail Point",
-      "Crescent Metro Unit",
-      "Broadway Service Site",
-      "Harborfield Storage",
-      "Westlake Operations",
-      "Parkview Delivery Yard",
-      "Delta Street Facility"
-    ];
 
     function makeGuid() {
       if (window.crypto && typeof window.crypto.randomUUID === "function") {
@@ -715,38 +728,45 @@
 
       const tbody = document.getElementById("sites-tbody");
       const resultsNote = document.getElementById("results-note");
-      const siteSelect = document.getElementById("entity-site");
-      const siteEmpty = document.getElementById("entity-site-empty");
-      const saveBtn = document.getElementById("add-form-save");
+      // The PIN is held on the contract and applies to every site linked to it
+      const pinInput = document.getElementById("contract-pin-display");
+      const pinStatus = document.getElementById("pin-status");
+      const viewPinBtn = document.getElementById("view-pin");
+      const resetPinBtn = document.getElementById("reset-pin");
+      let pinVisible = false;
 
-      // Any site name already onboarded anywhere in the tree is removed from the pickable pool
-      function getAvailableSiteNames() {
-        const usedNames = new Set();
-        data.companies.forEach((co) => {
-          co.divisions.forEach((div) => {
-            div.contracts.forEach((con) => {
-              con.sites.forEach((site) => usedNames.add(site.name));
-            });
-          });
-        });
-        return SITE_MASTER_LIST.filter((name) => !usedNames.has(name));
+      function newPin() { return String(Math.floor(1000 + Math.random() * 9000)); }
+
+      if (!contract.pin) {
+        contract.pin = newPin();
+        saveData(data);
       }
 
-      function renderSitePicker() {
-        const available = getAvailableSiteNames();
-        siteSelect.innerHTML = '<option value="" disabled selected>Select a site&hellip;</option>' +
-          available.map((name) => `<option value="${escapeHtml(name)}">${escapeHtml(name)}</option>`).join("");
-        siteSelect.disabled = available.length === 0;
-        siteEmpty.hidden = available.length > 0;
-        saveBtn.disabled = available.length === 0;
+      document.getElementById("pin-scope").textContent =
+        `This PIN belongs to the contract "${contract.name}" and is used by all sites linked to it.`;
+
+      function renderPin() {
+        pinInput.value = pinVisible ? contract.pin : "\u2022\u2022\u2022\u2022";
+        viewPinBtn.textContent = pinVisible ? "Hide" : "View";
+        pinStatus.textContent = pinVisible
+          ? "The contract PIN is currently visible."
+          : "The current PIN is hidden for security.";
       }
+
+      viewPinBtn.addEventListener("click", () => { pinVisible = !pinVisible; renderPin(); });
+      resetPinBtn.addEventListener("click", () => {
+        contract.pin = newPin();
+        saveData(data);
+        pinVisible = true;
+        renderPin();
+      });
 
       function render() {
         tbody.innerHTML = "";
 
         if (contract.sites.length === 0) {
           const tr = document.createElement("tr");
-          tr.innerHTML = `<td colspan="3" class="table-empty">No sites yet. Add one above to get started.</td>`;
+          tr.innerHTML = `<td colspan="2" class="table-empty">No sites are linked to this contract.</td>`;
           tbody.appendChild(tr);
         } else {
           contract.sites.forEach((site) => {
@@ -754,37 +774,15 @@
             tr.innerHTML = `
               <td>${escapeHtml(site.name)}</td>
               <td class="is-guid">${site.id}</td>
-              <td></td>
             `;
-            const actionCell = tr.lastElementChild;
-            const removeBtn = document.createElement("button");
-            removeBtn.className = "btn-secondary";
-            removeBtn.type = "button";
-            removeBtn.textContent = "Remove";
-            removeBtn.addEventListener("click", () => {
-              contract.sites = contract.sites.filter((s) => s.id !== site.id);
-              saveData(data);
-              render();
-            });
-            actionCell.appendChild(removeBtn);
             tbody.appendChild(tr);
           });
         }
 
         resultsNote.textContent = `Showing ${contract.sites.length} site${contract.sites.length === 1 ? "" : "s"}`;
-        renderSitePicker();
       }
 
-      document.getElementById("add-form").addEventListener("submit", (event) => {
-        event.preventDefault();
-        const siteName = siteSelect.value;
-        if (!siteName) return;
-
-        contract.sites.push(makeSite(siteName));
-        saveData(data);
-        render();
-      });
-
+      renderPin();
       render();
     }
   </script>

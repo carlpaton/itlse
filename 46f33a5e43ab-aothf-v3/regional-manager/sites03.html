@@ -458,36 +458,6 @@
       border-color: #9fb1c6;
     }
 
-    .pin-row {
-      display: flex;
-      align-items: center;
-      gap: var(--space-3);
-      flex-wrap: wrap;
-    }
-
-    .pin-display {
-      max-width: 220px;
-      font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
-      letter-spacing: 0.18em;
-    }
-
-    .pin-actions {
-      display: flex;
-      gap: var(--space-2);
-      flex-wrap: wrap;
-    }
-
-    .pin-action-btn {
-      min-height: 44px;
-      padding: 0 var(--space-4);
-    }
-
-    .pin-hint {
-      margin: var(--space-2) 0 0;
-      color: var(--color-text-muted);
-      font-size: 0.85rem;
-    }
-
     .dev-notes {
       margin-top: calc(var(--space-8) + var(--space-2));
       padding: var(--space-5);
@@ -619,8 +589,14 @@
         </div>
 
         <div class="form-field">
-          <label for="site-contact">Site Contact</label>
-          <input class="form-input" id="site-contact" name="site_contact" type="text" placeholder="Site Contact" required />
+          <label for="site-contact">Site Contract</label>
+          <select class="form-select" id="site-contact" name="site_contact" required>
+            <option value="" disabled selected>Please select</option>
+            <option value="NZDF Contract (Devonport)">NZDF Contract (Devonport)</option>
+            <option value="NZDF Contract (Whenuapai)">NZDF Contract (Whenuapai)</option>
+            <option value="NZ Police Contract">NZ Police Contract</option>
+            <option value="Massey University Contract">Massey University Contract</option>
+          </select>
         </div>
 
         <div class="form-field">
@@ -651,22 +627,6 @@
         <div class="form-field form-field--full">
           <label for="site-address">Site Address</label>
           <input class="form-input" id="site-address" name="site_address" type="text" placeholder="Site Address" required />
-        </div>
-
-        <div class="section-divider">
-          <h3 class="section-title">Site Access</h3>
-        </div>
-
-        <div class="form-field form-field--full">
-          <label for="site-pin-display">Site PIN</label>
-          <div class="pin-row">
-            <input class="form-input pin-display" id="site-pin-display" name="site_pin" type="text" value="••••" readonly aria-describedby="pin-status" />
-            <div class="pin-actions">
-              <button class="btn-secondary pin-action-btn" id="view-pin" type="button">View</button>
-              <button class="btn-primary pin-action-btn" id="reset-pin" type="button">Reset</button>
-            </div>
-          </div>
-          <p class="pin-hint" id="pin-status">The current site PIN is hidden for security.</p>
         </div>
 
         <div class="section-divider">
@@ -704,10 +664,32 @@
         <li>Additional Contact Person - no limit on how many additional contacts can be added</li>
         <li>Cancel - cancels the action, so changes are not saved</li>
         <li>Save - saves the changes made to the site details</li>
-        <li>Site PIN can be viewed or reset from the Site Access section</li>
+        <li>The access PIN is not set here: it belongs to the contract and is managed on <a href="on-boarding04.html">on-boarding04.html</a></li>
       </ul>
     </section>
   </main>
+
+  <script>
+    // Add any contracts created in the onboarding wizard to the Site Contract list
+    (function () {
+      try {
+        var data = JSON.parse(localStorage.getItem("aotech-onboarding-wizard-data") || "null");
+        var select = document.getElementById("site-contact");
+        var existing = Array.prototype.map.call(select.options, function (o) { return o.value; });
+        ((data && data.companies) || []).forEach(function (company) {
+          (company.divisions || []).forEach(function (division) {
+            (division.contracts || []).forEach(function (contract) {
+              if (existing.indexOf(contract.name) !== -1) return;
+              existing.push(contract.name);
+              var option = document.createElement("option");
+              option.value = option.textContent = contract.name;
+              select.appendChild(option);
+            });
+          });
+        });
+      } catch (e) { /* keep the default list */ }
+    })();
+  </script>
 
   <script>
     (function () {
@@ -716,12 +698,6 @@
       var contactEmailInput = document.getElementById("contact-email");
       var contactsList = document.getElementById("contacts-list");
       var contactsEmpty = document.getElementById("contacts-empty");
-      var sitePinInput = document.getElementById("site-pin-display");
-      var viewPinButton = document.getElementById("view-pin");
-      var resetPinButton = document.getElementById("reset-pin");
-      var pinStatus = document.getElementById("pin-status");
-      var sitePinValue = "4827";
-      var pinVisible = false;
 
       function setEmptyState() {
         var hasRows = contactsList.querySelectorAll(".contact-row").length > 0;
@@ -766,25 +742,6 @@
         contactsList.appendChild(row);
       }
 
-      function renderPinState() {
-        sitePinInput.value = pinVisible ? sitePinValue : "••••";
-        viewPinButton.textContent = pinVisible ? "Hide" : "View";
-        pinStatus.textContent = pinVisible
-          ? "The site PIN is currently visible."
-          : "The current site PIN is hidden for security.";
-      }
-
-      viewPinButton.addEventListener("click", function () {
-        pinVisible = !pinVisible;
-        renderPinState();
-      });
-
-      resetPinButton.addEventListener("click", function () {
-        sitePinValue = String(Math.floor(1000 + Math.random() * 9000));
-        pinVisible = true;
-        renderPinState();
-      });
-
       addContactButton.addEventListener("click", function () {
         var name = contactNameInput.value.trim();
         var email = contactEmailInput.value.trim();
@@ -818,7 +775,6 @@
         });
       });
 
-      renderPinState();
       setEmptyState();
     })();
   </script>
